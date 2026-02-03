@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>動物行動生成器</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Caveat:wght@700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            touch-action: none;
+            position: relative;
+        }
+        
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+        
+        #behavior-display {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+            width: 90%;
+            max-width: 600px;
+        }
+        
+        #animal-name {
+            font-size: clamp(32px, 8vw, 64px);
+            font-weight: 700;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: scale(0.5) rotate(-10deg);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+        }
+        
+        #animal-name.active {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+        
+        #behavior-text {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(20px, 5vw, 36px);
+            line-height: 1.6;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+            border: 3px dashed rgba(255, 255, 255, 0.5);
+        }
+        
+        #behavior-text.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #main-button {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%) scale(1);
+            padding: 25px 50px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(20px, 5vw, 32px);
+            font-weight: 700;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #fff;
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            pointer-events: all;
+            z-index: 20;
+            box-shadow: 0 10px 40px rgba(245, 87, 108, 0.6);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        #main-button:hover {
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 0 15px 50px rgba(245, 87, 108, 0.8);
+        }
+        
+        #main-button:active {
+            transform: translateX(-50%) scale(0.95);
+        }
+        
+        #main-button.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) scale(0.3);
+        }
+        
+        .animal-emoji {
+            position: absolute;
+            font-size: 60px;
+            pointer-events: none;
+            z-index: 5;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+        
+
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div id="behavior-display">
+        <div id="animal-name"></div>
+        <div id="behavior-text"></div>
+    </div>
+    
+    <button id="main-button">観測する</button>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // 真の乱数生成
+        class TrueRandom {
+            static seed = performance.now() + Date.now();
+            
+            static get() {
+                this.seed = (this.seed * 9301 + 49297) % 233280;
+                return (this.seed / 233280) * Math.random() * performance.now() % 1;
+            }
+            
+            static range(min, max) {
+                return min + this.get() * (max - min);
+            }
+            
+            static int(min, max) {
+                return Math.floor(this.range(min, max + 1));
+            }
+            
+            static choice(array) {
+                return array[this.int(0, array.length - 1)];
+            }
+            
+            static shuffle(array) {
+                const result = [...array];
+                for (let i = result.length - 1; i > 0; i--) {
+                    const j = this.int(0, i);
+                    [result[i], result[j]] = [result[j], result[i]];
+                }
+                return result;
+            }
+        }
+        
+        // 動物と行動の自動生成
+        class BehaviorGenerator {
+            static animals = [
+                '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', 
+                '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🐤', '🦆',
+                '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🦋',
+                '🐌', '🐞', '🐜', '🦟', '🦗', '🕷', '🦂', '🐢', '🐍', '🦎',
+                '🦖', '🦕', '🐙', '🦑', '🦐', '🦞', '🦀', '🐡', '🐠', '🐟',
+                '🐬', '🐳', '🐋', '🦈', '🐊', '🐅', '🐆', '🦓', '🦍', '🦧',
+                '🐘', '🦛', '🦏', '🐪', '🐫', '🦒', '🦘', '🦬', '🐃', '🐂',
+                '🐄', '🐎', '🐖', '🐏', '🐑', '🦙', '🐐', '🦌', '🐕', '🐩',
+                '🦮', '🐈', '🦚', '🦜', '🦢', '🦩', '🕊', '🐇', '🦝', '🦨',
+                '🦡', '🦦', '🦥', '🐁', '🐀', '🐿', '🦔'
+            ];
+            
+            static actions = [
+                'が突然', 'がゆっくりと', 'が猛烈に', 'が優雅に', 'が必死に',
+                'がこっそり', 'が堂々と', 'が不思議そうに', 'が嬉しそうに', 'が悲しそうに',
+                'が怒りながら', 'が笑いながら', 'が震えながら', 'が飛びながら', 'が転がりながら',
+                'が踊りながら', 'が歌いながら', 'が叫びながら', 'が眠りながら', 'が夢の中で'
+            ];
+            
+            static objects = [
+                '空を', '地面を', '壁を', '木を', '石を', '水を', '火を', '氷を',
+                '雲を', '月を', '星を', '虹を', '風を', '雷を', '影を', '光を',
+                '音楽を', '言葉を', '数字を', '色を', '時間を', '記憶を', '夢を', '未来を',
+                '過去を', '次元を', '重力を', '空間を', '量子を', '波動を'
+            ];
+            
+            static methods = [
+                '食べた', '飲んだ', '投げた', '蹴った', '叩いた', '踏んだ', '噛んだ', '舐めた',
+                '嗅いだ', '見つめた', '握った', '抱きしめた', '振った', '回した', '伸ばした', '縮めた',
+                '折った', '溶かした', '凍らせた', '燃やした', '消した', '作った', '壊した', '直した',
+                '変えた', '混ぜた', '分けた', '集めた', '散らした', '隠した', '見つけた', '失った',
+                '数えた', '測った', '描いた', '歌った', '踊った', '跳ねた', '転がした', '飛ばした',
+                '沈めた', '浮かべた', '削った', '磨いた', '塗った', '剥がした', '貼った', '結んだ',
+                '解いた', '開いた', '閉じた', '繋げた', '切った', '折り畳んだ', '広げた', '詰めた'
+            ];
+            
+            static consequences = [
+                'その結果、世界が', 'すると、時間が', 'そして、空間が', 'なぜか、重力が',
+                '突然、色が', '不思議なことに、音が', 'その瞬間、光が', '驚くべきことに、影が',
+                'その影響で、風が', '奇妙なことに、水が', '予想外に、火が', '信じられないが、氷が',
+                'その結果、雲が', 'なんと、星が', 'そのせいで、月が', '不可解にも、太陽が',
+                'その瞬間、記憶が', '突如として、夢が', 'その時、現実が', '驚いたことに、未来が'
+            ];
+            
+            static results = [
+                '逆さまになった', '消えてしまった', '二倍になった', '半分になった', '透明になった',
+                '虹色になった', '踊り始めた', '歌い始めた', '笑い出した', '泣き出した',
+                '飛び跳ねた', '回転した', '溶けた', '凍った', '燃えた', '光った', '爆発した',
+                '分裂した', '融合した', '変身した', '進化した', '退化した', '巨大化した', '縮小した',
+                '加速した', '停止した', '逆再生された', 'ループした', '分岐した', '収束した',
+                '反転した', '鏡面化した', '複製された', '消去された', 'リセットされた', 'バグった',
+                '次元が上がった', '次元が下がった', '量子化した', '波動化した', 'デジタル化した', 'アナログ化した',
+                '液体化した', '気体化した', '固体化した', 'プラズマ化した', '虚数化した', '無限化した'
+            ];
+            
+            static generateUniqueBehavior() {
+                // 完全にランダムな順序で要素を選択
+                const shuffledActions = TrueRandom.shuffle(this.actions);
+                const shuffledObjects = TrueRandom.shuffle(this.objects);
+                const shuffledMethods = TrueRandom.shuffle(this.methods);
+                const shuffledConsequences = TrueRandom.shuffle(this.consequences);
+                const shuffledResults = TrueRandom.shuffle(this.results);
+                
+                // ランダムな数の動詞を組み合わせ（1〜3個）
+                const actionCount = TrueRandom.int(1, 3);
+                let behaviorText = '';
+                
+                for (let i = 0; i < actionCount; i++) {
+                    const action = TrueRandom.choice(shuffledActions);
+                    const object = TrueRandom.choice(shuffledObjects);
+                    const method = TrueRandom.choice(shuffledMethods);
+                    
+                    behaviorText += action + object + method;
+                    
+                    if (i < actionCount - 1) {
+                        const connectors = ['、その後', '、同時に', '、そして', '、しかし', '、だから', '、もしくは'];
+                        behaviorText += TrueRandom.choice(connectors);
+                    }
+                }
+                
+                // 結果の追加（ランダムに0〜2個）
+                const consequenceCount = TrueRandom.int(0, 2);
+                for (let i = 0; i < consequenceCount; i++) {
+                    const consequence = TrueRandom.choice(shuffledConsequences);
+                    const result = TrueRandom.choice(shuffledResults);
+                    behaviorText += '。' + consequence + result;
+                }
+                
+                // ランダムな追加要素（10%の確率で発生）
+                if (TrueRandom.get() > 0.9) {
+                    const bonus = [
+                        '（これは誰も見たことがない現象だ）',
+                        '（理論上は不可能なはずだ）',
+                        '（物理法則を無視している）',
+                        '（説明が一切つかない）',
+                        '（科学では解明できない）',
+                        '（宇宙の法則が書き換わった）',
+                        '（次元の壁が崩れた）',
+                        '（時空に歪みが生じた）',
+                        '（因果律が破綻した）',
+                        '（観測者効果が発動した）'
+                    ];
+                    behaviorText += TrueRandom.choice(bonus);
+                }
+                
+                return behaviorText;
+            }
+            
+            static getRandomAnimal() {
+                return TrueRandom.choice(this.animals);
+            }
+            
+            static getAnimalName() {
+                const names = [
+                    '謎の生物', '未確認動物', '幻の獣', '伝説の存在', '奇妙な生き物',
+                    '不思議な動物', '想像上の生物', '異世界の住人', '次元を超えた存在', '時空を彷徨う者',
+                    '量子的生命体', '非ユークリッド生物', 'シュレディンガーの動物', '波動関数の化身', '確率的存在'
+                ];
+                return TrueRandom.choice(names);
+            }
+        }
+        
+        // Three.js セットアップ
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+        
+        camera.position.z = 5;
+        
+        // 背景のパーティクル
+        const particleGeometry = new THREE.BufferGeometry();
+        const particleCount = 500;
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+        
+        for (let i = 0; i < particleCount; i++) {
+            positions[i * 3] = TrueRandom.range(-20, 20);
+            positions[i * 3 + 1] = TrueRandom.range(-20, 20);
+            positions[i * 3 + 2] = TrueRandom.range(-20, 20);
+            
+            colors[i * 3] = TrueRandom.get();
+            colors[i * 3 + 1] = TrueRandom.get();
+            colors[i * 3 + 2] = TrueRandom.get();
+        }
+        
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        
+        const particleMaterial = new THREE.PointsMaterial({
+            size: 0.1,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
+        });
+        
+        const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+        scene.add(particleSystem);
+        
+        // ライティング
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        
+        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+        pointLight.position.set(0, 0, 10);
+        scene.add(pointLight);
+        
+        // 動物絵文字のDOM要素管理
+        const animalElements = [];
+        
+        function createAnimalEmoji(emoji, behavior) {
+            const element = document.createElement('div');
+            element.className = 'animal-emoji';
+            element.textContent = emoji;
+            element.style.left = TrueRandom.range(10, 90) + '%';
+            element.style.top = TrueRandom.range(10, 90) + '%';
+            document.body.appendChild(element);
+            
+            // ランダムな動きのパターン生成
+            const duration = TrueRandom.range(2000, 4000);
+            const rotations = TrueRandom.int(0, 4);
+            const scale = TrueRandom.range(0.5, 2);
+            const moveX = TrueRandom.range(-200, 200);
+            const moveY = TrueRandom.range(-200, 200);
+            
+            element.animate([
+                { 
+                    transform: 'translate(0, 0) rotate(0deg) scale(0)',
+                    opacity: 0
+                },
+                {
+                    transform: `translate(${moveX/2}px, ${moveY/2}px) rotate(${rotations * 180}deg) scale(${scale})`,
+                    opacity: 1,
+                    offset: 0.3
+                },
+                {
+                    transform: `translate(${moveX}px, ${moveY}px) rotate(${rotations * 360}deg) scale(${scale * 1.2})`,
+                    opacity: 1,
+                    offset: 0.7
+                },
+                {
+                    transform: `translate(${moveX * 1.5}px, ${moveY * 1.5}px) rotate(${rotations * 540}deg) scale(0)`,
+                    opacity: 0
+                }
+            ], {
+                duration: duration,
+                easing: 'cubic-bezier(' + [TrueRandom.get(), TrueRandom.get(), TrueRandom.get(), TrueRandom.get()].join(',') + ')'
+            });
+            
+            animalElements.push(element);
+            
+            setTimeout(() => {
+                element.remove();
+                const index = animalElements.indexOf(element);
+                if (index > -1) animalElements.splice(index, 1);
+            }, duration);
+        }
+        
+        // イベント管理
+        let behaviorCount = 0;
+        let isEventActive = false;
+        
+        function triggerBehavior() {
+            if (isEventActive) return;
+            
+            isEventActive = true;
+            behaviorCount++;
+            
+            // ボタンを隠す
+            const button = document.getElementById('main-button');
+            button.classList.add('hidden');
+            
+            // ランダムな動物と行動を生成
+            const animal = BehaviorGenerator.getRandomAnimal();
+            const animalName = BehaviorGenerator.getAnimalName();
+            const behavior = BehaviorGenerator.generateUniqueBehavior();
+            
+            // 表示を更新
+            const animalNameEl = document.getElementById('animal-name');
+            const behaviorTextEl = document.getElementById('behavior-text');
+            
+            animalNameEl.textContent = animal + ' ' + animalName;
+            behaviorTextEl.textContent = behavior;
+            
+            animalNameEl.classList.add('active');
+            setTimeout(() => behaviorTextEl.classList.add('active'), 300);
+            
+            // 背景色変更
+            const hue1 = TrueRandom.int(0, 360);
+            const hue2 = (hue1 + TrueRandom.int(30, 150)) % 360;
+            document.body.style.background = `linear-gradient(${TrueRandom.int(0, 360)}deg, 
+                hsl(${hue1}, 70%, 60%) 0%, 
+                hsl(${hue2}, 70%, 60%) 100%)`;
+            
+            // 複数の動物絵文字を生成
+            const emojiCount = TrueRandom.int(5, 15);
+            for (let i = 0; i < emojiCount; i++) {
+                setTimeout(() => {
+                    createAnimalEmoji(animal, behavior);
+                }, i * 200);
+            }
+            
+            // パーティクルの色を変更
+            const colors = particleSystem.geometry.attributes.color.array;
+            for (let i = 0; i < particleCount; i++) {
+                colors[i * 3] = TrueRandom.get();
+                colors[i * 3 + 1] = TrueRandom.get();
+                colors[i * 3 + 2] = TrueRandom.get();
+            }
+            particleSystem.geometry.attributes.color.needsUpdate = true;
+            
+            // カメラの動き
+            const cameraAnimation = [
+                { z: 5, rotationZ: 0 },
+                { z: 3, rotationZ: 0.2 },
+                { z: 7, rotationZ: -0.2 },
+                { z: 5, rotationZ: 0 }
+            ];
+            
+            let step = 0;
+            const cameraInterval = setInterval(() => {
+                if (step < cameraAnimation.length) {
+                    camera.position.z = cameraAnimation[step].z;
+                    camera.rotation.z = cameraAnimation[step].rotationZ;
+                    step++;
+                } else {
+                    clearInterval(cameraInterval);
+                }
+            }, 750);
+            
+            // 3秒後にリセット
+            setTimeout(() => {
+                animalNameEl.classList.remove('active');
+                behaviorTextEl.classList.remove('active');
+                
+                button.classList.remove('hidden');
+                const buttonTexts = ['観測する', '実行する', '発動する', '起こす', '見る', '確認する'];
+                button.textContent = TrueRandom.choice(buttonTexts);
+                
+                const btnHue1 = TrueRandom.int(0, 360);
+                const btnHue2 = (btnHue1 + TrueRandom.int(30, 100)) % 360;
+                button.style.background = `linear-gradient(135deg, 
+                    hsl(${btnHue1}, 80%, 65%) 0%, 
+                    hsl(${btnHue2}, 80%, 60%) 100%)`;
+                
+                isEventActive = false;
+            }, 3000);
+        }
+        
+        // ボタンイベント
+        document.getElementById('main-button').addEventListener('click', triggerBehavior);
+        document.getElementById('main-button').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            triggerBehavior();
+        });
+        
+        // アニメーションループ
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // パーティクルの回転
+            particleSystem.rotation.y += 0.001;
+            particleSystem.rotation.x += 0.0005;
+            
+            renderer.render(scene, camera);
+        }
+        
+        // リサイズ対応
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // 初期化
+        animate();
+    </script>
+</body>
+</html>
