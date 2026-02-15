@@ -8,23 +8,29 @@
   <meta name="format-detection" content="telephone=no,email=no,address=no" />
 
   <title>AI診断｜この悩みに最適なAIは？（無料）</title>
-  <meta name="description" content="質問に答えるだけで、文章・画像・動画・コード・自動化など用途に最適なAIをおすすめします。初心者向けの使い方・注意点・プロンプト例つき。" />
+  <meta name="description" content="質問に答えるだけで、文章・画像・動画・コード・自動化など用途に最適なAIをおすすめします。" />
 
-  <!-- OGP -->
+  <!-- ★ PWA / TWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <!-- OGP（★絶対URL） -->
   <meta property="og:title" content="AI診断｜この悩みに最適なAIは？" />
-  <meta property="og:description" content="質問に答えるだけで、あなたに合うAIがわかる。プロンプト例つき。" />
+  <meta property="og:description" content="質問に答えるだけで、あなたに合うAIがわかる。" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="" />
-  <meta property="og:image" content="" />
+  <meta property="og:url" content="https://your-domain.example/" />
+  <meta property="og:image" content="https://your-domain.example/icon/icon-512.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- JSON-LD (FAQは後で拡張しやすい) -->
+  <!-- JSON-LD -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
-    "@type":"WebSite",
-    "name":"AI診断｜この悩みに最適なAIは？",
-    "description":"質問に答えるだけで最適なAIをおすすめ。プロンプト例つき。",
+    "@type":"WebApplication",
+    "name":"AI診断",
+    "operatingSystem":"Android",
+    "applicationCategory":"UtilitiesApplication",
     "inLanguage":"ja"
   }
   </script>
