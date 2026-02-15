@@ -1,1328 +1,224 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-  <meta name="theme-color" content="#0b1220" />
-  <meta name="format-detection" content="telephone=no,email=no,address=no" />
+<meta charset="utf-8">
+<meta name="viewport"
+  content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0b1220">
+<meta name="format-detection" content="telephone=no,email=no,address=no">
+<title>AI診断｜あなたに最適なAIは？</title>
 
-  <title>AI診断｜この悩みに最適なAIは？（無料）</title>
-  <meta name="description" content="質問に答えるだけで、文章・画像・動画・コード・自動化など用途に最適なAIをおすすめします。初心者向けの使い方・注意点・プロンプト例つき。" />
+<style>
+:root{
+  --bg:#070b14;
+  --panel:#0b1220;
+  --text:#e7eefc;
+  --muted:#a9b7d6;
+  --accent:#7c3aed;
+  --good:#22c55e;
+  --line:rgba(255,255,255,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Noto Sans JP","Meiryo",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+.page{display:none;min-height:100vh;padding:18px}
+.page.active{display:block}
 
-  <!-- OGP -->
-  <meta property="og:title" content="AI診断｜この悩みに最適なAIは？" />
-  <meta property="og:description" content="質問に答えるだけで、あなたに合うAIがわかる。プロンプト例つき。" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="" />
-  <meta property="og:image" content="" />
-  <meta name="twitter:card" content="summary_large_image" />
+h1{font-size:22px;margin:0 0 12px}
+h2{font-size:18px;margin:0 0 10px}
+p{color:var(--muted)}
 
-  <!-- JSON-LD (FAQは後で拡張しやすい) -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"WebSite",
-    "name":"AI診断｜この悩みに最適なAIは？",
-    "description":"質問に答えるだけで最適なAIをおすすめ。プロンプト例つき。",
-    "inLanguage":"ja"
-  }
-  </script>
+.card{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
+}
 
-  <style>
-    :root{
-      --bg:#070b14;
-      --panel:#0b1220;
-      --panel2:#0f1a2e;
-      --text:#e7eefc;
-      --muted:#a9b7d6;
-      --line:rgba(231,238,252,.12);
-      --accent:#7c3aed;
-      --accent2:#22c55e;
-      --warn:#f59e0b;
-      --danger:#ef4444;
-      --shadow: 0 18px 60px rgba(0,0,0,.35);
-      --radius:18px;
-      --radius2:26px;
-      --max:1040px;
-      --focus: 0 0 0 3px rgba(124,58,237,.35);
-      color-scheme: dark;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN","Noto Sans JP","Meiryo", Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background:
-        radial-gradient(1100px 600px at 20% -10%, rgba(124,58,237,.35), transparent 60%),
-        radial-gradient(900px 500px at 90% 0%, rgba(34,197,94,.22), transparent 55%),
-        radial-gradient(900px 650px at 40% 110%, rgba(59,130,246,.18), transparent 55%),
-        var(--bg);
-      color:var(--text);
-      line-height:1.55;
-    }
-    a{color:inherit}
-    .wrap{max-width:var(--max); margin:0 auto; padding:28px 18px 80px}
-    header{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
-      margin:10px 0 22px;
-    }
-    .brand{
-      display:flex; gap:14px; align-items:center;
-    }
-    .logo{
-      width:44px; height:44px; border-radius:14px;
-      background: linear-gradient(145deg, rgba(124,58,237,.95), rgba(34,197,94,.85));
-      box-shadow: 0 10px 30px rgba(124,58,237,.25);
-      display:grid; place-items:center;
-      position:relative;
-      overflow:hidden;
-    }
-    .logo::after{
-      content:"";
-      position:absolute; inset:-40%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.28), transparent 55%);
-      transform: rotate(12deg);
-    }
-    .logo span{
-      position:relative;
-      font-weight:900;
-      letter-spacing:.02em;
-    }
-    .title h1{
-      margin:0;
-      font-size: clamp(20px, 3.4vw, 32px);
-      letter-spacing:.01em;
-    }
-    .title p{
-      margin:8px 0 0;
-      color:var(--muted);
-      max-width: 62ch;
-      font-size: 14px;
-    }
-    .top-actions{
-      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
-    }
-    .btn{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color:var(--text);
-      padding:10px 12px;
-      border-radius: 999px;
-      cursor:pointer;
-      display:inline-flex; align-items:center; gap:8px;
-      transition: transform .05s ease, background .15s ease, border-color .15s ease;
-      user-select:none;
-      text-decoration:none;
-      font-size: 13px;
-    }
-    .btn:hover{background: rgba(255,255,255,.07); border-color: rgba(231,238,252,.20)}
-    .btn:active{transform: translateY(1px)}
-    .btn.primary{
-      background: linear-gradient(145deg, rgba(124,58,237,.95), rgba(124,58,237,.75));
-      border-color: rgba(124,58,237,.55);
-      box-shadow: 0 14px 38px rgba(124,58,237,.24);
-    }
-    .btn.primary:hover{background: linear-gradient(145deg, rgba(124,58,237,1), rgba(124,58,237,.82))}
-    .btn.good{
-      background: linear-gradient(145deg, rgba(34,197,94,.95), rgba(34,197,94,.75));
-      border-color: rgba(34,197,94,.55);
-      box-shadow: 0 14px 38px rgba(34,197,94,.18);
-    }
-    .btn.ghost{background:transparent}
-    .btn:focus-visible{outline:none; box-shadow: var(--focus)}
-    .grid{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:16px;
-      align-items:start;
-    }
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr}
-      .top-actions{justify-content:flex-start}
-    }
+.opt{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px;
+  margin-bottom:10px;
+  cursor:pointer;
+}
+.opt.sel{
+  border-color:var(--accent);
+  background:rgba(124,58,237,.18);
+}
 
-    .card{
-      background: rgba(255,255,255,.03);
-      border: 1px solid var(--line);
-      border-radius: var(--radius2);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .card .hd{
-      padding:16px 16px 12px;
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), transparent);
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-    }
-    .card .hd h2{
-      margin:0;
-      font-size: 16px;
-      letter-spacing:.01em;
-    }
-    .card .hd .mini{
-      color:var(--muted);
-      font-size:12px;
-    }
-    .card .bd{padding:16px}
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:7px 10px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      border-radius: 999px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .dot{width:8px; height:8px; border-radius:99px; background: var(--accent)}
-    .dot.g{background: var(--accent2)}
-    .dot.w{background: var(--warn)}
-    .dot.r{background: var(--danger)}
+.btn{
+  width:100%;
+  border:none;
+  border-radius:999px;
+  padding:14px;
+  font-size:15px;
+  background:var(--accent);
+  color:white;
+  cursor:pointer;
+}
+.btn.secondary{
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--text);
+}
 
-    .stepper{
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
-    }
-    .progress{
-      flex:1;
-      height:10px;
-      border-radius:999px;
-      background: rgba(231,238,252,.08);
-      overflow:hidden;
-      border: 1px solid rgba(231,238,252,.10);
-      min-width: 160px;
-    }
-    .progress > div{
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, rgba(124,58,237,1), rgba(34,197,94,1));
-      border-radius:999px;
-      transition: width .25s ease;
-    }
+.result{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:12px;
+}
+.score{
+  font-size:22px;
+  font-weight:bold;
+  color:var(--good);
+}
 
-    .qwrap{display:grid; gap:14px}
-    .q{
-      padding:14px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.02);
-      border-radius: var(--radius);
-    }
-    .q .label{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-      margin-bottom:10px;
-    }
-    .q .label strong{font-size:14px}
-    .q .label span{color:var(--muted); font-size:12px}
-    .options{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap:10px;
-    }
-    @media (max-width: 540px){
-      .options{grid-template-columns:1fr}
-    }
-    .opt{
-      border:1px solid rgba(231,238,252,.14);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding:12px;
-      cursor:pointer;
-      display:flex; align-items:flex-start; gap:10px;
-      transition: background .15s ease, border-color .15s ease, transform .05s ease;
-      position:relative;
-      min-height: 58px;
-    }
-    .opt:hover{background: rgba(255,255,255,.06); border-color: rgba(231,238,252,.22)}
-    .opt:active{transform: translateY(1px)}
-    .opt input{position:absolute; opacity:0; pointer-events:none}
-    .opt .mark{
-      width:18px; height:18px; border-radius: 6px;
-      border: 1px solid rgba(231,238,252,.25);
-      background: rgba(255,255,255,.02);
-      margin-top:2px;
-      display:grid; place-items:center;
-      flex:0 0 auto;
-    }
-    .opt .mark::after{
-      content:"";
-      width:10px; height:10px; border-radius: 4px;
-      background: transparent;
-      transition: background .15s ease;
-    }
-    .opt .txt{display:grid; gap:2px}
-    .opt .txt b{font-size:13px}
-    .opt .txt small{font-size:12px; color:var(--muted)}
-    .opt.sel{
-      border-color: rgba(124,58,237,.55);
-      background: rgba(124,58,237,.14);
-    }
-    .opt.sel .mark{border-color: rgba(124,58,237,.65)}
-    .opt.sel .mark::after{background: rgba(124,58,237,1)}
-    .opt:focus-visible{outline:none; box-shadow: var(--focus)}
-
-    .controls{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
-      margin-top: 12px;
-    }
-    .controls .left, .controls .right{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-    }
-    .hint{
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .results{display:grid; gap:12px}
-    .resCard{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.02);
-      border-radius: var(--radius2);
-      overflow:hidden;
-    }
-    .resCard .top{
-      padding:14px 14px 12px;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.04), transparent);
-    }
-    .resCard .top .name{
-      display:grid; gap:4px;
-    }
-    .resCard .top .name strong{
-      font-size: 15px;
-      letter-spacing:.01em;
-    }
-    .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px}
-    .chip{
-      font-size: 12px;
-      color: var(--muted);
-      border:1px solid rgba(231,238,252,.14);
-      background: rgba(255,255,255,.03);
-      padding:6px 9px;
-      border-radius:999px;
-    }
-    .score{
-      text-align:right;
-      min-width: 88px;
-    }
-    .score .n{
-      font-weight:800;
-      font-size: 18px;
-    }
-    .score .sub{
-      font-size: 12px;
-      color: var(--muted);
-      margin-top:2px;
-    }
-    .resCard .mid{
-      padding:12px 14px 14px;
-      display:grid; gap:10px;
-    }
-    .kvs{
-      display:grid; gap:8px;
-      grid-template-columns: 1fr;
-    }
-    .kv{
-      padding:10px 11px;
-      border:1px solid rgba(231,238,252,.12);
-      background: rgba(255,255,255,.02);
-      border-radius: 14px;
-    }
-    .kv b{font-size:13px}
-    .kv p{margin:6px 0 0; font-size:13px; color:var(--text)}
-    .kv p.muted{color:var(--muted)}
-    .mono{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      font-size: 12px;
-      line-height: 1.5;
-      background: rgba(0,0,0,.30);
-      border: 1px solid rgba(231,238,252,.12);
-      border-radius: 14px;
-      padding: 10px 11px;
-      overflow:auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    details{
-      border:1px solid rgba(231,238,252,.12);
-      border-radius: 14px;
-      background: rgba(255,255,255,.02);
-      overflow:hidden;
-    }
-    summary{
-      cursor:pointer;
-      padding:12px 12px;
-      font-size: 13px;
-      color: var(--muted);
-      list-style:none;
-      user-select:none;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
-    }
-    summary::-webkit-details-marker{display:none}
-    details[open] summary{border-bottom:1px solid rgba(231,238,252,.10)}
-    .detailsBody{padding: 12px}
-    .footer{
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 12px;
-      display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap;
-    }
-
-    .toast{
-      position: fixed;
-      left: 50%;
-      bottom: 22px;
-      transform: translateX(-50%);
-      background: rgba(15,26,46,.92);
-      border: 1px solid rgba(231,238,252,.16);
-      border-radius: 999px;
-      padding: 10px 12px;
-      color: var(--text);
-      font-size: 13px;
-      box-shadow: var(--shadow);
-      display:none;
-      z-index: 99;
-      backdrop-filter: blur(10px);
-    }
-
-    .muted{color:var(--muted)}
-    .small{font-size:12px}
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    .sr-only{
-      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
-      overflow:hidden; clip:rect(0,0,0,0); border:0;
-    }
-    .divider{
-      height:1px; background: rgba(231,238,252,.10);
-      margin: 12px 0;
-    }
-  </style>
+footer{
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:24px;
+}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true"><span>AI</span></div>
-        <div class="title">
-          <h1>AI診断：この悩みに最適なAIは？</h1>
-          <p>
-            質問に答えるだけで、あなたの目的に合うAIをおすすめします（文章・画像・動画・コード・自動化など）。
-            <span class="muted">※このページはローカルで完結。APIキー不要。</span>
-          </p>
-        </div>
-      </div>
 
-      <div class="top-actions">
-        <button class="btn ghost" id="btnLoadSample" type="button" title="例の回答を自動入力">
-          例で試す
-        </button>
-        <button class="btn" id="btnReset" type="button" title="回答をリセット">
-          リセット
-        </button>
-        <a class="btn primary" href="#diagnosis" title="診断へ">
-          診断する
-        </a>
-      </div>
-    </header>
+<!-- ================= 診断画面 ================= -->
+<div id="page-quiz" class="page active">
+  <h1>AI診断</h1>
+  <p>質問に答えるだけで、あなたに最適なAIを判定します。</p>
 
-    <div class="grid">
-      <!-- LEFT: Diagnostic -->
-      <section class="card" id="diagnosis" aria-label="AI診断">
-        <div class="hd">
-          <div style="display:grid; gap:6px">
-            <h2>診断（5問）</h2>
-            <div class="stepper">
-              <span class="badge" id="stepBadge"><span class="dot"></span>未回答</span>
-              <div class="progress" aria-label="進捗"><div id="progBar"></div></div>
-              <span class="mini" id="progText">0 / 5</span>
-            </div>
-          </div>
-          <span class="badge"><span class="dot g"></span>最短30秒</span>
-        </div>
-
-        <div class="bd">
-          <form id="quiz" class="qwrap" autocomplete="off">
-            <!-- Q1 -->
-            <div class="q" data-q="goal">
-              <div class="label">
-                <strong>Q1. 何をしたい？</strong>
-                <span>必須</span>
-              </div>
-              <div class="options" role="radiogroup" aria-label="何をしたい？">
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="goal" value="writing" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>文章・要約・メール</b>
-                    <small>ブログ、企画、議事録、翻訳</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="goal" value="image" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>画像生成・デザイン</b>
-                    <small>アイコン、サムネ、素材</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="goal" value="video" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>動画生成</b>
-                    <small>ショート、PV、アニメ風</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="goal" value="coding" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>プログラム・開発</b>
-                    <small>Web/アプリ/自動化/デバッグ</small>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Q2 -->
-            <div class="q" data-q="level">
-              <div class="label">
-                <strong>Q2. あなたのレベルは？</strong>
-                <span>必須</span>
-              </div>
-              <div class="options" role="radiogroup" aria-label="レベル">
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="level" value="beginner" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>初心者</b>
-                    <small>まずは簡単に使いたい</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="level" value="intermediate" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>中級</b>
-                    <small>設定やプロンプトも少し触れる</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="level" value="advanced" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>上級</b>
-                    <small>APIやワークフローもOK</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="level" value="any" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>こだわらない</b>
-                    <small>おすすめ優先</small>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Q3 -->
-            <div class="q" data-q="jp">
-              <div class="label">
-                <strong>Q3. 日本語の自然さはどれくらい重要？</strong>
-                <span>必須</span>
-              </div>
-              <div class="options" role="radiogroup" aria-label="日本語の重要度">
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="jp" value="must" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>必須（超重要）</b>
-                    <small>自然な敬語・言い回しが大事</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="jp" value="nice" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>できれば</b>
-                    <small>多少の違和感はOK</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="jp" value="ok" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>どちらでも</b>
-                    <small>英語でも大丈夫</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="jp" value="none" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>気にしない</b>
-                    <small>結果が出ればOK</small>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Q4 -->
-            <div class="q" data-q="budget">
-              <div class="label">
-                <strong>Q4. 料金の希望は？</strong>
-                <span>必須</span>
-              </div>
-              <div class="options" role="radiogroup" aria-label="料金の希望">
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="budget" value="free" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>無料だけ</b>
-                    <small>できる範囲でOK</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="budget" value="low" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>安めならOK</b>
-                    <small>月数百〜千円くらい</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="budget" value="ok" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>有料OK</b>
-                    <small>効率・品質を優先したい</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="budget" value="biz" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>業務利用（法人）</b>
-                    <small>安全性・運用を重視</small>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Q5 -->
-            <div class="q" data-q="priority">
-              <div class="label">
-                <strong>Q5. 何を優先する？</strong>
-                <span>必須</span>
-              </div>
-              <div class="options" role="radiogroup" aria-label="優先度">
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="priority" value="quality" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>品質（精度・表現力）</b>
-                    <small>多少遅くてもOK</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="priority" value="speed" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>速さ（サクサク）</b>
-                    <small>テンポ重視</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="priority" value="cost" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>コスパ</b>
-                    <small>無料/安いのが最優先</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="priority" value="privacy" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>安全性（機密・個人情報）</b>
-                    <small>社内・顧客情報を扱う</small>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <div class="controls">
-              <div class="left">
-                <button class="btn" id="btnSave" type="button">回答を保存</button>
-                <button class="btn" id="btnRestore" type="button">保存を復元</button>
-              </div>
-              <div class="right">
-                <span class="hint" id="validationHint">すべて回答するとおすすめが表示されます。</span>
-                <button class="btn good" id="btnDiagnose" type="button">おすすめを見る</button>
-              </div>
-            </div>
-
-            <div class="footer">
-              <span>🧠 判定は「ルールベース」で行います（後でAPI連携も可能）。</span>
-              <span class="muted">ver 1.0</span>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <!-- RIGHT: Result -->
-      <aside class="card" aria-label="診断結果">
-        <div class="hd">
-          <div style="display:grid; gap:6px">
-            <h2>結果</h2>
-            <div class="row">
-              <span class="badge" id="resultBadge"><span class="dot w"></span>未診断</span>
-              <span class="badge"><span class="dot g"></span>プロンプト例つき</span>
-            </div>
-          </div>
-          <div class="row">
-            <button class="btn" id="btnCopyLink" type="button" title="回答をURLにして共有">共有リンク</button>
-            <button class="btn" id="btnCopySummary" type="button" title="結果をコピー">結果コピー</button>
-          </div>
-        </div>
-
-        <div class="bd">
-          <div id="emptyState" class="muted" style="display:grid; gap:10px">
-            <div class="badge"><span class="dot"></span>まずは左の5問に回答</div>
-            <div class="small">
-              例）「文章を書きたい → 日本語必須 → 品質重視」など、あなたの条件でおすすめが変わります。
-            </div>
-            <div class="divider"></div>
-            <details>
-              <summary>
-                この診断ができること
-                <span class="muted">▼</span>
-              </summary>
-              <div class="detailsBody small">
-                <ul style="margin:0; padding-left:18px; display:grid; gap:6px">
-                  <li>用途に合うAIカテゴリを提案（文章/画像/動画/開発）</li>
-                  <li>おすすめの理由・注意点・最初の一歩</li>
-                  <li>そのままコピペできる「プロンプト例」</li>
-                </ul>
-              </div>
-            </details>
-          </div>
-
-          <div id="resultArea" style="display:none">
-            <div class="results" id="results"></div>
-
-            <details style="margin-top:12px">
-              <summary>
-                判定ロジック（透明性）
-                <span class="muted">▼</span>
-              </summary>
-              <div class="detailsBody small">
-                <div class="muted" style="margin-bottom:8px">
-                  ここは「ルールベース」のため、説明可能です。必要なら条件を増やして精度を上げられます。
-                </div>
-                <div class="mono" id="logicDump"></div>
-              </div>
-            </details>
-
-            <details style="margin-top:12px">
-              <summary>
-                API連携の拡張（任意）
-                <span class="muted">▼</span>
-              </summary>
-              <div class="detailsBody small">
-                <p style="margin:0 0 8px">
-                  このindex.htmlはAPI無しで動きます。<br/>
-                  もし「LLMに自然文で判定させたい」なら、Cloudflare Workers / Firebase Functions などで
-                  <span class="muted">サーバー側</span>にAPIキーを置くのがおすすめです（キーをブラウザに置かない）。
-                </p>
-                <div class="mono">例：ユーザー回答JSON → サーバー → LLM → 推薦文 + 補足</div>
-              </div>
-            </details>
-          </div>
-        </div>
-      </aside>
-    </div>
+  <div class="card">
+    <h2>Q1. 何をしたい？</h2>
+    <div class="opt" data-q="goal" data-v="writing">文章・要約・企画</div>
+    <div class="opt" data-q="goal" data-v="image">画像生成</div>
+    <div class="opt" data-q="goal" data-v="video">動画生成</div>
+    <div class="opt" data-q="goal" data-v="coding">プログラミング</div>
   </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="card">
+    <h2>Q2. 日本語の自然さは？</h2>
+    <div class="opt" data-q="jp" data-v="must">必須</div>
+    <div class="opt" data-q="jp" data-v="ok">どちらでも</div>
+  </div>
 
-  <script>
-    // =========================
-    // Data (候補AIの"型"として扱う)
-    // =========================
-    const CANDIDATES = [
-      {
-        id: "chatgpt",
-        name: "ChatGPT（汎用LLM）",
-        tags: ["文章", "企画", "要約", "相談", "コード"],
-        bestFor: ["文章作成", "要約・翻訳", "アイデア出し", "プログラミング相談"],
-        notes: [
-          "万能型。迷ったらまずこれ。",
-          "プロンプトが短くてもそこそこ良い結果が出やすい。"
-        ],
-        promptTemplates: {
-          writing: `あなたは優秀な編集者です。次の条件で文章を作ってください。\n- 目的：{目的}\n- 読者：{読者}\n- トーン：{丁寧/フランク}\n- 文字数：{目安}\n- 必ず入れる要素：{箇条書き}\n\n素材:\n{本文/メモ}`,
-          coding: `あなたは経験豊富なエンジニアです。次を満たす実装案をください。\n- 目的：{目的}\n- 使う技術：{例: HTML/CSS/JS}\n- 制約：{無料/簡単/セキュリティ}\n- 出力：手順 + サンプルコード + 注意点\n\n現状:\n{状況/エラー/コード}`
-        }
-      },
-      {
-        id: "claude",
-        name: "Claude（長文・文章寄り）",
-        tags: ["長文", "要約", "構成", "推敲"],
-        bestFor: ["長文整理", "構成・推敲", "ドキュメント作成"],
-        notes: [
-          "長文の扱いが得意な傾向。",
-          "文章の読みやすさ・構成の整え方が強い。"
-        ],
-        promptTemplates: {
-          writing: `次の文章を「読みやすく、誤解がない」形に整えてください。\n- 目的：{例: 社内メール/報告}\n- トーン：{丁寧/簡潔/柔らかく}\n- 追加してほしい観点：{抜け漏れチェック/前提整理}\n\n原文:\n{本文}`
-        }
-      },
-      {
-        id: "gemini",
-        name: "Gemini（検索・統合寄り）",
-        tags: ["調べ物", "要点整理", "マルチモーダル"],
-        bestFor: ["調査→要約", "比較表", "学習用途"],
-        notes: [
-          "調査・整理の体験が強いことが多い。",
-          "用途によっては“情報整理役”として便利。"
-        ],
-        promptTemplates: {
-          writing: `次のテーマについて、初心者向けに「結論→理由→具体例」の順で説明してください。\n- テーマ：{テーマ}\n- 文字数：{目安}\n- 最後に：要点3つの箇条書き\n\n条件:\n{条件}`
-        }
-      },
-      {
-        id: "dalle",
-        name: "DALL·E（画像生成）",
-        tags: ["画像", "アイコン", "サムネ", "デザイン"],
-        bestFor: ["サムネ案", "アイコン案", "シンプルな素材生成"],
-        notes: [
-          "短い指示でも破綻しにくいタイプ。",
-          "デザイン案の叩き台に向く。"
-        ],
-        promptTemplates: {
-          image: `日本のSNS向け。次の条件で画像を生成するプロンプトを作って。\n- 用途：{例: TikTokサムネ}\n- 画角：{例: 横長/縦長}\n- テイスト：{例: かわいい/シンプル/ミーム}\n- 文字入れ：{あり/なし}\n- 伝えたいこと：{一目で}\n\n出力：生成プロンプト（英語） + ネガティブプロンプト（任意）`
-        }
-      },
-      {
-        id: "stablediff",
-        name: "Stable Diffusion（画像・自由度高め）",
-        tags: ["画像", "調整", "ローカル", "自由度"],
-        bestFor: ["こだわり調整", "LoRA/スタイル", "大量生成"],
-        notes: [
-          "設定が多い分、ハマると強い。",
-          "中級以上や“絵作り”にこだわる人向け。"
-        ],
-        promptTemplates: {
-          image: `次の条件でStable Diffusion用プロンプトを作成。\n- 被写体：{被写体}\n- スタイル：{アニメ/写真/イラスト}\n- 雰囲気：{かわいい/暗い/ポップ}\n- 画角：{縦/横/正方形}\n\n出力：Positive / Negative / 推奨設定（steps, cfg, sampler）`
-        }
-      },
-      {
-        id: "runway",
-        name: "Runway / Pika（動画生成系）",
-        tags: ["動画", "ショート", "演出"],
-        bestFor: ["短尺動画", "簡単な映像化", "SNS向け演出"],
-        notes: [
-          "UIがわかりやすいものが多い。",
-          "短尺で映える動画に向く。"
-        ],
-        promptTemplates: {
-          video: `15秒の縦型ショート動画を作るための英語プロンプトを作って。\n- 主人公：{キャラ}\n- 世界観：{雰囲気}\n- 構成：序盤→中盤→オチ（各5秒）\n- カメラ：安定/ズーム/パンなど\n- テロップ案：短い日本語\n\n出力：プロンプト + シーン分割 + テロップ`
-        }
-      },
-      {
-        id: "ltx",
-        name: "LTX系（ローカル動画・ワークフロー）",
-        tags: ["動画", "ローカル", "高自由度", "技術寄り"],
-        bestFor: ["ローカル生成", "実験", "ワークフロー構築"],
-        notes: [
-          "セットアップやVRAMなど環境要件がある。",
-          "ComfyUI等と組むと拡張性が高い。"
-        ],
-        promptTemplates: {
-          video: `LTX用に、次を満たす英語プロンプトを書いて。\n- ショット数：{例: 3}\n- 画角：{縦/横}\n- キャラ：{特徴}\n- 動き：{自然/ゆっくり}\n- 背景：{場所}\n- NG：破綻しやすい要素の回避\n\n出力：プロンプト + ネガ（任意） + 推奨フレーム/解像度の目安`
-        }
-      },
-      {
-        id: "copilot",
-        name: "GitHub Copilot（開発補助）",
-        tags: ["コード", "補完", "IDE"],
-        bestFor: ["実装スピードUP", "IDE内補完", "反復作業"],
-        notes: [
-          "コーディング中の補完が強み。",
-          "設計相談は別のLLMと併用が効く。"
-        ],
-        promptTemplates: {
-          coding: `この関数（またはファイル）の意図をコメントで説明し、改善点を提案して。\n- 目的：{目的}\n- 制約：{制約}\n\nコード:\n{コード}`
-        }
-      }
-    ];
+  <div class="card">
+    <h2>Q3. 料金</h2>
+    <div class="opt" data-q="cost" data-v="free">無料がいい</div>
+    <div class="opt" data-q="cost" data-v="paid">有料OK</div>
+  </div>
 
-    // =========================
-    // Simple rule engine
-    // =========================
-    function scoreCandidates(answers){
-      const scores = new Map(CANDIDATES.map(c => [c.id, {score:0, reasons:[], cautions:[]}]));
+  <button class="btn" id="btnDiagnose">診断する</button>
 
-      const add = (id, n, reason) => {
-        const it = scores.get(id);
-        it.score += n;
-        if(reason) it.reasons.push(reason);
-      };
-      const caution = (id, text) => {
-        const it = scores.get(id);
-        it.cautions.push(text);
-      };
+  <footer>ver 1.0 / TWA optimized</footer>
+</div>
 
-      const { goal, level, jp, budget, priority } = answers;
+<!-- ================= 結果画面 ================= -->
+<div id="page-result" class="page">
+  <h1>診断結果</h1>
 
-      // Goal weighting
-      if(goal === "writing"){
-        add("chatgpt", 28, "文章系の万能型として安定");
-        add("claude", 26, "長文の整理・推敲が得意");
-        add("gemini", 18, "調査→要点整理に向く");
-      }
-      if(goal === "image"){
-        add("dalle", 28, "短い指示でも画像が作りやすい");
-        add("stablediff", 24, "こだわり調整や大量生成に強い");
-        add("chatgpt", 10, "画像プロンプト作成の相棒として便利");
-      }
-      if(goal === "video"){
-        add("runway", 26, "手軽にSNS向け短尺を作りやすい");
-        add("ltx", 22, "ローカル/ワークフロー構築で自由度が高い");
-        add("chatgpt", 12, "構成・プロンプト作成に強い");
-      }
-      if(goal === "coding"){
-        add("chatgpt", 26, "設計相談・デバッグの言語化が得意");
-        add("copilot", 22, "IDE補完で実装スピードが上がる");
-        add("gemini", 14, "要点整理・比較表が得意");
-      }
+  <div id="results"></div>
 
-      // Level
-      if(level === "beginner"){
-        add("chatgpt", 12, "初心者でも扱いやすい");
-        add("dalle", 10, "操作がシンプル寄りで始めやすい");
-        add("runway", 10, "UIで直感的に作りやすい");
-        caution("stablediff", "Stable Diffusionは設定項目が多く、最初は迷いやすい");
-        caution("ltx", "LTX系は環境（VRAM/設定）で詰まりやすいことがある");
-      }
-      if(level === "intermediate"){
-        add("stablediff", 6, "調整するほど伸びるタイプ");
-        add("ltx", 6, "ワークフローで伸びる");
-        add("copilot", 6, "開発体験が良くなる");
-      }
-      if(level === "advanced"){
-        add("stablediff", 8, "高度な調整・運用が可能");
-        add("ltx", 8, "ローカル最適化が活きる");
-        add("copilot", 8, "IDE/リポジトリ連携を活かせる");
-      }
+  <button class="btn secondary" onclick="goPage('quiz')">
+    ← 診断に戻る
+  </button>
+</div>
 
-      // Japanese priority
-      if(jp === "must"){
-        add("chatgpt", 10, "日本語の自然さを優先しやすい");
-        add("claude", 8, "文章の整えが得意");
-      } else if(jp === "nice"){
-        add("chatgpt", 6, "日本語の安定感");
-      }
+<script>
+/* ================= 状態 ================= */
+const answers = {};
 
-      // Budget
-      if(budget === "free"){
-        add("stablediff", 8, "ローカル運用ならコストを抑えやすい");
-        add("ltx", 8, "ローカル運用ならコストを抑えやすい");
-        add("gemini", 4, "無料枠がある場合が多い");
-        caution("runway", "動画系は無料枠が少なめ/制限が出やすい");
-      }
-      if(budget === "biz"){
-        add("chatgpt", 6, "業務利用プラン/運用が整っている場合がある");
-        add("gemini", 6, "業務向け運用を想定しやすい場合がある");
-        caution("stablediff", "社内運用なら“素材の権利/モデル管理”のルール作りが必要");
-      }
+/* ================= 画面遷移 ================= */
+function goPage(page){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById("page-"+page).classList.add("active");
+  history.pushState({page}, "", "#"+page);
+}
 
-      // Priority
-      if(priority === "quality"){
-        add("claude", 8, "文章品質・構成に強い");
-        add("stablediff", 8, "画像のこだわり品質を詰められる");
-        add("ltx", 6, "動画の自由度で詰められる");
-        add("chatgpt", 6, "総合品質が安定");
-      }
-      if(priority === "speed"){
-        add("copilot", 10, "実装速度が上がる");
-        add("runway", 6, "短尺を素早く作りやすい");
-        add("chatgpt", 6, "やり取りが速い");
-      }
-      if(priority === "cost"){
-        add("stablediff", 10, "ローカルで繰り返し使える");
-        add("ltx", 8, "ローカル運用でコストを抑えられる");
-        add("gemini", 6, "無料枠前提で使いやすい場合がある");
-      }
-      if(priority === "privacy"){
-        add("stablediff", 8, "ローカルなら機密を外に出しにくい");
-        add("ltx", 8, "ローカルなら機密を外に出しにくい");
-        caution("chatgpt", "機密/個人情報は社内ルールに従って入力を避ける（マスキング推奨）");
-        caution("claude", "機密/個人情報は社内ルールに従って入力を避ける（マスキング推奨）");
-        caution("gemini", "機密/個人情報は社内ルールに従って入力を避ける（マスキング推奨）");
-      }
+window.addEventListener("popstate", e=>{
+  const page = e.state?.page || "quiz";
+  goPage(page);
+});
 
-      // Slight balancing: if goal isn't image, reduce image candidates a bit, etc.
-      if(goal !== "image"){
-        scores.get("dalle").score -= 6;
-        scores.get("stablediff").score -= 4;
-      }
-      if(goal !== "video"){
-        scores.get("runway").score -= 6;
-        scores.get("ltx").score -= 4;
-      }
-      if(goal !== "coding"){
-        scores.get("copilot").score -= 4;
-      }
+history.replaceState({page:"quiz"},"","#quiz");
 
-      // clamp
-      for(const [id, it] of scores){
-        it.score = Math.max(0, it.score);
-      }
+/* ================= 選択UI ================= */
+document.querySelectorAll(".opt").forEach(opt=>{
+  opt.onclick=()=>{
+    const q=opt.dataset.q;
+    const v=opt.dataset.v;
+    answers[q]=v;
+    document.querySelectorAll(`.opt[data-q="${q}"]`)
+      .forEach(o=>o.classList.remove("sel"));
+    opt.classList.add("sel");
+  };
+});
 
-      // Return sorted with merged data
-      const list = CANDIDATES.map(c => ({
-        ...c,
-        score: scores.get(c.id).score,
-        reasons: uniq(scores.get(c.id).reasons).slice(0, 5),
-        cautions: uniq(scores.get(c.id).cautions).slice(0, 4)
-      }))
-      .sort((a,b) => b.score - a.score);
+/* ================= 判定ロジック ================= */
+function diagnose(){
+  const score={
+    chatgpt:0,
+    dalle:0,
+    runway:0,
+    copilot:0
+  };
 
-      return list;
-    }
+  if(answers.goal==="writing") score.chatgpt+=30;
+  if(answers.goal==="image") score.dalle+=30;
+  if(answers.goal==="video") score.runway+=30;
+  if(answers.goal==="coding") score.copilot+=30;
 
-    function uniq(arr){
-      return Array.from(new Set(arr.filter(Boolean)));
-    }
+  if(answers.jp==="must") score.chatgpt+=10;
+  if(answers.cost==="free") score.chatgpt+=5;
 
-    // =========================
-    // UI helpers
-    // =========================
-    const $ = (sel, root=document) => root.querySelector(sel);
-    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  return Object.entries(score)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,3);
+}
 
-    const quiz = $("#quiz");
-    const progBar = $("#progBar");
-    const progText = $("#progText");
-    const stepBadge = $("#stepBadge");
-    const validationHint = $("#validationHint");
+/* ================= 結果描画 ================= */
+function renderResults(){
+  const res=diagnose();
+  const el=document.getElementById("results");
+  el.innerHTML="";
 
-    const emptyState = $("#emptyState");
-    const resultArea = $("#resultArea");
-    const resultsEl = $("#results");
-    const resultBadge = $("#resultBadge");
-    const logicDump = $("#logicDump");
+  res.forEach(([id,sc],i)=>{
+    el.innerHTML+=`
+      <div class="result">
+        <div><strong>#${i+1} ${id.toUpperCase()}</strong></div>
+        <div class="score">${sc}</div>
+        <p>あなたの条件に合致しています。</p>
+      </div>
+    `;
+  });
+}
 
-    const toast = $("#toast");
+/* ================= 診断ボタン ================= */
+document.getElementById("btnDiagnose").onclick=()=>{
+  if(Object.keys(answers).length<3){
+    alert("すべて回答してください");
+    return;
+  }
+  renderResults();
+  goPage("result");
+};
 
-    const REQUIRED = ["goal","level","jp","budget","priority"];
-
-    function getAnswers(){
-      const data = {};
-      for(const k of REQUIRED){
-        const el = quiz.querySelector(`input[name="${k}"]:checked`);
-        data[k] = el ? el.value : "";
-      }
-      return data;
-    }
-
-    function countAnswered(ans){
-      return REQUIRED.reduce((n,k)=> n + (ans[k] ? 1 : 0), 0);
-    }
-
-    function isComplete(ans){
-      return REQUIRED.every(k => !!ans[k]);
-    }
-
-    function updateProgress(){
-      const ans = getAnswers();
-      const n = countAnswered(ans);
-      progBar.style.width = `${(n/REQUIRED.length)*100}%`;
-      progText.textContent = `${n} / ${REQUIRED.length}`;
-
-      if(n === 0){
-        stepBadge.innerHTML = `<span class="dot"></span>未回答`;
-      }else if(n < REQUIRED.length){
-        stepBadge.innerHTML = `<span class="dot w"></span>回答中`;
-      }else{
-        stepBadge.innerHTML = `<span class="dot g"></span>準備OK`;
-      }
-
-      validationHint.textContent = isComplete(ans)
-        ? "準備OK！「おすすめを見る」を押せます。"
-        : "すべて回答するとおすすめが表示されます。";
-
-      // update selected style
-      $$(".q").forEach(q=>{
-        const name = q.getAttribute("data-q");
-        const checked = quiz.querySelector(`input[name="${name}"]:checked`);
-        $$(".opt", q).forEach(opt=>{
-          const input = $("input", opt);
-          opt.classList.toggle("sel", checked && input.value === checked.value);
-        });
-      });
-
-      // persist minimal state for reload
-      localStorage.setItem("ai_diagnosis_autosave", JSON.stringify(ans));
-    }
-
-    function showToast(msg){
-      toast.textContent = msg;
-      toast.style.display = "block";
-      clearTimeout(showToast._t);
-      showToast._t = setTimeout(()=> toast.style.display = "none", 1800);
-    }
-
-    // Keyboard accessibility: allow Enter/Space on label.opt
-    function wireOptionKeys(){
-      $$(".opt").forEach(opt=>{
-        opt.addEventListener("keydown", (e)=>{
-          if(e.key === "Enter" || e.key === " "){
-            e.preventDefault();
-            const input = $("input", opt);
-            input.checked = true;
-            input.dispatchEvent(new Event("change", {bubbles:true}));
-          }
-        });
-      });
-    }
-
-    // =========================
-    // Render results
-    // =========================
-    function renderResults(){
-      const ans = getAnswers();
-      if(!isComplete(ans)){
-        showToast("5問すべて回答してください");
-        return;
-      }
-
-      const ranked = scoreCandidates(ans);
-      const top = ranked.slice(0, 3);
-
-      // UI switch
-      emptyState.style.display = "none";
-      resultArea.style.display = "block";
-      resultBadge.innerHTML = `<span class="dot g"></span>診断済み`;
-
-      resultsEl.innerHTML = "";
-      top.forEach((c, idx)=>{
-        const why = c.reasons.length ? c.reasons.map(x => `• ${escapeHtml(x)}`).join("<br>") : "• 条件に合致";
-        const caut = c.cautions.length ? c.cautions.map(x => `• ${escapeHtml(x)}`).join("<br>") : "• 特になし";
-
-        const prompt = pickPrompt(c, ans);
-        const promptBlock = prompt
-          ? `<div class="kv">
-               <b>最初のプロンプト例（コピペOK）</b>
-               <p class="muted">{} はあなたの内容に置き換えてね。</p>
-               <div class="mono">${escapeHtml(prompt)}</div>
-             </div>`
-          : "";
-
-        const card = document.createElement("div");
-        card.className = "resCard";
-        card.innerHTML = `
-          <div class="top">
-            <div class="name">
-              <strong>#${idx+1} ${escapeHtml(c.name)}</strong>
-              <div class="chips">
-                ${c.tags.slice(0,4).map(t=>`<span class="chip">${escapeHtml(t)}</span>`).join("")}
-              </div>
-            </div>
-            <div class="score">
-              <div class="n">${Math.round(c.score)}</div>
-              <div class="sub">マッチ度</div>
-            </div>
-          </div>
-          <div class="mid">
-            <div class="kvs">
-              <div class="kv">
-                <b>おすすめ理由</b>
-                <p>${why}</p>
-              </div>
-              <div class="kv">
-                <b>向いている使い方</b>
-                <p class="muted">${escapeHtml(c.bestFor.join(" / "))}</p>
-              </div>
-              <div class="kv">
-                <b>注意点</b>
-                <p>${caut}</p>
-              </div>
-              ${promptBlock}
-            </div>
-          </div>
-        `;
-        resultsEl.appendChild(card);
-      });
-
-      // Logic dump
-      logicDump.textContent = JSON.stringify({
-        answers: ans,
-        top3: top.map(x => ({ id:x.id, name:x.name, score:x.score, reasons:x.reasons, cautions:x.cautions }))
-      }, null, 2);
-
-      // Save last result for copy
-      localStorage.setItem("ai_diagnosis_last_result", JSON.stringify({answers:ans, top}));
-      showToast("おすすめを表示しました");
-      // scroll into view on mobile
-      resultArea.scrollIntoView({behavior:"smooth", block:"start"});
-    }
-
-    function pickPrompt(candidate, ans){
-      const g = ans.goal;
-      const t = candidate.promptTemplates || {};
-      if(g === "writing") return t.writing || t.coding || "";
-      if(g === "coding") return t.coding || t.writing || "";
-      if(g === "image") return t.image || "";
-      if(g === "video") return t.video || "";
-      return "";
-    }
-
-    function escapeHtml(s){
-      return String(s)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    // =========================
-    // Persistence & Share link
-    // =========================
-    function saveAnswers(){
-      const ans = getAnswers();
-      localStorage.setItem("ai_diagnosis_saved", JSON.stringify(ans));
-      showToast("回答を保存しました");
-    }
-
-    function restoreAnswers(){
-      const raw = localStorage.getItem("ai_diagnosis_saved");
-      if(!raw){ showToast("保存データがありません"); return; }
-      applyAnswers(JSON.parse(raw));
-      showToast("保存を復元しました");
-    }
-
-    function applyAnswers(ans){
-      for(const k of REQUIRED){
-        if(!ans[k]) continue;
-        const el = quiz.querySelector(`input[name="${k}"][value="${ans[k]}"]`);
-        if(el) el.checked = true;
-      }
-      updateProgress();
-    }
-
-    // URL share (answers in query string, short-ish)
-    function encodeAnswersToUrl(ans){
-      const params = new URLSearchParams();
-      for(const k of REQUIRED){
-        if(ans[k]) params.set(k, ans[k]);
-      }
-      const url = new URL(location.href);
-      url.hash = "#diagnosis";
-      url.search = params.toString();
-      return url.toString();
-    }
-
-    function loadFromUrl(){
-      const params = new URLSearchParams(location.search);
-      const ans = {};
-      for(const k of REQUIRED){
-        const v = params.get(k);
-        if(v) ans[k] = v;
-      }
-      if(Object.keys(ans).length){
-        applyAnswers(ans);
-        // If complete, auto-render
-        if(isComplete(getAnswers())) renderResults();
-      }
-    }
-
-    async function copyText(text){
-      try{
-        await navigator.clipboard.writeText(text);
-        showToast("コピーしました");
-      }catch{
-        // fallback
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
-        showToast("コピーしました");
-      }
-    }
-
-    function copyLink(){
-      const ans = getAnswers();
-      if(!countAnswered(ans)){ showToast("まず回答してください"); return; }
-      const url = encodeAnswersToUrl(ans);
-      copyText(url);
-    }
-
-    function copySummary(){
-      const raw = localStorage.getItem("ai_diagnosis_last_result");
-      if(!raw){ showToast("まだ結果がありません"); return; }
-      const {answers, top} = JSON.parse(raw);
-      const lines = [];
-      lines.push("AI診断結果（Top3）");
-      lines.push("");
-      lines.push(`回答：${JSON.stringify(answers)}`);
-      lines.push("");
-      top.forEach((c,i)=>{
-        lines.push(`#${i+1} ${c.name}（マッチ度 ${Math.round(c.score)}）`);
-        if(c.reasons?.length) lines.push("理由： " + c.reasons.join(" / "));
-        if(c.cautions?.length) lines.push("注意： " + c.cautions.join(" / "));
-        lines.push("");
-      });
-      copyText(lines.join("\n"));
-    }
-
-    // =========================
-    // Events
-    // =========================
-    quiz.addEventListener("change", updateProgress);
-
-    $("#btnDiagnose").addEventListener("click", renderResults);
-    $("#btnSave").addEventListener("click", saveAnswers);
-    $("#btnRestore").addEventListener("click", restoreAnswers);
-    $("#btnCopyLink").addEventListener("click", copyLink);
-    $("#btnCopySummary").addEventListener("click", copySummary);
-
-    $("#btnReset").addEventListener("click", ()=>{
-      quiz.reset();
-      updateProgress();
-      emptyState.style.display = "grid";
-      resultArea.style.display = "none";
-      resultBadge.innerHTML = `<span class="dot w"></span>未診断`;
-      showToast("リセットしました");
-      // clear url params
-      const url = new URL(location.href);
-      url.search = "";
-      history.replaceState({}, "", url.toString());
-    });
-
-    $("#btnLoadSample").addEventListener("click", ()=>{
-      // サンプル：文章/初心者/日本語必須/安め/品質
-      applyAnswers({goal:"writing", level:"beginner", jp:"must", budget:"low", priority:"quality"});
-      renderResults();
-    });
-
-    // Auto-restore autosave
-    (function init(){
-      wireOptionKeys();
-      const auto = localStorage.getItem("ai_diagnosis_autosave");
-      if(auto){
-        try{ applyAnswers(JSON.parse(auto)); }catch{}
-      }
-      updateProgress();
-      loadFromUrl();
-    })();
-  </script>
+/* ================= 外部リンク制御（TWA） ================= */
+document.addEventListener("click",e=>{
+  const a=e.target.closest("a");
+  if(a && a.href.startsWith("http")){
+    e.preventDefault();
+    window.open(a.href,"_blank");
+  }
+});
+</script>
 </body>
 </html>
