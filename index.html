@@ -1,1333 +1,930 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-  <meta name="theme-color" content="#0b1220" />
-  <meta name="format-detection" content="telephone=no,email=no,address=no" />
-
-  <title>AI診断｜この悩みに最適なAIは？（無料）</title>
-  <meta name="description" content="質問に答えるだけで、文章・画像・動画・コード・自動化など用途に最適なAIをおすすめします。" />
-
-  <!-- ★ PWA / TWA -->
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-
-  <!-- OGP（★絶対URL） -->
-  <meta property="og:title" content="AI診断｜この悩みに最適なAIは？" />
-  <meta property="og:description" content="質問に答えるだけで、あなたに合うAIがわかる。" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://your-domain.example/" />
-  <meta property="og:image" content="https://your-domain.example/icon/icon-512.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <!-- JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"WebApplication",
-    "name":"AI診断",
-    "operatingSystem":"Android",
-    "applicationCategory":"UtilitiesApplication",
-    "inLanguage":"ja"
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#07070f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>AI診断 – あなたに最適なAIを</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07070f;
+    --surface: #0f0f1e;
+    --surface2: #181828;
+    --surface3: #1f1f35;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --accent: #7c5cfc;
+    --accent2: #c084fc;
+    --accent3: #38bdf8;
+    --gold: #f59e0b;
+    --green: #34d399;
+    --red: #f87171;
+    --orange: #fb923c;
+    --text: #f0f0ff;
+    --text2: #9090b0;
+    --text3: #606080;
+    --radius: 18px;
+    --radius-sm: 12px;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
   }
-  </script>
+  * { margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent; }
+  html,body { height:100%;background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;overflow:hidden;touch-action:manipulation; }
 
-  <style>
-    :root{
-      --bg:#070b14;
-      --panel:#0b1220;
-      --panel2:#0f1a2e;
-      --text:#e7eefc;
-      --muted:#a9b7d6;
-      --line:rgba(231,238,252,.12);
-      --accent:#7c3aed;
-      --accent2:#22c55e;
-      --warn:#f59e0b;
-      --danger:#ef4444;
-      --shadow: 0 18px 60px rgba(0,0,0,.35);
-      --radius:18px;
-      --radius2:26px;
-      --max:1040px;
-      --focus: 0 0 0 3px rgba(124,58,237,.35);
-      color-scheme: dark;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN","Noto Sans JP","Meiryo", Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background:
-        radial-gradient(1100px 600px at 20% -10%, rgba(124,58,237,.35), transparent 60%),
-        radial-gradient(900px 500px at 90% 0%, rgba(34,197,94,.22), transparent 55%),
-        radial-gradient(900px 650px at 40% 110%, rgba(59,130,246,.18), transparent 55%),
-        var(--bg);
-      color:var(--text);
-      line-height:1.55;
-    }
-    a{color:inherit}
-    .wrap{max-width:var(--max); margin:0 auto; padding:28px 18px 80px}
-    header{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
-      margin:10px 0 22px;
-    }
-    .brand{
-      display:flex; gap:14px; align-items:center;
-    }
-    .logo{
-      width:44px; height:44px; border-radius:14px;
-      background: linear-gradient(145deg, rgba(124,58,237,.95), rgba(34,197,94,.85));
-      box-shadow: 0 10px 30px rgba(124,58,237,.25);
-      display:grid; place-items:center;
-      position:relative;
-      overflow:hidden;
-    }
-    .logo::after{
-      content:"";
-      position:absolute; inset:-40%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.28), transparent 55%);
-      transform: rotate(12deg);
-    }
-    .logo span{
-      position:relative;
-      font-weight:900;
-      letter-spacing:.02em;
-    }
-    .title h1{
-      margin:0;
-      font-size: clamp(20px, 3.4vw, 32px);
-      letter-spacing:.01em;
-    }
-    .title p{
-      margin:8px 0 0;
-      color:var(--muted);
-      max-width: 62ch;
-      font-size: 14px;
-    }
-    .top-actions{
-      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
-    }
-    .btn{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color:var(--text);
-      padding:10px 12px;
-      border-radius: 999px;
-      cursor:pointer;
-      display:inline-flex; align-items:center; gap:8px;
-      transition: transform .05s ease, background .15s ease, border-color .15s ease;
-      user-select:none;
-      text-decoration:none;
-      font-size: 13px;
-    }
-    .btn:hover{background: rgba(255,255,255,.07); border-color: rgba(231,238,252,.20)}
-    .btn:active{transform: translateY(1px)}
-    .btn.primary{
-      background: linear-gradient(145deg, rgba(124,58,237,.95), rgba(124,58,237,.75));
-      border-color: rgba(124,58,237,.55);
-      box-shadow: 0 14px 38px rgba(124,58,237,.24);
-    }
-    .btn.primary:hover{background: linear-gradient(145deg, rgba(124,58,237,1), rgba(124,58,237,.82))}
-    .btn.good{
-      background: linear-gradient(145deg, rgba(34,197,94,.95), rgba(34,197,94,.75));
-      border-color: rgba(34,197,94,.55);
-      box-shadow: 0 14px 38px rgba(34,197,94,.18);
-    }
-    .btn.ghost{background:transparent}
-    .btn:focus-visible{outline:none; box-shadow: var(--focus)}
-    .grid{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:16px;
-      align-items:start;
-    }
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr}
-      .top-actions{justify-content:flex-start}
-    }
+  #app { height:100svh;display:flex;flex-direction:column;overflow:hidden;position:relative; }
+  #app::before { content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.5; }
 
-    .card{
-      background: rgba(255,255,255,.03);
-      border: 1px solid var(--line);
-      border-radius: var(--radius2);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .card .hd{
-      padding:16px 16px 12px;
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), transparent);
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-    }
-    .card .hd h2{
-      margin:0;
-      font-size: 16px;
-      letter-spacing:.01em;
-    }
-    .card .hd .mini{
-      color:var(--muted);
-      font-size:12px;
-    }
-    .card .bd{padding:16px}
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:7px 10px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      border-radius: 999px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .dot{width:8px; height:8px; border-radius:99px; background: var(--accent)}
-    .dot.g{background: var(--accent2)}
-    .dot.w{background: var(--warn)}
-    .dot.r{background: var(--danger)}
+  header { display:flex;align-items:center;justify-content:space-between;padding:14px 18px 10px;padding-top:calc(14px + var(--safe-top));background:rgba(7,7,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:100; }
+  .logo { display:flex;align-items:center;gap:9px; }
+  .logo-icon { width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 0 14px rgba(124,92,252,0.45); }
+  .logo-text { font-size:14px;font-weight:700;letter-spacing:.02em; }
+  .logo-text span { color:var(--accent2); }
+  .reset-btn { background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:6px 13px;border-radius:20px;font-size:11px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;transition:all .2s; }
+  .reset-btn:active { opacity:.7;transform:scale(.96); }
 
-    .stepper{
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
-    }
-    .progress{
-      flex:1;
-      height:10px;
-      border-radius:999px;
-      background: rgba(231,238,252,.08);
-      overflow:hidden;
-      border: 1px solid rgba(231,238,252,.10);
-      min-width: 160px;
-    }
-    .progress > div{
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, rgba(124,58,237,1), rgba(34,197,94,1));
-      border-radius:999px;
-      transition: width .25s ease;
-    }
+  .progress-wrap { padding:0 18px 10px;background:rgba(7,7,15,0.92);backdrop-filter:blur(20px);flex-shrink:0; }
+  .progress-meta { display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;font-size:11px;color:var(--text2); }
+  .progress-meta strong { color:var(--accent2);font-family:'Space Mono',monospace; }
+  .progress-bar-bg { height:3px;background:var(--surface2);border-radius:99px;overflow:hidden; }
+  .progress-bar-fill { height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1);box-shadow:0 0 8px rgba(192,132,252,.5); }
+  .step-dots { display:flex;gap:6px;justify-content:center;padding:8px 0 0; }
+  .step-dot { width:6px;height:6px;border-radius:99px;background:var(--surface2);border:1px solid var(--border);transition:all .3s; }
+  .step-dot.active { background:var(--accent2);box-shadow:0 0 6px var(--accent2);width:18px; }
+  .step-dot.done { background:var(--accent);border-color:var(--accent); }
 
-    .qwrap{display:grid; gap:14px}
-    .q{
-      padding:14px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.02);
-      border-radius: var(--radius);
-    }
-    .q .label{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-      margin-bottom:10px;
-    }
-    .q .label strong{font-size:14px}
-    .q .label span{color:var(--muted); font-size:12px}
-    .options{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap:10px;
-    }
-    @media (max-width: 540px){
-      .options{grid-template-columns:1fr}
-    }
-    .opt{
-      border:1px solid rgba(231,238,252,.14);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding:12px;
-      cursor:pointer;
-      display:flex; align-items:flex-start; gap:10px;
-      transition: background .15s ease, border-color .15s ease, transform .05s ease;
-      position:relative;
-      min-height: 58px;
-    }
-    .opt:hover{background: rgba(255,255,255,.06); border-color: rgba(231,238,252,.22)}
-    .opt:active{transform: translateY(1px)}
-    .opt input{position:absolute; opacity:0; pointer-events:none}
-    .opt .mark{
-      width:18px; height:18px; border-radius: 6px;
-      border: 1px solid rgba(231,238,252,.25);
-      background: rgba(255,255,255,.02);
-      margin-top:2px;
-      display:grid; place-items:center;
-      flex:0 0 auto;
-    }
-    .opt .mark::after{
-      content:"";
-      width:10px; height:10px; border-radius: 4px;
-      background: transparent;
-      transition: background .15s ease;
-    }
-    .opt .txt{display:grid; gap:2px}
-    .opt .txt b{font-size:13px}
-    .opt .txt small{font-size:12px; color:var(--muted)}
-    .opt.sel{
-      border-color: rgba(124,58,237,.55);
-      background: rgba(124,58,237,.14);
-    }
-    .opt.sel .mark{border-color: rgba(124,58,237,.65)}
-    .opt.sel .mark::after{background: rgba(124,58,237,1)}
-    .opt:focus-visible{outline:none; box-shadow: var(--focus)}
+  main { flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scroll-behavior:smooth; }
+  .screen { min-height:100%;display:none;flex-direction:column; }
+  .screen.active { display:flex; }
 
-    .controls{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
-      margin-top: 12px;
-    }
-    .controls .left, .controls .right{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-    }
-    .hint{
-      font-size: 12px;
-      color: var(--muted);
-    }
+  #screen-welcome { padding:24px 20px 40px;justify-content:center;align-items:center;text-align:center;gap:22px;min-height:calc(100svh - 100px); }
+  .welcome-orb { width:110px;height:110px;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--accent2),var(--accent) 50%,#1a1040);box-shadow:0 0 60px rgba(124,92,252,.5),0 0 120px rgba(124,92,252,.2);display:flex;align-items:center;justify-content:center;font-size:46px;animation:float 4s ease-in-out infinite;position:relative; }
+  .welcome-orb::after { content:'';position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(192,132,252,.2);animation:pulse-ring 3s ease-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)} }
+  @keyframes pulse-ring { 0%{transform:scale(1);opacity:.5}100%{transform:scale(1.4);opacity:0} }
+  .welcome-title { font-size:25px;font-weight:900;line-height:1.3;letter-spacing:-.02em; }
+  .welcome-title em { background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal; }
+  .welcome-desc { font-size:13px;color:var(--text2);line-height:1.8;max-width:300px; }
+  .welcome-badges { display:flex;flex-wrap:wrap;justify-content:center;gap:7px; }
+  .badge { background:var(--surface2);border:1px solid var(--border);border-radius:99px;padding:4px 11px;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:5px; }
+  .badge span { font-size:13px; }
+  .start-btn { width:100%;max-width:320px;padding:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:var(--radius);color:#fff;font-size:16px;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;box-shadow:0 4px 24px rgba(124,92,252,.4);transition:all .2s;letter-spacing:.02em; }
+  .start-btn:active { transform:scale(.97);opacity:.9; }
+  .time-note { font-size:11px;color:var(--text2); }
 
-    .results{display:grid; gap:12px}
-    .resCard{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.02);
-      border-radius: var(--radius2);
-      overflow:hidden;
-    }
-    .resCard .top{
-      padding:14px 14px 12px;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.04), transparent);
-    }
-    .resCard .top .name{
-      display:grid; gap:4px;
-    }
-    .resCard .top .name strong{
-      font-size: 15px;
-      letter-spacing:.01em;
-    }
-    .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px}
-    .chip{
-      font-size: 12px;
-      color: var(--muted);
-      border:1px solid rgba(231,238,252,.14);
-      background: rgba(255,255,255,.03);
-      padding:6px 9px;
-      border-radius:999px;
-    }
-    .score{
-      text-align:right;
-      min-width: 88px;
-    }
-    .score .n{
-      font-weight:800;
-      font-size: 18px;
-    }
-    .score .sub{
-      font-size: 12px;
-      color: var(--muted);
-      margin-top:2px;
-    }
-    .resCard .mid{
-      padding:12px 14px 14px;
-      display:grid; gap:10px;
-    }
-    .kvs{
-      display:grid; gap:8px;
-      grid-template-columns: 1fr;
-    }
-    .kv{
-      padding:10px 11px;
-      border:1px solid rgba(231,238,252,.12);
-      background: rgba(255,255,255,.02);
-      border-radius: 14px;
-    }
-    .kv b{font-size:13px}
-    .kv p{margin:6px 0 0; font-size:13px; color:var(--text)}
-    .kv p.muted{color:var(--muted)}
-    .mono{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      font-size: 12px;
-      line-height: 1.5;
-      background: rgba(0,0,0,.30);
-      border: 1px solid rgba(231,238,252,.12);
-      border-radius: 14px;
-      padding: 10px 11px;
-      overflow:auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    details{
-      border:1px solid rgba(231,238,252,.12);
-      border-radius: 14px;
-      background: rgba(255,255,255,.02);
-      overflow:hidden;
-    }
-    summary{
-      cursor:pointer;
-      padding:12px 12px;
-      font-size: 13px;
-      color: var(--muted);
-      list-style:none;
-      user-select:none;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
-    }
-    summary::-webkit-details-marker{display:none}
-    details[open] summary{border-bottom:1px solid rgba(231,238,252,.10)}
-    .detailsBody{padding: 12px}
-    .footer{
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 12px;
-      display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap;
-    }
+  #screen-quiz { padding:0; }
+  .question-slide { padding:20px 18px 28px;display:none;flex-direction:column;gap:18px;animation:slideIn .3s ease;min-height:calc(100svh - 180px); }
+  .question-slide.active { display:flex; }
+  @keyframes slideIn { from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)} }
+  .question-number { font-size:10px;font-family:'Space Mono',monospace;color:var(--accent2);letter-spacing:.1em;margin-bottom:6px;text-transform:uppercase; }
+  .question-text { font-size:19px;font-weight:700;line-height:1.4;letter-spacing:-.01em; }
+  .question-sub { font-size:12px;color:var(--text2);margin-top:3px;line-height:1.5; }
+  .options-grid { display:flex;flex-direction:column;gap:9px;flex:1; }
+  .option-btn { background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:13px;text-align:left;transition:all .2s; }
+  .option-btn.selected { border-color:var(--accent2);background:rgba(124,92,252,.1);box-shadow:0 0 0 1px rgba(192,132,252,.25),0 4px 16px rgba(124,92,252,.12); }
+  .option-btn:active { transform:scale(.98); }
+  .option-icon { font-size:20px;flex-shrink:0; }
+  .option-content { flex:1; }
+  .option-label { font-weight:700;font-size:14px;line-height:1.3; }
+  .option-sub { font-size:11px;color:var(--text2);margin-top:2px;line-height:1.4; }
+  .option-check { width:20px;height:20px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:11px; }
+  .option-btn.selected .option-check { background:var(--accent2);border-color:var(--accent2);color:white; }
 
-    .toast{
-      position: fixed;
-      left: 50%;
-      bottom: 22px;
-      transform: translateX(-50%);
-      background: rgba(15,26,46,.92);
-      border: 1px solid rgba(231,238,252,.16);
-      border-radius: 999px;
-      padding: 10px 12px;
-      color: var(--text);
-      font-size: 13px;
-      box-shadow: var(--shadow);
-      display:none;
-      z-index: 99;
-      backdrop-filter: blur(10px);
-    }
+  .nav-row { padding:12px 18px;padding-bottom:calc(12px + var(--safe-bottom));background:rgba(7,7,15,.96);backdrop-filter:blur(20px);border-top:1px solid var(--border);flex-shrink:0;display:flex;gap:9px;align-items:center; }
+  .back-btn { width:46px;height:50px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text2);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s; }
+  .back-btn:active { opacity:.7; }
+  .back-btn:disabled { opacity:.25;pointer-events:none; }
+  .next-btn { flex:1;height:50px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:var(--radius-sm);color:#fff;font-size:14px;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;box-shadow:0 4px 18px rgba(124,92,252,.3);transition:all .2s;opacity:.35;pointer-events:none;letter-spacing:.02em; }
+  .next-btn.enabled { opacity:1;pointer-events:all; }
+  .next-btn:active { transform:scale(.98); }
 
-    .muted{color:var(--muted)}
-    .small{font-size:12px}
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    .sr-only{
-      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
-      overflow:hidden; clip:rect(0,0,0,0); border:0;
-    }
-    .divider{
-      height:1px; background: rgba(231,238,252,.10);
-      margin: 12px 0;
-    }
-  </style>
+  #screen-result { padding:0 0 calc(24px + var(--safe-bottom));display:none;flex-direction:column;animation:fadeIn .5s ease; }
+  #screen-result.active { display:flex; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)} }
+
+  .result-hero { padding:20px 18px 18px;background:linear-gradient(180deg,rgba(124,92,252,.08) 0%,transparent 100%);border-bottom:1px solid var(--border); }
+  .result-label { font-size:10px;font-family:'Space Mono',monospace;color:var(--accent2);letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px; }
+  .result-top-name { font-size:26px;font-weight:900;letter-spacing:-.02em;line-height:1.2;margin-bottom:4px; }
+  .result-top-name em { background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal; }
+  .result-tagline { font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:14px; }
+  .result-stats { display:flex;gap:8px;margin-bottom:0; }
+  .stat-chip { flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center; }
+  .stat-chip .num { font-size:20px;font-weight:700;font-family:'Space Mono',monospace;color:var(--accent2); }
+  .stat-chip .lbl { font-size:10px;color:var(--text2);margin-top:2px; }
+
+  .section-title { font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;padding:16px 18px 8px; }
+
+  .ai-cards { padding:0 14px;display:flex;flex-direction:column;gap:10px; }
+  .ai-card { background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .2s; }
+  .ai-card.top-pick { border-color:rgba(192,132,252,.28);background:rgba(124,92,252,.05); }
+  .ai-card:active { transform:scale(.99); }
+
+  .card-head { padding:14px 14px 0;display:flex;align-items:flex-start;gap:11px; }
+  .ai-icon { width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0; }
+  .ai-name-block { flex:1; }
+  .ai-name { font-size:15px;font-weight:700;line-height:1.2;margin-bottom:1px; }
+  .ai-company { font-size:11px;color:var(--text2); }
+  .rank-badge { color:white;font-size:9px;font-weight:700;padding:3px 7px;border-radius:99px;letter-spacing:.05em;flex-shrink:0;align-self:flex-start; }
+
+  .match-area { padding:10px 14px 0; }
+  .match-row { display:flex;align-items:center;gap:9px; }
+  .match-label-txt { font-size:10px;font-family:'Space Mono',monospace;color:var(--text2);white-space:nowrap; }
+  .match-bar-bg { flex:1;height:5px;background:var(--surface2);border-radius:99px;overflow:hidden; }
+  .match-bar-fill { height:100%;border-radius:99px;transition:width 1.1s cubic-bezier(.4,0,.2,1);width:0%; }
+  .match-pct { font-size:13px;font-family:'Space Mono',monospace;font-weight:700;white-space:nowrap;min-width:34px;text-align:right; }
+
+  .ai-tags { display:flex;flex-wrap:wrap;gap:5px;padding:10px 14px 0; }
+  .ai-tag { background:var(--surface2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-size:10px;color:var(--text2); }
+  .ai-tag.hi { border-color:rgba(124,92,252,.35);color:var(--accent2);background:rgba(124,92,252,.07); }
+  .ai-tag.green { border-color:rgba(52,211,153,.3);color:var(--green);background:rgba(52,211,153,.05); }
+  .ai-tag.orange { border-color:rgba(251,146,60,.3);color:var(--orange);background:rgba(251,146,60,.05); }
+
+  .ai-tagline-txt { font-size:12px;font-weight:700;color:var(--text);padding:10px 14px 0;line-height:1.5; }
+  .ai-desc { font-size:12px;color:var(--text2);line-height:1.8;padding:5px 14px 0; }
+
+  .pros-cons { display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:10px 14px; }
+  .pro-box,.con-box { border-radius:9px;padding:8px 10px;font-size:11px;line-height:1.5; }
+  .pro-box { background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.18);color:rgba(52,211,153,.9); }
+  .con-box { background:rgba(248,113,113,.05);border:1px solid rgba(248,113,113,.18);color:rgba(248,113,113,.85); }
+  .pc-label { font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;opacity:.65;margin-bottom:3px; }
+
+  .pricing-row { display:flex;align-items:center;gap:6px;padding:0 14px 12px; }
+  .price-pill { background:var(--surface3);border:1px solid var(--border);border-radius:99px;padding:4px 10px;font-size:11px;color:var(--text2);display:flex;align-items:center;gap:4px;flex:1;overflow:hidden; }
+  .price-val { color:var(--text);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+  .url-btn { background:transparent;border:1px solid rgba(124,92,252,.3);color:var(--accent2);border-radius:99px;padding:5px 12px;font-size:11px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;white-space:nowrap;flex-shrink:0; }
+  .url-btn:active { opacity:.7; }
+
+  .prompt-section { padding:0 18px 0; }
+  .prompt-card { background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px; }
+  .prompt-label { font-size:10px;color:var(--accent3);font-family:'Space Mono',monospace;letter-spacing:.08em;margin-bottom:9px; }
+  .prompt-text { font-size:11px;color:var(--text);line-height:1.85;font-family:'Space Mono',monospace;white-space:pre-wrap;background:rgba(56,189,248,.03);border:1px solid rgba(56,189,248,.1);border-radius:9px;padding:11px;margin-bottom:10px;max-height:200px;overflow-y:auto; }
+  .copy-btn { width:100%;padding:11px;background:rgba(56,189,248,.09);border:1px solid rgba(56,189,248,.2);border-radius:9px;color:var(--accent3);font-size:12px;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;transition:all .2s;letter-spacing:.02em; }
+  .copy-btn:active { opacity:.7;transform:scale(.98); }
+  .copy-btn.copied { background:rgba(52,211,153,.09);border-color:rgba(52,211,153,.28);color:var(--green); }
+
+  .action-row { display:flex;gap:9px;padding:14px 18px 0; }
+  .action-btn { flex:1;padding:13px;border-radius:var(--radius-sm);font-size:12px;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;transition:all .2s;border:1px solid;letter-spacing:.02em; }
+  .action-btn.primary { background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:white;box-shadow:0 4px 18px rgba(124,92,252,.28); }
+  .action-btn.secondary { background:var(--surface2);border-color:var(--border);color:var(--text2); }
+  .action-btn:active { transform:scale(.97); }
+
+  .star-section { padding:14px 18px 0;text-align:center; }
+  .star-title { font-size:12px;color:var(--text2);margin-bottom:9px; }
+  .stars { display:flex;justify-content:center;gap:8px; }
+  .star { font-size:26px;cursor:pointer;filter:grayscale(1) opacity(.3);transition:all .2s; }
+  .star.active { filter:none;transform:scale(1.1); }
+  .star:active { transform:scale(.9); }
+
+  #screen-loading { align-items:center;justify-content:center;gap:22px;padding:40px 20px;min-height:calc(100svh - 100px); }
+  .loading-orb { width:72px;height:72px;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--accent2),var(--accent));animation:spin-glow 1.5s linear infinite;box-shadow:0 0 40px rgba(124,92,252,.5); }
+  @keyframes spin-glow { 0%{box-shadow:0 0 40px rgba(124,92,252,.5);transform:rotate(0)}50%{box-shadow:0 0 60px rgba(192,132,252,.6)}100%{box-shadow:0 0 40px rgba(124,92,252,.5);transform:rotate(360deg)} }
+  .loading-text { font-size:15px;font-weight:700;text-align:center; }
+  .loading-sub { font-size:12px;color:var(--text2);text-align:center;animation:blink 1.5s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1}50%{opacity:.4} }
+
+  #toast { position:fixed;bottom:calc(80px + var(--safe-bottom));left:50%;transform:translateX(-50%) translateY(20px);background:rgba(25,25,45,.97);border:1px solid var(--border);backdrop-filter:blur(20px);border-radius:99px;padding:9px 18px;font-size:12px;font-weight:700;color:var(--text);z-index:9998;opacity:0;transition:all .3s;white-space:nowrap; }
+  #toast.show { opacity:1;transform:translateX(-50%) translateY(0); }
+  .result-spacer { height:calc(16px + var(--safe-bottom)); }
+  ::-webkit-scrollbar { width:2px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:rgba(255,255,255,.08);border-radius:99px; }
+</style>
 </head>
-
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true"><span>AI</span></div>
-        <div class="title">
-          <h1>AI診断：この悩みに最適なAIは？</h1>
-          <p>
-            質問に答えるだけで、あなたの目的に合うAIをおすすめします（文章・画像・動画・コード・自動化など）。
-            <span class="muted">※このページはローカルで完結。APIキー不要。</span>
-          </p>
-        </div>
-      </div>
+<div id="app">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">✦</div>
+      <div class="logo-text">AI<span>診断</span></div>
+    </div>
+    <button class="reset-btn" onclick="resetApp()">🔄 リセット</button>
+  </header>
 
-      <div class="top-actions">
-        <button class="btn ghost" id="btnLoadSample" type="button" title="例の回答を自動入力">
-          例で試す
-        </button>
-        <button class="btn" id="btnReset" type="button" title="回答をリセット">
-          リセット
-        </button>
-        <a class="btn primary" href="#diagnosis" title="診断へ">
-          診断する
-        </a>
-      </div>
-    </header>
-
-    <div class="grid">
-      <!-- LEFT: Diagnostic -->
-      <section class="card" id="diagnosis" aria-label="AI診断">
-        <div class="hd">
-          <div style="display:grid; gap:6px">
-            <h2>診断（5問）</h2>
-            <div class="stepper">
-              <span class="badge" id="stepBadge"><span class="dot"></span>未回答</span>
-              <div class="progress" aria-label="進捗"><div id="progBar"></div></div>
-              <span class="mini" id="progText">0 / 5</span>
-            </div>
-          </div>
-          <span class="badge"><span class="dot g"></span>最短30秒</span>
-        </div>
-
-        <div class="bd">
-          <form id="quiz" class="qwrap" autocomplete="off">
-            <!-- Q1 -->
-            <div class="q" data-q="goal">
-              <div class="label">
-                <strong>Q1. 何をしたい？</strong>
-                <span>必須</span>
-              </div>
-              <div class="options" role="radiogroup" aria-label="何をしたい？">
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="goal" value="writing" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>文章・要約・メール</b>
-                    <small>ブログ、企画、議事録、翻訳</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="goal" value="image" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>画像生成・デザイン</b>
-                    <small>アイコン、サムネ、素材</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="goal" value="video" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>動画生成</b>
-                    <small>ショート、PV、アニメ風</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="goal" value="coding" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>プログラム・開発</b>
-                    <small>Web/アプリ/自動化/デバッグ</small>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Q2 -->
-            <div class="q" data-q="level">
-              <div class="label">
-                <strong>Q2. あなたのレベルは？</strong>
-                <span>必須</span>
-              </div>
-              <div class="options" role="radiogroup" aria-label="レベル">
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="level" value="beginner" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>初心者</b>
-                    <small>まずは簡単に使いたい</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="level" value="intermediate" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>中級</b>
-                    <small>設定やプロンプトも少し触れる</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="level" value="advanced" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>上級</b>
-                    <small>APIやワークフローもOK</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="level" value="any" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>こだわらない</b>
-                    <small>おすすめ優先</small>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Q3 -->
-            <div class="q" data-q="jp">
-              <div class="label">
-                <strong>Q3. 日本語の自然さはどれくらい重要？</strong>
-                <span>必須</span>
-              </div>
-              <div class="options" role="radiogroup" aria-label="日本語の重要度">
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="jp" value="must" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>必須（超重要）</b>
-                    <small>自然な敬語・言い回しが大事</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="jp" value="nice" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>できれば</b>
-                    <small>多少の違和感はOK</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="jp" value="ok" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>どちらでも</b>
-                    <small>英語でも大丈夫</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="jp" value="none" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>気にしない</b>
-                    <small>結果が出ればOK</small>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Q4 -->
-            <div class="q" data-q="budget">
-              <div class="label">
-                <strong>Q4. 料金の希望は？</strong>
-                <span>必須</span>
-              </div>
-              <div class="options" role="radiogroup" aria-label="料金の希望">
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="budget" value="free" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>無料だけ</b>
-                    <small>できる範囲でOK</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="budget" value="low" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>安めならOK</b>
-                    <small>月数百〜千円くらい</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="budget" value="ok" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>有料OK</b>
-                    <small>効率・品質を優先したい</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="budget" value="biz" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>業務利用（法人）</b>
-                    <small>安全性・運用を重視</small>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Q5 -->
-            <div class="q" data-q="priority">
-              <div class="label">
-                <strong>Q5. 何を優先する？</strong>
-                <span>必須</span>
-              </div>
-              <div class="options" role="radiogroup" aria-label="優先度">
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="priority" value="quality" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>品質（精度・表現力）</b>
-                    <small>多少遅くてもOK</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="priority" value="speed" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>速さ（サクサク）</b>
-                    <small>テンポ重視</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="priority" value="cost" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>コスパ</b>
-                    <small>無料/安いのが最優先</small>
-                  </span>
-                </label>
-                <label class="opt" tabindex="0">
-                  <input type="radio" name="priority" value="privacy" />
-                  <span class="mark" aria-hidden="true"></span>
-                  <span class="txt">
-                    <b>安全性（機密・個人情報）</b>
-                    <small>社内・顧客情報を扱う</small>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <div class="controls">
-              <div class="left">
-                <button class="btn" id="btnSave" type="button">回答を保存</button>
-                <button class="btn" id="btnRestore" type="button">保存を復元</button>
-              </div>
-              <div class="right">
-                <span class="hint" id="validationHint">すべて回答するとおすすめが表示されます。</span>
-                <button class="btn good" id="btnDiagnose" type="button">おすすめを見る</button>
-              </div>
-            </div>
-
-            <div class="footer">
-              <span class="muted">ver 1.0</span>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <!-- RIGHT: Result -->
-      <aside class="card" aria-label="診断結果">
-        <div class="hd">
-          <div style="display:grid; gap:6px">
-            <h2>結果</h2>
-            <div class="row">
-              <span class="badge" id="resultBadge"><span class="dot w"></span>未診断</span>
-              <span class="badge"><span class="dot g"></span>プロンプト例つき</span>
-            </div>
-          </div>
-          <div class="row">
-            <button class="btn" id="btnCopyLink" type="button" title="回答をURLにして共有">共有リンク</button>
-            <button class="btn" id="btnCopySummary" type="button" title="結果をコピー">結果コピー</button>
-          </div>
-        </div>
-
-        <div class="bd">
-          <div id="emptyState" class="muted" style="display:grid; gap:10px">
-            <div class="badge"><span class="dot"></span>まずは上の5問に回答</div>
-            <div class="small">
-              例）「文章を書きたい → 日本語必須 → 品質重視」など、あなたの条件でおすすめが変わります。
-            </div>
-            <div class="divider"></div>
-            <details>
-              <summary>
-                この診断ができること
-                <span class="muted">▼</span>
-              </summary>
-              <div class="detailsBody small">
-                <ul style="margin:0; padding-left:18px; display:grid; gap:6px">
-                  <li>用途に合うAIカテゴリを提案（文章/画像/動画/開発）</li>
-                  <li>おすすめの理由・注意点・最初の一歩</li>
-                  <li>そのままコピペできる「プロンプト例」</li>
-                </ul>
-              </div>
-            </details>
-          </div>
-
-          <div id="resultArea" style="display:none">
-            <div class="results" id="results"></div>
-
-            <details style="margin-top:12px">
-              <summary>
-                判定ロジック（透明性）
-                <span class="muted">▼</span>
-              </summary>
-              <div class="detailsBody small">
-                <div class="muted" style="margin-bottom:8px">
-                  ここは「ルールベース」のため、説明可能です。必要なら条件を増やして精度を上げられます。
-                </div>
-                <div class="mono" id="logicDump"></div>
-              </div>
-            </details>
-
-            <details style="margin-top:12px">
-              <summary>
-                API連携の拡張（任意）
-                <span class="muted">▼</span>
-              </summary>
-              <div class="detailsBody small">
-                <p style="margin:0 0 8px">
-                  このindex.htmlはAPI無しで動きます。<br/>
-                  もし「LLMに自然文で判定させたい」なら、Cloudflare Workers / Firebase Functions などで
-                  <span class="muted">サーバー側</span>にAPIキーを置くのがおすすめです（キーをブラウザに置かない）。
-                </p>
-                <div class="mono">例：ユーザー回答JSON → サーバー → LLM → 推薦文 + 補足</div>
-              </div>
-            </details>
-          </div>
-        </div>
-      </aside>
+  <div class="progress-wrap" id="progress-wrap" style="display:none">
+    <div class="progress-meta">
+      <span>Q<strong id="q-num">1</strong> / 5</span>
+      <span id="q-time">⚡ あと約30秒</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="step-dots">
+      <div class="step-dot active" id="dot-0"></div>
+      <div class="step-dot" id="dot-1"></div>
+      <div class="step-dot" id="dot-2"></div>
+      <div class="step-dot" id="dot-3"></div>
+      <div class="step-dot" id="dot-4"></div>
     </div>
   </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <main id="main">
+    <div class="screen active" id="screen-welcome">
+      <div class="welcome-orb">✦</div>
+      <div>
+        <div class="welcome-title"><em>最適なAI</em>を<br>30秒で見つける</div>
+      </div>
+      <div class="welcome-desc">5問に答えるだけで、文章・画像・動画・コードなど目的に合ったAIを、マッチ度つきで最大5件ご提案します。</div>
+      <div class="welcome-badges">
+        <div class="badge"><span>📝</span>文章 5種</div>
+        <div class="badge"><span>🎨</span>画像 5種</div>
+        <div class="badge"><span>🎬</span>動画 5種</div>
+        <div class="badge"><span>💻</span>開発 5種</div>
+      </div>
+      <button class="start-btn" onclick="startQuiz()">診断スタート →</button>
+      <div class="time-note">⏱ 最短30秒・API不要・完全無料</div>
+    </div>
 
-  <script>
-    // =========================
-    // Data (候補AIの"型"として扱う)
-    // =========================
-    const CANDIDATES = [
+    <div class="screen" id="screen-quiz">
+      <div class="question-slide active" id="q0">
+        <div>
+          <div class="question-number">QUESTION 01 — 目的</div>
+          <div class="question-text">何をしたいですか？</div>
+          <div class="question-sub">一番やりたいことを1つ選んでください</div>
+        </div>
+        <div class="options-grid">
+          <button class="option-btn" data-q="0" data-v="text" onclick="selectOption(this)"><div class="option-icon">📝</div><div class="option-content"><div class="option-label">文章・要約・翻訳</div><div class="option-sub">ブログ、メール、議事録、企画書など</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="0" data-v="image" onclick="selectOption(this)"><div class="option-icon">🎨</div><div class="option-content"><div class="option-label">画像生成・デザイン</div><div class="option-sub">アイコン、サムネ、イラスト、商品写真</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="0" data-v="video" onclick="selectOption(this)"><div class="option-icon">🎬</div><div class="option-content"><div class="option-label">動画生成</div><div class="option-sub">ショート動画、PV、リール、アニメ</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="0" data-v="code" onclick="selectOption(this)"><div class="option-icon">💻</div><div class="option-content"><div class="option-label">プログラム・開発</div><div class="option-sub">Web/アプリ/デバッグ/自動化</div></div><div class="option-check"></div></button>
+        </div>
+      </div>
+      <div class="question-slide" id="q1">
+        <div>
+          <div class="question-number">QUESTION 02 — レベル</div>
+          <div class="question-text">AIの使用経験は？</div>
+          <div class="question-sub">現在のスキル感を教えてください</div>
+        </div>
+        <div class="options-grid">
+          <button class="option-btn" data-q="1" data-v="beginner" onclick="selectOption(this)"><div class="option-icon">🌱</div><div class="option-content"><div class="option-label">初心者</div><div class="option-sub">なるべく簡単に使いたい</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="1" data-v="intermediate" onclick="selectOption(this)"><div class="option-icon">⚡</div><div class="option-content"><div class="option-label">中級者</div><div class="option-sub">設定やプロンプトも少し触れる</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="1" data-v="advanced" onclick="selectOption(this)"><div class="option-icon">🚀</div><div class="option-content"><div class="option-label">上級者・開発者</div><div class="option-sub">API・CLIツールもOK</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="1" data-v="any" onclick="selectOption(this)"><div class="option-icon">🎯</div><div class="option-content"><div class="option-label">こだわらない</div><div class="option-sub">おすすめ優先でOK</div></div><div class="option-check"></div></button>
+        </div>
+      </div>
+      <div class="question-slide" id="q2">
+        <div>
+          <div class="question-number">QUESTION 03 — 言語</div>
+          <div class="question-text">日本語の自然さは重要？</div>
+          <div class="question-sub">使う言語の優先度を教えてください</div>
+        </div>
+        <div class="options-grid">
+          <button class="option-btn" data-q="2" data-v="ja-must" onclick="selectOption(this)"><div class="option-icon">🇯🇵</div><div class="option-content"><div class="option-label">必須（超重要）</div><div class="option-sub">自然な敬語・表現が大事</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="2" data-v="ja-prefer" onclick="selectOption(this)"><div class="option-icon">🌐</div><div class="option-content"><div class="option-label">できれば日本語</div><div class="option-sub">多少の違和感はOK</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="2" data-v="either" onclick="selectOption(this)"><div class="option-icon">🔤</div><div class="option-content"><div class="option-label">どちらでも</div><div class="option-sub">英語でも問題ない</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="2" data-v="dont-care" onclick="selectOption(this)"><div class="option-icon">✅</div><div class="option-content"><div class="option-label">気にしない</div><div class="option-sub">結果が出ればOK</div></div><div class="option-check"></div></button>
+        </div>
+      </div>
+      <div class="question-slide" id="q3">
+        <div>
+          <div class="question-number">QUESTION 04 — 料金</div>
+          <div class="question-text">予算の希望は？</div>
+          <div class="question-sub">月々の予算感を教えてください</div>
+        </div>
+        <div class="options-grid">
+          <button class="option-btn" data-q="3" data-v="free" onclick="selectOption(this)"><div class="option-icon">🆓</div><div class="option-content"><div class="option-label">無料のみ</div><div class="option-sub">できる範囲で試したい</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="3" data-v="cheap" onclick="selectOption(this)"><div class="option-icon">💰</div><div class="option-content"><div class="option-label">月1,000〜3,000円まで</div><div class="option-sub">コスパ重視</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="3" data-v="paid" onclick="selectOption(this)"><div class="option-icon">💎</div><div class="option-content"><div class="option-label">月3,000〜8,000円まで</div><div class="option-sub">品質・効率を優先</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="3" data-v="enterprise" onclick="selectOption(this)"><div class="option-icon">🏢</div><div class="option-content"><div class="option-label">予算制限なし／法人</div><div class="option-sub">最高品質・安全性重視</div></div><div class="option-check"></div></button>
+        </div>
+      </div>
+      <div class="question-slide" id="q4">
+        <div>
+          <div class="question-number">QUESTION 05 — 優先</div>
+          <div class="question-text">何を一番重視する？</div>
+          <div class="question-sub">最も大切にしたいポイントを選んでください</div>
+        </div>
+        <div class="options-grid">
+          <button class="option-btn" data-q="4" data-v="quality" onclick="selectOption(this)"><div class="option-icon">🏆</div><div class="option-content"><div class="option-label">品質・精度</div><div class="option-sub">多少遅くても最高水準を求める</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="4" data-v="speed" onclick="selectOption(this)"><div class="option-icon">⚡</div><div class="option-content"><div class="option-label">速さ・快適さ</div><div class="option-sub">テンポよくサクサク使いたい</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="4" data-v="cost" onclick="selectOption(this)"><div class="option-icon">💴</div><div class="option-content"><div class="option-label">コスパ最優先</div><div class="option-sub">無料/安いほど嬉しい</div></div><div class="option-check"></div></button>
+          <button class="option-btn" data-q="4" data-v="security" onclick="selectOption(this)"><div class="option-icon">🔒</div><div class="option-content"><div class="option-label">安全性・プライバシー</div><div class="option-sub">機密情報・顧客データを扱う</div></div><div class="option-check"></div></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-loading">
+      <div class="loading-orb"></div>
+      <div class="loading-text">最適なAIを診断中...</div>
+      <div class="loading-sub" id="loading-msg">あなたの回答を分析しています</div>
+    </div>
+
+    <div class="screen" id="screen-result">
+      <div id="result-content"></div>
+    </div>
+  </main>
+
+  <div class="nav-row" id="nav-row" style="display:none">
+    <button class="back-btn" id="back-btn" onclick="prevQuestion()" disabled>←</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">次へ →</button>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// 2025年最新調査 AI DATABASE
+// ═══════════════════════════════════════
+const AI_DB = {
+  text: {
+    categoryName: '文章・テキスト生成AI',
+    tagline: '文章作成・翻訳・要約・リサーチに強いAIをご提案します。',
+    ais: [
       {
-        id: "chatgpt",
-        name: "ChatGPT（汎用LLM）",
-        tags: ["文章", "企画", "要約", "相談", "コード"],
-        bestFor: ["文章作成", "要約・翻訳", "アイデア出し", "プログラミング相談"],
-        notes: [
-          "万能型。迷ったらまずこれ。",
-          "プロンプトが短くてもそこそこ良い結果が出やすい。"
-        ],
-        promptTemplates: {
-          writing: `あなたは優秀な編集者です。次の条件で文章を作ってください。\n- 目的：{目的}\n- 読者：{読者}\n- トーン：{丁寧/フランク}\n- 文字数：{目安}\n- 必ず入れる要素：{箇条書き}\n\n素材:\n{本文/メモ}`,
-          coding: `あなたは経験豊富なエンジニアです。次を満たす実装案をください。\n- 目的：{目的}\n- 使う技術：{例: HTML/CSS/JS}\n- 制約：{無料/簡単/セキュリティ}\n- 出力：手順 + サンプルコード + 注意点\n\n現状:\n{状況/エラー/コード}`
-        }
+        id:'claude', name:'Claude（Anthropic）', company:'Anthropic', icon:'🤖',
+        iconBg:'linear-gradient(135deg,#c084fc1a,#7c5cfc1a)',
+        tagline:'日本語の文章品質と長文理解力が業界トップクラス',
+        tags:['日本語◎','長文200K対応','倫理性高','安全性重視'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'長文を一度に最大200,000トークン処理できる圧倒的なコンテキスト長が最大の強み。「文章の上品さ・自然さはChatGPTを上回る」と多数のメディアで評価される。倫理ガイドラインが業界最厳格で、プライバシー情報を扱う業務にも安心。ブログ・論文・企画書・メールの文章品質を特に重視する人に最適。',
+        pro:'指示への追従力が業界最高水準', proSub:'長文の一貫性・論理性が優秀',
+        con:'無料版の利用制限が厳しめ', conSub:'画像・動画の生成機能はなし',
+        price:'無料あり / Pro $20/月（約3,000円）', priceType:'free',
+        url:'https://claude.ai', baseScore:94,
+        scoreFactors:{ jaBonus:8, qualityBonus:7, securityBonus:8, freeBonus:2 }
       },
       {
-        id: "claude",
-        name: "Claude（長文・文章寄り）",
-        tags: ["長文", "要約", "構成", "推敲"],
-        bestFor: ["長文整理", "構成・推敲", "ドキュメント作成"],
-        notes: [
-          "長文の扱いが得意な傾向。",
-          "文章の読みやすさ・構成の整え方が強い。"
-        ],
-        promptTemplates: {
-          writing: `次の文章を「読みやすく、誤解がない」形に整えてください。\n- 目的：{例: 社内メール/報告}\n- トーン：{丁寧/簡潔/柔らかく}\n- 追加してほしい観点：{抜け漏れチェック/前提整理}\n\n原文:\n{本文}`
-        }
+        id:'chatgpt', name:'ChatGPT（OpenAI）', company:'OpenAI', icon:'💬',
+        iconBg:'linear-gradient(135deg,#34d3991a,#10b9811a)',
+        tagline:'世界最多ユーザー。文章・画像・音声・記憶がすべて一体化',
+        tags:['オールマイティ','記憶機能あり','画像生成内蔵','無料あり'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'2022年に世界を変えた最初の大型AIチャット。GPT-5世代で文章・画像・音声・データ分析・コードをすべて1つの画面で完結。「記憶機能」で過去の会話を踏まえた継続的な応答が可能。使える機能の幅広さと安定性はどのAIにも劣らず、汎用性重視なら最初の選択肢になる。',
+        pro:'1ツールで何でも完結できる', proSub:'記憶機能で会話が蓄積される',
+        con:'Claude比で日本語のニュアンスがやや粗め', conSub:'無料版は使用上限あり',
+        price:'無料あり / Plus $20/月（約3,000円）', priceType:'free',
+        url:'https://chatgpt.com', baseScore:88,
+        scoreFactors:{ jaBonus:4, qualityBonus:4, speedBonus:4, freeBonus:3 }
       },
       {
-        id: "gemini",
-        name: "Gemini（検索・統合寄り）",
-        tags: ["調べ物", "要点整理", "マルチモーダル"],
-        bestFor: ["調査→要約", "比較表", "学習用途"],
-        notes: [
-          "調査・整理の体験が強いことが多い。",
-          "用途によっては“情報整理役”として便利。"
-        ],
-        promptTemplates: {
-          writing: `次のテーマについて、初心者向けに「結論→理由→具体例」の順で説明してください。\n- テーマ：{テーマ}\n- 文字数：{目安}\n- 最後に：要点3つの箇条書き\n\n条件:\n{条件}`
-        }
+        id:'gemini', name:'Gemini 2.5（Google）', company:'Google DeepMind', icon:'✨',
+        iconBg:'linear-gradient(135deg,#38bdf81a,#818cf81a)',
+        tagline:'Google検索と直結。最新情報・リアルタイム検索が最も強い',
+        tags:['リアルタイム検索','Google連携','無料充実','LMArena1位'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'Gemini 2.5は2025年3月のリリース後、LMArenaリーダーボードで大差をつけてトップを記録した最高水準モデル。Googleドキュメント・Gmail・Sheetsと直接連携でき、メール返信の自動生成・ドキュメント要約が一瞬で完了する。最新ニュースへのリアルタイムアクセスはGemini固有の強み。',
+        pro:'最新情報にリアルタイムで対応', proSub:'Googleアプリと完全に統合できる',
+        con:'長文の論理構成はClaudeに劣る場面あり', conSub:'Google Workspace外の連携は限定的',
+        price:'無料あり / Advanced 約2,900円/月', priceType:'free',
+        url:'https://gemini.google.com', baseScore:83,
+        scoreFactors:{ jaBonus:4, speedBonus:5, freeBonus:4 }
       },
       {
-        id: "dalle",
-        name: "DALL·E（画像生成）",
-        tags: ["画像", "アイコン", "サムネ", "デザイン"],
-        bestFor: ["サムネ案", "アイコン案", "シンプルな素材生成"],
-        notes: [
-          "短い指示でも破綻しにくいタイプ。",
-          "デザイン案の叩き台に向く。"
-        ],
-        promptTemplates: {
-          image: `日本のSNS向け。次の条件で画像を生成するプロンプトを作って。\n- 用途：{例: TikTokサムネ}\n- 画角：{例: 横長/縦長}\n- テイスト：{例: かわいい/シンプル/ミーム}\n- 文字入れ：{あり/なし}\n- 伝えたいこと：{一目で}\n\n出力：生成プロンプト（英語） + ネガティブプロンプト（任意）`
-        }
+        id:'perplexity', name:'Perplexity AI', company:'Perplexity AI', icon:'🔍',
+        iconBg:'linear-gradient(135deg,#06b6d41a,#0ea5e91a)',
+        tagline:'すべての回答に「引用元URL」を明記。ファクトチェックが即できる',
+        tags:['引用元全表示','リアルタイム','リサーチ特化','無料充実'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'AIチャットの中で唯一、すべての回答に参照元URLを表示するため情報の信頼性が即座に確認できる。ファクトチェック・市場調査・学術リサーチに最適で、記者・研究者・学生に特に人気が高い。無料版でも十分な品質があり、ChatGPTやClaudeとは異なる「検索特化」の位置づけ。',
+        pro:'すべての答えに出典URLが付く', proSub:'調べ物・事実確認が劇的に速い',
+        con:'創作・長文ライティングは得意でない', conSub:'ChatGPTのような汎用性はない',
+        price:'無料あり / Pro $20/月（約3,000円）', priceType:'free',
+        url:'https://perplexity.ai', baseScore:76,
+        scoreFactors:{ freeBonus:5, speedBonus:3 }
       },
       {
-        id: "stablediff",
-        name: "Stable Diffusion（画像・自由度高め）",
-        tags: ["画像", "調整", "ローカル", "自由度"],
-        bestFor: ["こだわり調整", "LoRA/スタイル", "大量生成"],
-        notes: [
-          "設定が多い分、ハマると強い。",
-          "中級以上や“絵作り”にこだわる人向け。"
-        ],
-        promptTemplates: {
-          image: `次の条件でStable Diffusion用プロンプトを作成。\n- 被写体：{被写体}\n- スタイル：{アニメ/写真/イラスト}\n- 雰囲気：{かわいい/暗い/ポップ}\n- 画角：{縦/横/正方形}\n\n出力：Positive / Negative / 推奨設定（steps, cfg, sampler）`
-        }
-      },
-      {
-        id: "runway",
-        name: "Runway / Pika（動画生成系）",
-        tags: ["動画", "ショート", "演出"],
-        bestFor: ["短尺動画", "簡単な映像化", "SNS向け演出"],
-        notes: [
-          "UIがわかりやすいものが多い。",
-          "短尺で映える動画に向く。"
-        ],
-        promptTemplates: {
-          video: `15秒の縦型ショート動画を作るための英語プロンプトを作って。\n- 主人公：{キャラ}\n- 世界観：{雰囲気}\n- 構成：序盤→中盤→オチ（各5秒）\n- カメラ：安定/ズーム/パンなど\n- テロップ案：短い日本語\n\n出力：プロンプト + シーン分割 + テロップ`
-        }
-      },
-      {
-        id: "ltx",
-        name: "LTX系（ローカル動画・ワークフロー）",
-        tags: ["動画", "ローカル", "高自由度", "技術寄り"],
-        bestFor: ["ローカル生成", "実験", "ワークフロー構築"],
-        notes: [
-          "セットアップやVRAMなど環境要件がある。",
-          "ComfyUI等と組むと拡張性が高い。"
-        ],
-        promptTemplates: {
-          video: `LTX用に、次を満たす英語プロンプトを書いて。\n- ショット数：{例: 3}\n- 画角：{縦/横}\n- キャラ：{特徴}\n- 動き：{自然/ゆっくり}\n- 背景：{場所}\n- NG：破綻しやすい要素の回避\n\n出力：プロンプト + ネガ（任意） + 推奨フレーム/解像度の目安`
-        }
-      },
-      {
-        id: "copilot",
-        name: "GitHub Copilot（開発補助）",
-        tags: ["コード", "補完", "IDE"],
-        bestFor: ["実装スピードUP", "IDE内補完", "反復作業"],
-        notes: [
-          "コーディング中の補完が強み。",
-          "設計相談は別のLLMと併用が効く。"
-        ],
-        promptTemplates: {
-          coding: `この関数（またはファイル）の意図をコメントで説明し、改善点を提案して。\n- 目的：{目的}\n- 制約：{制約}\n\nコード:\n{コード}`
-        }
+        id:'grok', name:'Grok 3（xAI）', company:'xAI（Elon Musk）', icon:'⚡',
+        iconBg:'linear-gradient(135deg,#f59e0b1a,#ef44441a)',
+        tagline:'X（旧Twitter）のリアルタイム投稿データにアクセスできる唯一のAI',
+        tags:['X/Twitter連携','SNSトレンド分析','制約が少なめ','Xプレミアム'],
+        tagTypes:['hi','hi','orange','orange'],
+        desc:'Elon MuskのxAIが開発したAI。X（旧Twitter）の投稿データにリアルタイムでアクセスできるのはGrok唯一の強み。SNS上のトレンド・バズを瞬時に把握したい人に最適。Grok 3は論理推論・数学タスクでも高スコアを記録しているが、他社比でコンテンツ倫理的制約がゆるめの面がある。',
+        pro:'X/Twitterのリアルタイム動向を把握できる', proSub:'制約が少なくフランクに使える',
+        con:'日本語精度はまだ発展途上', conSub:'X Premiumへの加入が必須',
+        price:'X Premium+ 月約1,700円〜', priceType:'cheap',
+        url:'https://x.com/i/grok', baseScore:68,
+        scoreFactors:{ speedBonus:3 }
       }
+    ]
+  },
+
+  image: {
+    categoryName: '画像生成AI',
+    tagline: 'テキストや指示から高品質な画像を生成するAIをご提案します。',
+    ais: [
+      {
+        id:'midjourney', name:'Midjourney v7', company:'Midjourney Inc.', icon:'🎨',
+        iconBg:'linear-gradient(135deg,#f59e0b1a,#ef44441a)',
+        tagline:'アート・映画品質の画像生成。プロクリエイター御用達の業界No.1',
+        tags:['芸術性No.1','ドラフトモード搭載','Web UI対応','月$10〜'],
+        tagTypes:['hi','hi','green','orange'],
+        desc:'「最も美しい・芸術的な画像が生成できる」として世界のクリエイターに最も支持されるAI。v7でWebブラウザUIが整備されDiscord操作が不要になった。「ドラフトモード」で10倍の速さで試作でき、本番生成前のアイデア出しが効率的。ファンタジー・コンセプトアート・映画ポスター・ゲームアート向き。',
+        pro:'映画・ゲームレベルの圧倒的ビジュアル', proSub:'あらゆる芸術スタイルを表現可能',
+        con:'完全有料。画像内テキストが苦手', conSub:'細かい構図指定はやや難しい',
+        price:'Basic $10/月〜（約1,500円、無料なし）', priceType:'paid',
+        url:'https://midjourney.com', baseScore:95,
+        scoreFactors:{ qualityBonus:6, freeNegative:-18 }
+      },
+      {
+        id:'flux', name:'FLUX.1 Pro（Black Forest Labs）', company:'Black Forest Labs', icon:'📸',
+        iconBg:'linear-gradient(135deg,#7c5cfc1a,#c084fc1a)',
+        tagline:'製品写真・人物写真のリアルさが業界最高水準。コマーシャル用途に最適',
+        tags:['フォトリアル最強','商用OK','API提供','4Kクオリティ'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'元Stable Diffusionチームが2024年に立ち上げたBlack Forest Labsの最新モデル。「本物の製品写真と見分けがつかない」と評されるほど照明・素材感・反射の再現度が突出している。商用ライセンスが明確で法的にも安心。4.5秒という高速生成も魅力。API提供によりWebサービスへの組み込みも可能。',
+        pro:'製品写真がプロスタジオ撮影品質', proSub:'商用ライセンスが整備されて安心',
+        con:'使えるUIサービスが少なく導入がやや難', conSub:'Midjourneyほどの「芸術的驚き」は薄い',
+        price:'約$0.04/枚〜（APIごとに変動）', priceType:'cheap',
+        url:'https://fal.ai/models/fal-ai/flux-pro', baseScore:88,
+        scoreFactors:{ qualityBonus:5, freeBonus:1 }
+      },
+      {
+        id:'dalle3', name:'DALL·E 3（ChatGPT内）', company:'OpenAI', icon:'🖼️',
+        iconBg:'linear-gradient(135deg,#34d3991a,#06b6d41a)',
+        tagline:'ChatGPTで日本語で話すだけ。プロンプトの書き方ゼロで使える',
+        tags:['日本語指示OK','ChatGPT内完結','テキスト描画◎','初心者最適'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'ChatGPTのチャット内で「〇〇の画像を作って」と日本語で伝えるだけで高品質な画像が生成できる。専用プロンプトの書き方を覚えなくていいのが最大の差別化ポイント。画像内に文字テキストを正確に描画する能力もFLUXと並んで最高水準。ChatGPT Plusに含まれるため追加料金なし。',
+        pro:'「〇〇の絵を作って」だけでOK', proSub:'画像内の文字表現が得意',
+        con:'スタイルの細かい指定が難しい', conSub:'無料版は生成枚数に制限あり',
+        price:'ChatGPT Plus $20/月（約3,000円）に含む', priceType:'cheap',
+        url:'https://chatgpt.com', baseScore:81,
+        scoreFactors:{ jaBonus:6, freeBonus:2 }
+      },
+      {
+        id:'firefly', name:'Adobe Firefly', company:'Adobe', icon:'🔥',
+        iconBg:'linear-gradient(135deg,#ef44441a,#f973161a)',
+        tagline:'著作権クリアの学習データ使用。企業・法務部が最も安心できる',
+        tags:['著作権安全','Photoshop統合','商用利用◎','企業向き'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'AdobeがAdobe Stockなど著作権がクリアなデータのみで学習させたAI。生成した画像を商用利用しても著作権訴訟リスクが最も低いとされ、企業の法務部でも承認されやすい。Photoshop・Illustratorに直接組み込まれているため、既存のAdobe CCワークフローにシームレスに統合できる。',
+        pro:'商用利用の著作権リスクが業界最小', proSub:'Adobeソフトから直接呼び出せる',
+        con:'Midjourneyほど「驚くような」表現は出にくい', conSub:'Adobe CCの契約が前提',
+        price:'CC込み $9.99/月〜（約1,500円）', priceType:'cheap',
+        url:'https://firefly.adobe.com', baseScore:79,
+        scoreFactors:{ securityBonus:9, qualityBonus:2 }
+      },
+      {
+        id:'stablediffusion', name:'Stable Diffusion', company:'Stability AI', icon:'🔧',
+        iconBg:'linear-gradient(135deg,#4ade801a,#22d3ee1a)',
+        tagline:'完全無料・ローカル動作。制限なく枚数無制限で作れるオープンソース',
+        tags:['完全無料','枚数制限なし','ローカル動作','上級者向け'],
+        tagTypes:['green','green','hi','orange'],
+        desc:'インターネット不要でPC上で動作するオープンソースAI。一度セットアップすれば生成枚数無制限・完全無料で使い続けられる。「LoRA」という学習技術でキャラクターやスタイルを固定でき、同一キャラを複数シーンで量産することも可能。ただし初期セットアップにPCの知識と数時間が必要。',
+        pro:'完全無料で枚数無制限', proSub:'LoRAでキャラ固定・スタイル統一が可能',
+        con:'初期セットアップに技術知識が必要', conSub:'GPU搭載PCが理想（CPUでも動くが遅い）',
+        price:'完全無料（ソフトウェア代のみ）', priceType:'free',
+        url:'https://stability.ai', baseScore:72,
+        scoreFactors:{ freeBonus:14, costBonus:10, advancedBonus:5 }
+      }
+    ]
+  },
+
+  video: {
+    categoryName: '動画生成AI',
+    tagline: 'テキストや画像から映像を自動生成できる2025年最新AIをご提案します。',
+    ais: [
+      {
+        id:'veo3', name:'Veo 3（Google DeepMind）', company:'Google DeepMind', icon:'🎬',
+        iconBg:'linear-gradient(135deg,#38bdf81a,#818cf81a)',
+        tagline:'音声・環境音まで自動生成。2025年動画AI品質の最高峰',
+        tags:['音声込みで生成','4K対応','シネマ品質','Gemini連携'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'2025年にGoogleがリリースした動画AI。テキストから映像だけでなく、環境音・BGM・効果音まで含む「音声付き動画」を自動生成できる唯一の主要AIとして業界を驚かせた。物理シミュレーション（光の当たり方・水の流れ・布のなびき）の精度が非常に高く、撮影不要のシネマ品質映像が制作できる。',
+        pro:'音声込みの動画生成が完全自動', proSub:'物理シミュレーションが映画品質',
+        con:'月249ドルと非常に高価（法人向け）', conSub:'日本から直接アクセスしにくい場合あり',
+        price:'Google AI Ultra $249/月（約38,000円）', priceType:'enterprise',
+        url:'https://deepmind.google/technologies/veo/', baseScore:93,
+        scoreFactors:{ qualityBonus:7, freeNegative:-15, enterpriseBonus:12 }
+      },
+      {
+        id:'sora2', name:'Sora 2（OpenAI）', company:'OpenAI', icon:'🌀',
+        iconBg:'linear-gradient(135deg,#7c5cfc1a,#c084fc1a)',
+        tagline:'最大20秒のリアル映像。ChatGPT Plusに含まれてコスパ最高',
+        tags:['最長20秒','ストーリー映像◎','ChatGPT Plus込み','物理リアル'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'OpenAIが2024年末に正式リリース。最大20秒の動画を生成でき、光の当たり方・物理の動き・人物の表情が非常に自然でリアル。「撮影したような映像」として商品プロモーション・ナラティブ映像制作に向く。ChatGPT Plusに含まれているため月3,000円以下でアクセスできるコスパも魅力。',
+        pro:'ストーリー性ある映像の完成度が高い', proSub:'ChatGPT Plusで追加費用ゼロ',
+        con:'Veo 3比で音声の自動生成がない', conSub:'長尺ほど品質が落ちやすい',
+        price:'ChatGPT Plus $20/月（約3,000円）に含む', priceType:'cheap',
+        url:'https://sora.com', baseScore:88,
+        scoreFactors:{ qualityBonus:5, freeBonus:2 }
+      },
+      {
+        id:'runway', name:'Runway Gen-4', company:'Runway ML', icon:'✈️',
+        iconBg:'linear-gradient(135deg,#c084fc1a,#818cf81a)',
+        tagline:'映像クリエイター御用達。モーションブラシ・カメラ制御が業界最高',
+        tags:['カメラ制御◎','モーションブラシ','4K対応','PV制作向き'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'映像・広告制作のプロが最も使うAIビデオツール。「モーションブラシ」で動かしたい範囲を絵で指定できる直感的な操作性が好評。Gen-4では最大16秒・4K相当の動画が生成可能。音楽PV・CM・映画ショットへの採用実績が多数あり、プロの現場で実際に使われているAIはRunwayが最も多い。',
+        pro:'モーションブラシで動きを絵で指定できる', proSub:'CM・PV制作の現場で豊富な実績',
+        con:'本格利用すると月95ドル〜と高い', conSub:'操作習得に1〜2時間かかる',
+        price:'無料あり / Standard $15/月（約2,300円）', priceType:'cheap',
+        url:'https://runway.ml', baseScore:85,
+        scoreFactors:{ qualityBonus:4, freeBonus:2 }
+      },
+      {
+        id:'kling', name:'Kling AI 2.1（Kuaishou）', company:'快手（Kuaishou）', icon:'🌊',
+        iconBg:'linear-gradient(135deg,#34d3991a,#10b9811a)',
+        tagline:'最長2分の動画が生成可能。コスパ最強で無料枠も業界随一',
+        tags:['最長2分動画','無料枠◎','4K対応','SNS量産向き'],
+        tagTypes:['hi','green','green','hi'],
+        desc:'中国のKuaishou（快手）が開発。他の主要AIが最長20秒前後のなか、最長2分間の動画を生成できる唯一のツール。無料プランの充実度は業界随一で、試してみる最初の動画AIとして多数に選ばれている。キャラクターのモーション・表情の一貫性に強く、SNSのショート動画を大量制作したい人に最適。',
+        pro:'他にない2分間の長尺動画生成', proSub:'無料枠の充実度は業界トップ',
+        con:'無料プランは処理待ち時間が2〜3時間', conSub:'中国企業のためデータ管理要確認',
+        price:'無料あり / Standard $8/月（約1,200円）', priceType:'cheap',
+        url:'https://klingai.com', baseScore:80,
+        scoreFactors:{ freeBonus:8, costBonus:6 }
+      },
+      {
+        id:'pika', name:'Pika 2.5', company:'Pika Labs', icon:'⚡',
+        iconBg:'linear-gradient(135deg,#f59e0b1a,#fbbf241a)',
+        tagline:'最速・最簡単。SNS動画コンテンツを秒速で作れる初心者向けAI',
+        tags:['初心者向き','生成が速い','無料あり','SNS最適'],
+        tagTypes:['green','hi','green','hi'],
+        desc:'直感的なUIと圧倒的な生成速度が特徴。数分でSNS向けの短い動画が完成するため、TikTok・Instagram Reels・YouTube Shortsコンテンツの量産に最も向いている。専門知識なしで使えるUIは業界随一のわかりやすさで、「初めて動画AIを試す」ならPikaが最も挫折しにくい。',
+        pro:'直感的UIで初心者でもすぐ使える', proSub:'動画生成が速くてストレスなし',
+        con:'複雑なシーンや長尺の品質は他社に劣る', conSub:'Veo3・Soraほどのリアルさは出ない',
+        price:'無料あり / Basic $8/月（約1,200円）', priceType:'cheap',
+        url:'https://pika.art', baseScore:73,
+        scoreFactors:{ freeBonus:5, speedBonus:6, beginnerBonus:9 }
+      }
+    ]
+  },
+
+  code: {
+    categoryName: 'プログラム・開発AI',
+    tagline: 'コード生成・デバッグ・リファクタリングを強力サポートするAIをご提案します。',
+    ais: [
+      {
+        id:'claudecode', name:'Claude Code（Anthropic）', company:'Anthropic', icon:'🤖',
+        iconBg:'linear-gradient(135deg,#c084fc1a,#7c5cfc1a)',
+        tagline:'SWEベンチスコア業界最高80.9%。大規模コードの理解力が突出',
+        tags:['SWEベンチNo.1','200K文脈','CLI自律エージェント','複雑推論◎'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'SWE-bench Verified（実際のGitHub Issueを解かせるベンチマーク）でスコア80.9%という業界最高を記録。20万トークンのコンテキスト長でコードベース全体を把握したうえでの設計・リファクタリングが得意。ターミナルからのCLI操作・ファイル編集・テスト実行まで自律的にこなすエージェント機能が特に評価が高い。',
+        pro:'業界最高ベンチマークの推論力', proSub:'大規模コードベースを一括理解できる',
+        con:'IDEへのリアルタイム補完は非対応', conSub:'CLI操作になれるまで手間がかかる',
+        price:'Claude Pro $20/月（約3,000円）or API従量課金', priceType:'cheap',
+        url:'https://claude.ai/code', baseScore:95,
+        scoreFactors:{ qualityBonus:9, securityBonus:5, advancedBonus:7 }
+      },
+      {
+        id:'cursor', name:'Cursor', company:'Anysphere', icon:'🖱️',
+        iconBg:'linear-gradient(135deg,#f59e0b1a,#fb923c1a)',
+        tagline:'AI統合コードエディタのデファクトスタンダード。時価総額$100億のスター',
+        tags:['VSCodeベース','プロジェクト全体理解','エージェントモード','Fortune500採用'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'VSCodeをベースにAIを全面統合した専用コードエディタ。フォーチュン500の50%が採用し、時価総額$100億を超えるAIツール界の大型スタートアップ。プロジェクト内の複数ファイルを横断的に理解した補完・生成が強み。「Composerエージェント」で複数ファイルの同時編集・テスト・コミットまで自律的に実行できる。',
+        pro:'プロジェクト全体を把握した的確な補完', proSub:'エージェントで複数ファイルを同時編集',
+        con:'月20〜40ドルとやや高め', conSub:'慣れるまで設定に時間がかかる',
+        price:'Hobby 無料 / Pro $20/月（約3,000円）', priceType:'cheap',
+        url:'https://cursor.sh', baseScore:90,
+        scoreFactors:{ qualityBonus:5, advancedBonus:6, freeBonus:1 }
+      },
+      {
+        id:'copilot', name:'GitHub Copilot', company:'Microsoft / GitHub', icon:'⚙️',
+        iconBg:'linear-gradient(135deg,#1e29451a,#3341551a)',
+        tagline:'企業の82%が採用する業界標準。タイプしながらリアルタイム補完',
+        tags:['182万人が利用','VSCode/JetBrains','企業標準','月$10コスパ'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'エンジニアの82%が在籍企業で採用する業界標準のAIコーディングアシスタント。タイピングに合わせたリアルタイム補完が最も高速で、開発のリズムを止めない自然な体験が最大の魅力。VS Code・JetBrains・Neovim等すべての主要IDEに対応。月$10は最もコスパが良い選択肢。2025年からAgent Modeも搭載。',
+        pro:'タイプしながらの補完速度が最速', proSub:'企業・エンタープライズ採用実績No.1',
+        con:'複雑な推論はClaude Codeに劣る', conSub:'大規模コード理解に8Kトークン制限',
+        price:'無料あり / Pro $10/月（約1,500円）', priceType:'cheap',
+        url:'https://github.com/features/copilot', baseScore:87,
+        scoreFactors:{ qualityBonus:3, speedBonus:6, securityBonus:5, freeBonus:2 }
+      },
+      {
+        id:'windsurf', name:'Windsurf（Codeium）', company:'Codeium（OpenAI傘下）', icon:'🏄',
+        iconBg:'linear-gradient(135deg,#34d3991a,#22d3ee1a)',
+        tagline:'Cursorのライバル。月15ドルでCursor並みの機能を実現するコスパ番長',
+        tags:['Cascade Flow搭載','コスパNo.1','自律エージェント','OpenAI傘下'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'Cursorの強力なライバルとして急成長したAIコードエディタ。独自の「Cascade Flow」アーキテクチャによるエージェントが、リポジトリ全体を理解した自律コーディングを実現する。2025年にOpenAIに買収されさらなる機能強化が進行中。Cursor Pro（$20）より安い$15という価格設定がコスパ重視層に人気。',
+        pro:'Cursorより安く同等以上の機能', proSub:'Cascade Flowで自律コーディングが可能',
+        con:'Cursorほどコミュニティ情報が多くない', conSub:'一部機能はまだ発展途上',
+        price:'無料あり / Pro $15/月（約2,300円）', priceType:'cheap',
+        url:'https://codeium.com/windsurf', baseScore:83,
+        scoreFactors:{ costBonus:8, qualityBonus:3, freeBonus:2 }
+      },
+      {
+        id:'replit', name:'Replit Agent', company:'Replit', icon:'🌐',
+        iconBg:'linear-gradient(135deg,#f973161a,#fb923c1a)',
+        tagline:'ブラウザのみで完結。アイデアを話すだけでWebサービスが公開できる',
+        tags:['インストール不要','デプロイ自動','非エンジニア向き','プロトタイプ最速'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'PCへのインストール・環境構築が一切不要で、ブラウザだけでコーディング〜Webサービス公開まで全部完結するクラウドIDE。「〇〇なWebサービスを作って」と指示するだけでAIがコードを書き・テストし・デプロイまで全自動で行ってくれる。エンジニアでない起業家・マーケター・学生のプロトタイプ開発に特に人気。',
+        pro:'ブラウザだけでアプリを公開できる', proSub:'コードゼロでもサービス作成が可能',
+        con:'本格的な大規模開発・チーム開発には不向き', conSub:'ローカル環境の学習機会にはならない',
+        price:'無料あり / Core $20/月（約3,000円）', priceType:'cheap',
+        url:'https://replit.com', baseScore:76,
+        scoreFactors:{ freeBonus:4, beginnerBonus:11, speedBonus:3 }
+      }
+    ]
+  }
+};
+
+// ═══════════════════════════════════════
+// SCORING ENGINE
+// ═══════════════════════════════════════
+function calcScores(ais, ans) {
+  const [use, level, lang, price, priority] = [ans[0],ans[1],ans[2],ans[3],ans[4]];
+  return ais.map(ai => {
+    let score = ai.baseScore;
+    const f = ai.scoreFactors || {};
+    if (lang === 'ja-must')   score += (f.jaBonus||0);
+    if (lang === 'ja-prefer') score += (f.jaBonus||0) * 0.5;
+    const isFree   = ai.priceType === 'free';
+    const isCheap  = ai.priceType === 'free' || ai.priceType === 'cheap';
+    const isEnt    = ai.priceType === 'enterprise';
+    if (price === 'free') {
+      if (isFree)   score += (f.freeBonus||0) + 9;
+      else if (!isCheap) score -= 20;
+      else score -= 7;
+      score += (f.freeNegative||0);
+    } else if (price === 'cheap') {
+      if (isCheap) score += 4;
+      if (isEnt)   score -= 14;
+    } else if (price === 'paid') {
+      if (isEnt) score -= 6;
+    } else if (price === 'enterprise') {
+      score += (f.enterpriseBonus||0);
+      if (isEnt) score += 10;
+    }
+    if (priority === 'quality')  score += (f.qualityBonus||0);
+    if (priority === 'speed')    score += (f.speedBonus||0);
+    if (priority === 'cost')     score += (f.costBonus||0) + (isFree ? 7 : 0);
+    if (priority === 'security') score += (f.securityBonus||0);
+    if (level === 'beginner')    score += (f.beginnerBonus||0);
+    if (level === 'advanced')    score += (f.advancedBonus||0);
+    if (level === 'beginner' && (f.advancedBonus||0) > 3) score -= 8;
+    return { ...ai, score: Math.min(99, Math.max(35, Math.round(score))) };
+  }).sort((a,b)=>b.score-a.score);
+}
+
+function matchColor(p) {
+  if (p >= 88) return 'linear-gradient(90deg,#7c5cfc,#c084fc)';
+  if (p >= 74) return 'linear-gradient(90deg,#38bdf8,#818cf8)';
+  if (p >= 60) return 'linear-gradient(90deg,#34d399,#38bdf8)';
+  return 'linear-gradient(90deg,#f59e0b,#34d399)';
+}
+function matchLabel(p) {
+  if (p >= 92) return '🏆 完璧マッチ';
+  if (p >= 80) return '⭐ 高マッチ';
+  if (p >= 65) return '✓ 良マッチ';
+  return '△ 参考';
+}
+
+const PROMPTS = {
+  text: `以下の内容を、わかりやすく・読みやすい日本語でまとめてください。
+
+【要件】
+・冒頭に要点を箇条書きで3〜5つ
+・専門用語は噛み砕いて説明する
+・全体の流れが一読でわかる構成にする
+
+【元の内容】
+（ここに文章・データ・メモを貼り付けてください）
+
+【出力形式】
+・見出し＋本文の構成
+・読者は〇〇（対象者を入力）
+・文字数は〇〇字以内`,
+
+  image: `次の条件で画像を生成してください：
+
+スタイル: [写真風 / イラスト / アニメ / 水彩 / 3D / etc]
+テーマ: [メインの被写体・場面を具体的に]
+色調: [暖色 / 寒色 / モノクロ / パステル / etc]
+雰囲気: [プロフェッショナル / かわいい / クール / etc]
+用途: [SNSアイコン / サムネイル / 商品画像 / etc]
+解像度: [正方形1:1 / 横16:9 / 縦9:16]
+
+追加の要望: [その他こだわりたい点]`,
+
+  video: `次のシーンの動画を生成してください：
+
+場所・背景: [場所や環境を具体的に（例：東京の夜景、雪山の頂上）]
+被写体: [人物・物・動物など]
+動き: [カメラワーク（パン・ズーム等）と被写体の動き]
+照明・時間帯: [朝日/夕日/夜/スタジオ照明 など]
+尺: [秒数（例：5秒、10秒、最大20秒）]
+スタイル: [シネマティック / アニメ / ドキュメンタリー / 広告風]
+アスペクト比: [16:9 / 9:16 / 1:1]`,
+
+  code: `以下の機能を実装してください：
+
+【言語・フレームワーク】
+（例：Python / TypeScript + React / Node.js）
+
+【実装したい機能】
+（やりたいことを具体的に。「〇〇から△△を取得して□□に表示したい」など）
+
+【制約・要件】
+- パフォーマンス要件があれば記載
+- 既存コードがあれば下に貼り付けてください
+
+【完了基準】
+どうなれば「完成」と判断しますか？
+（例：ボタンを押したら〇〇が表示される）`
+};
+
+// ═══════════════════════════════════════
+// BUILD RESULT
+// ═══════════════════════════════════════
+function buildResult() {
+  const use = answers[0] || 'text';
+  const data = AI_DB[use];
+  const ranked = calcScores(data.ais, answers);
+  const top = ranked[0];
+  const shown = ranked.slice(0, 5);
+
+  const cardsHTML = shown.map((ai, i) => {
+    const tagHTML = ai.tags.map((t,ti)=>`<div class="ai-tag ${ai.tagTypes[ti]||''}">${t}</div>`).join('');
+    const ranks = ['NO.1','NO.2','NO.3','NO.4','NO.5'];
+    const rankColors = [
+      'linear-gradient(135deg,#7c5cfc,#c084fc)',
+      'linear-gradient(135deg,#38bdf8,#818cf8)',
+      'linear-gradient(135deg,#34d399,#38bdf8)',
+      'linear-gradient(135deg,#f59e0b,#34d399)',
+      'linear-gradient(135deg,#9ca3af,#6b7280)'
     ];
+    const pctColors = ['#c084fc','#38bdf8','#34d399','#f59e0b','#9ca3af'];
+    return `
+    <div class="ai-card ${i===0?'top-pick':''}">
+      <div class="card-head">
+        <div class="ai-icon" style="background:${ai.iconBg}">${ai.icon}</div>
+        <div class="ai-name-block">
+          <div class="ai-name">${ai.name}</div>
+          <div class="ai-company">${ai.company}</div>
+        </div>
+        <div class="rank-badge" style="background:${rankColors[i]}">${ranks[i]}</div>
+      </div>
+      <div class="match-area">
+        <div class="match-row">
+          <div class="match-label-txt">マッチ度</div>
+          <div class="match-bar-bg"><div class="match-bar-fill" id="bar-${i}" style="background:${matchColor(ai.score)}"></div></div>
+          <div class="match-pct" style="color:${pctColors[i]}">${ai.score}%</div>
+        </div>
+      </div>
+      <div class="ai-tags">${tagHTML}<div class="ai-tag">${matchLabel(ai.score)}</div></div>
+      <div class="ai-tagline-txt">${ai.tagline}</div>
+      <div class="ai-desc">${ai.desc}</div>
+      <div class="pros-cons">
+        <div class="pro-box"><div class="pc-label">✓ 強み</div>${ai.pro}<br><span style="opacity:.7">${ai.proSub}</span></div>
+        <div class="con-box"><div class="pc-label">△ 注意</div>${ai.con}<br><span style="opacity:.7">${ai.conSub}</span></div>
+      </div>
+      <div class="pricing-row">
+        <div class="price-pill">💴 <span class="price-val">${ai.price}</span></div>
+        <button class="url-btn" onclick="openUrl('${ai.url}')">公式サイト →</button>
+      </div>
+    </div>`;
+  }).join('');
 
-    // =========================
-    // Simple rule engine
-    // =========================
-    function scoreCandidates(answers){
-      const scores = new Map(CANDIDATES.map(c => [c.id, {score:0, reasons:[], cautions:[]}]));
+  const html = `
+    <div class="result-hero">
+      <div class="result-label">✦ 診断結果</div>
+      <div class="result-top-name"><em>${top.name}</em>がベスト</div>
+      <div class="result-tagline">${data.tagline}</div>
+      <div class="result-stats">
+        <div class="stat-chip"><div class="num">${shown.length}</div><div class="lbl">件提案</div></div>
+        <div class="stat-chip"><div class="num">${top.score}%</div><div class="lbl">最高マッチ度</div></div>
+        <div class="stat-chip"><div class="num">${data.ais.length}</div><div class="lbl">候補から選定</div></div>
+      </div>
+    </div>
+    <div class="section-title">🏆 おすすめランキング（全${shown.length}件）</div>
+    <div class="ai-cards">${cardsHTML}</div>
+    <div class="section-title">⌘ すぐ使えるプロンプトテンプレ</div>
+    <div class="prompt-section">
+      <div class="prompt-card">
+        <div class="prompt-label">📋 コピーして${top.name.split('（')[0]}に貼り付けてみよう</div>
+        <div class="prompt-text">${PROMPTS[use]||PROMPTS.text}</div>
+        <button class="copy-btn" id="copy-prompt-btn" onclick="copyPrompt('${use}')">📋 プロンプトをコピー</button>
+      </div>
+    </div>
+    <div class="action-row">
+      <button class="action-btn secondary" onclick="resetApp()">🔄 やり直す</button>
+      <button class="action-btn primary" onclick="shareResult()">↑ 結果を共有</button>
+    </div>
+    <div class="star-section">
+      <div class="star-title">診断は役に立ちましたか？</div>
+      <div class="stars">
+        <div class="star" onclick="rateStar(this,1)">⭐</div>
+        <div class="star" onclick="rateStar(this,2)">⭐</div>
+        <div class="star" onclick="rateStar(this,3)">⭐</div>
+        <div class="star" onclick="rateStar(this,4)">⭐</div>
+        <div class="star" onclick="rateStar(this,5)">⭐</div>
+      </div>
+    </div>
+    <div class="result-spacer"></div>`;
 
-      const add = (id, n, reason) => {
-        const it = scores.get(id);
-        it.score += n;
-        if(reason) it.reasons.push(reason);
-      };
-      const caution = (id, text) => {
-        const it = scores.get(id);
-        it.cautions.push(text);
-      };
+  document.getElementById('result-content').innerHTML = html;
+  setTimeout(()=>{shown.forEach((_,i)=>{const b=document.getElementById(`bar-${i}`);if(b)b.style.width=shown[i].score+'%';});},350);
+}
 
-      const { goal, level, jp, budget, priority } = answers;
+// ═══════════════════════════════════════
+// APP CONTROL
+// ═══════════════════════════════════════
+let currentQ = 0;
+const answers = {};
+const totalQ = 5;
 
-      // Goal weighting
-      if(goal === "writing"){
-        add("chatgpt", 28, "文章系の万能型として安定");
-        add("claude", 26, "長文の整理・推敲が得意");
-        add("gemini", 18, "調査→要点整理に向く");
-      }
-      if(goal === "image"){
-        add("dalle", 28, "短い指示でも画像が作りやすい");
-        add("stablediff", 24, "こだわり調整や大量生成に強い");
-        add("chatgpt", 10, "画像プロンプト作成の相棒として便利");
-      }
-      if(goal === "video"){
-        add("runway", 26, "手軽にSNS向け短尺を作りやすい");
-        add("ltx", 22, "ローカル/ワークフロー構築で自由度が高い");
-        add("chatgpt", 12, "構成・プロンプト作成に強い");
-      }
-      if(goal === "coding"){
-        add("chatgpt", 26, "設計相談・デバッグの言語化が得意");
-        add("copilot", 22, "IDE補完で実装スピードが上がる");
-        add("gemini", 14, "要点整理・比較表が得意");
-      }
-
-      // Level
-      if(level === "beginner"){
-        add("chatgpt", 12, "初心者でも扱いやすい");
-        add("dalle", 10, "操作がシンプル寄りで始めやすい");
-        add("runway", 10, "UIで直感的に作りやすい");
-        caution("stablediff", "Stable Diffusionは設定項目が多く、最初は迷いやすい");
-        caution("ltx", "LTX系は環境（VRAM/設定）で詰まりやすいことがある");
-      }
-      if(level === "intermediate"){
-        add("stablediff", 6, "調整するほど伸びるタイプ");
-        add("ltx", 6, "ワークフローで伸びる");
-        add("copilot", 6, "開発体験が良くなる");
-      }
-      if(level === "advanced"){
-        add("stablediff", 8, "高度な調整・運用が可能");
-        add("ltx", 8, "ローカル最適化が活きる");
-        add("copilot", 8, "IDE/リポジトリ連携を活かせる");
-      }
-
-      // Japanese priority
-      if(jp === "must"){
-        add("chatgpt", 10, "日本語の自然さを優先しやすい");
-        add("claude", 8, "文章の整えが得意");
-      } else if(jp === "nice"){
-        add("chatgpt", 6, "日本語の安定感");
-      }
-
-      // Budget
-      if(budget === "free"){
-        add("stablediff", 8, "ローカル運用ならコストを抑えやすい");
-        add("ltx", 8, "ローカル運用ならコストを抑えやすい");
-        add("gemini", 4, "無料枠がある場合が多い");
-        caution("runway", "動画系は無料枠が少なめ/制限が出やすい");
-      }
-      if(budget === "biz"){
-        add("chatgpt", 6, "業務利用プラン/運用が整っている場合がある");
-        add("gemini", 6, "業務向け運用を想定しやすい場合がある");
-        caution("stablediff", "社内運用なら“素材の権利/モデル管理”のルール作りが必要");
-      }
-
-      // Priority
-      if(priority === "quality"){
-        add("claude", 8, "文章品質・構成に強い");
-        add("stablediff", 8, "画像のこだわり品質を詰められる");
-        add("ltx", 6, "動画の自由度で詰められる");
-        add("chatgpt", 6, "総合品質が安定");
-      }
-      if(priority === "speed"){
-        add("copilot", 10, "実装速度が上がる");
-        add("runway", 6, "短尺を素早く作りやすい");
-        add("chatgpt", 6, "やり取りが速い");
-      }
-      if(priority === "cost"){
-        add("stablediff", 10, "ローカルで繰り返し使える");
-        add("ltx", 8, "ローカル運用でコストを抑えられる");
-        add("gemini", 6, "無料枠前提で使いやすい場合がある");
-      }
-      if(priority === "privacy"){
-        add("stablediff", 8, "ローカルなら機密を外に出しにくい");
-        add("ltx", 8, "ローカルなら機密を外に出しにくい");
-        caution("chatgpt", "機密/個人情報は社内ルールに従って入力を避ける（マスキング推奨）");
-        caution("claude", "機密/個人情報は社内ルールに従って入力を避ける（マスキング推奨）");
-        caution("gemini", "機密/個人情報は社内ルールに従って入力を避ける（マスキング推奨）");
-      }
-
-      // Slight balancing: if goal isn't image, reduce image candidates a bit, etc.
-      if(goal !== "image"){
-        scores.get("dalle").score -= 6;
-        scores.get("stablediff").score -= 4;
-      }
-      if(goal !== "video"){
-        scores.get("runway").score -= 6;
-        scores.get("ltx").score -= 4;
-      }
-      if(goal !== "coding"){
-        scores.get("copilot").score -= 4;
-      }
-
-      // clamp
-      for(const [id, it] of scores){
-        it.score = Math.max(0, it.score);
-      }
-
-      // Return sorted with merged data
-      const list = CANDIDATES.map(c => ({
-        ...c,
-        score: scores.get(c.id).score,
-        reasons: uniq(scores.get(c.id).reasons).slice(0, 5),
-        cautions: uniq(scores.get(c.id).cautions).slice(0, 4)
-      }))
-      .sort((a,b) => b.score - a.score);
-
-      return list;
-    }
-
-    function uniq(arr){
-      return Array.from(new Set(arr.filter(Boolean)));
-    }
-
-    // =========================
-    // UI helpers
-    // =========================
-    const $ = (sel, root=document) => root.querySelector(sel);
-    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-
-    const quiz = $("#quiz");
-    const progBar = $("#progBar");
-    const progText = $("#progText");
-    const stepBadge = $("#stepBadge");
-    const validationHint = $("#validationHint");
-
-    const emptyState = $("#emptyState");
-    const resultArea = $("#resultArea");
-    const resultsEl = $("#results");
-    const resultBadge = $("#resultBadge");
-    const logicDump = $("#logicDump");
-
-    const toast = $("#toast");
-
-    const REQUIRED = ["goal","level","jp","budget","priority"];
-
-    function getAnswers(){
-      const data = {};
-      for(const k of REQUIRED){
-        const el = quiz.querySelector(`input[name="${k}"]:checked`);
-        data[k] = el ? el.value : "";
-      }
-      return data;
-    }
-
-    function countAnswered(ans){
-      return REQUIRED.reduce((n,k)=> n + (ans[k] ? 1 : 0), 0);
-    }
-
-    function isComplete(ans){
-      return REQUIRED.every(k => !!ans[k]);
-    }
-
-    function updateProgress(){
-      const ans = getAnswers();
-      const n = countAnswered(ans);
-      progBar.style.width = `${(n/REQUIRED.length)*100}%`;
-      progText.textContent = `${n} / ${REQUIRED.length}`;
-
-      if(n === 0){
-        stepBadge.innerHTML = `<span class="dot"></span>未回答`;
-      }else if(n < REQUIRED.length){
-        stepBadge.innerHTML = `<span class="dot w"></span>回答中`;
-      }else{
-        stepBadge.innerHTML = `<span class="dot g"></span>準備OK`;
-      }
-
-      validationHint.textContent = isComplete(ans)
-        ? "準備OK！「おすすめを見る」を押せます。"
-        : "すべて回答するとおすすめが表示されます。";
-
-      // update selected style
-      $$(".q").forEach(q=>{
-        const name = q.getAttribute("data-q");
-        const checked = quiz.querySelector(`input[name="${name}"]:checked`);
-        $$(".opt", q).forEach(opt=>{
-          const input = $("input", opt);
-          opt.classList.toggle("sel", checked && input.value === checked.value);
-        });
-      });
-
-      // persist minimal state for reload
-      localStorage.setItem("ai_diagnosis_autosave", JSON.stringify(ans));
-    }
-
-    function showToast(msg){
-      toast.textContent = msg;
-      toast.style.display = "block";
-      clearTimeout(showToast._t);
-      showToast._t = setTimeout(()=> toast.style.display = "none", 1800);
-    }
-
-    // Keyboard accessibility: allow Enter/Space on label.opt
-    function wireOptionKeys(){
-      $$(".opt").forEach(opt=>{
-        opt.addEventListener("keydown", (e)=>{
-          if(e.key === "Enter" || e.key === " "){
-            e.preventDefault();
-            const input = $("input", opt);
-            input.checked = true;
-            input.dispatchEvent(new Event("change", {bubbles:true}));
-          }
-        });
-      });
-    }
-
-    // =========================
-    // Render results
-    // =========================
-    function renderResults(){
-      const ans = getAnswers();
-      if(!isComplete(ans)){
-        showToast("5問すべて回答してください");
-        return;
-      }
-
-      const ranked = scoreCandidates(ans);
-      const top = ranked.slice(0, 3);
-
-      // UI switch
-      emptyState.style.display = "none";
-      resultArea.style.display = "block";
-      resultBadge.innerHTML = `<span class="dot g"></span>診断済み`;
-
-      resultsEl.innerHTML = "";
-      top.forEach((c, idx)=>{
-        const why = c.reasons.length ? c.reasons.map(x => `• ${escapeHtml(x)}`).join("<br>") : "• 条件に合致";
-        const caut = c.cautions.length ? c.cautions.map(x => `• ${escapeHtml(x)}`).join("<br>") : "• 特になし";
-
-        const prompt = pickPrompt(c, ans);
-        const promptBlock = prompt
-          ? `<div class="kv">
-               <b>最初のプロンプト例（コピペOK）</b>
-               <p class="muted">{} はあなたの内容に置き換えてね。</p>
-               <div class="mono">${escapeHtml(prompt)}</div>
-             </div>`
-          : "";
-
-        const card = document.createElement("div");
-        card.className = "resCard";
-        card.innerHTML = `
-          <div class="top">
-            <div class="name">
-              <strong>#${idx+1} ${escapeHtml(c.name)}</strong>
-              <div class="chips">
-                ${c.tags.slice(0,4).map(t=>`<span class="chip">${escapeHtml(t)}</span>`).join("")}
-              </div>
-            </div>
-            <div class="score">
-              <div class="n">${Math.round(c.score)}</div>
-              <div class="sub">マッチ度</div>
-            </div>
-          </div>
-          <div class="mid">
-            <div class="kvs">
-              <div class="kv">
-                <b>おすすめ理由</b>
-                <p>${why}</p>
-              </div>
-              <div class="kv">
-                <b>向いている使い方</b>
-                <p class="muted">${escapeHtml(c.bestFor.join(" / "))}</p>
-              </div>
-              <div class="kv">
-                <b>注意点</b>
-                <p>${caut}</p>
-              </div>
-              ${promptBlock}
-            </div>
-          </div>
-        `;
-        resultsEl.appendChild(card);
-      });
-
-      // Logic dump
-      logicDump.textContent = JSON.stringify({
-        answers: ans,
-        top3: top.map(x => ({ id:x.id, name:x.name, score:x.score, reasons:x.reasons, cautions:x.cautions }))
-      }, null, 2);
-
-      // Save last result for copy
-      localStorage.setItem("ai_diagnosis_last_result", JSON.stringify({answers:ans, top}));
-      showToast("おすすめを表示しました");
-      // scroll into view on mobile
-      resultArea.scrollIntoView({behavior:"smooth", block:"start"});
-    }
-
-    function pickPrompt(candidate, ans){
-      const g = ans.goal;
-      const t = candidate.promptTemplates || {};
-      if(g === "writing") return t.writing || t.coding || "";
-      if(g === "coding") return t.coding || t.writing || "";
-      if(g === "image") return t.image || "";
-      if(g === "video") return t.video || "";
-      return "";
-    }
-
-    function escapeHtml(s){
-      return String(s)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    // =========================
-    // Persistence & Share link
-    // =========================
-    function saveAnswers(){
-      const ans = getAnswers();
-      localStorage.setItem("ai_diagnosis_saved", JSON.stringify(ans));
-      showToast("回答を保存しました");
-    }
-
-    function restoreAnswers(){
-      const raw = localStorage.getItem("ai_diagnosis_saved");
-      if(!raw){ showToast("保存データがありません"); return; }
-      applyAnswers(JSON.parse(raw));
-      showToast("保存を復元しました");
-    }
-
-    function applyAnswers(ans){
-      for(const k of REQUIRED){
-        if(!ans[k]) continue;
-        const el = quiz.querySelector(`input[name="${k}"][value="${ans[k]}"]`);
-        if(el) el.checked = true;
-      }
-      updateProgress();
-    }
-
-    // URL share (answers in query string, short-ish)
-    function encodeAnswersToUrl(ans){
-      const params = new URLSearchParams();
-      for(const k of REQUIRED){
-        if(ans[k]) params.set(k, ans[k]);
-      }
-      const url = new URL(location.href);
-      url.hash = "#diagnosis";
-      url.search = params.toString();
-      return url.toString();
-    }
-
-    function loadFromUrl(){
-      const params = new URLSearchParams(location.search);
-      const ans = {};
-      for(const k of REQUIRED){
-        const v = params.get(k);
-        if(v) ans[k] = v;
-      }
-      if(Object.keys(ans).length){
-        applyAnswers(ans);
-        // If complete, auto-render
-        if(isComplete(getAnswers())) renderResults();
-      }
-    }
-
-    async function copyText(text){
-      try{
-        await navigator.clipboard.writeText(text);
-        showToast("コピーしました");
-      }catch{
-        // fallback
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
-        showToast("コピーしました");
-      }
-    }
-
-    function copyLink(){
-      const ans = getAnswers();
-      if(!countAnswered(ans)){ showToast("まず回答してください"); return; }
-      const url = encodeAnswersToUrl(ans);
-      copyText(url);
-    }
-
-    function copySummary(){
-      const raw = localStorage.getItem("ai_diagnosis_last_result");
-      if(!raw){ showToast("まだ結果がありません"); return; }
-      const {answers, top} = JSON.parse(raw);
-      const lines = [];
-      lines.push("AI診断結果（Top3）");
-      lines.push("");
-      lines.push(`回答：${JSON.stringify(answers)}`);
-      lines.push("");
-      top.forEach((c,i)=>{
-        lines.push(`#${i+1} ${c.name}（マッチ度 ${Math.round(c.score)}）`);
-        if(c.reasons?.length) lines.push("理由： " + c.reasons.join(" / "));
-        if(c.cautions?.length) lines.push("注意： " + c.cautions.join(" / "));
-        lines.push("");
-      });
-      copyText(lines.join("\n"));
-    }
-
-    // =========================
-    // Events
-    // =========================
-    quiz.addEventListener("change", updateProgress);
-
-    $("#btnDiagnose").addEventListener("click", renderResults);
-    $("#btnSave").addEventListener("click", saveAnswers);
-    $("#btnRestore").addEventListener("click", restoreAnswers);
-    $("#btnCopyLink").addEventListener("click", copyLink);
-    $("#btnCopySummary").addEventListener("click", copySummary);
-
-    $("#btnReset").addEventListener("click", ()=>{
-      quiz.reset();
-      updateProgress();
-      emptyState.style.display = "grid";
-      resultArea.style.display = "none";
-      resultBadge.innerHTML = `<span class="dot w"></span>未診断`;
-      showToast("リセットしました");
-      // clear url params
-      const url = new URL(location.href);
-      url.search = "";
-      history.replaceState({}, "", url.toString());
-    });
-
-    $("#btnLoadSample").addEventListener("click", ()=>{
-      // サンプル：文章/初心者/日本語必須/安め/品質
-      applyAnswers({goal:"writing", level:"beginner", jp:"must", budget:"low", priority:"quality"});
-      renderResults();
-    });
-
-    // Auto-restore autosave
-    (function init(){
-      wireOptionKeys();
-      const auto = localStorage.getItem("ai_diagnosis_autosave");
-      if(auto){
-        try{ applyAnswers(JSON.parse(auto)); }catch{}
-      }
-      updateProgress();
-      loadFromUrl();
-    })();
-  </script>
+function selectOption(btn) {
+  const q = btn.dataset.q;
+  document.querySelectorAll(`.option-btn[data-q="${q}"]`).forEach(b=>{b.classList.remove('selected');b.querySelector('.option-check').innerHTML='';});
+  btn.classList.add('selected');
+  btn.querySelector('.option-check').innerHTML='✓';
+  answers[parseInt(q)]=btn.dataset.v;
+  document.getElementById('next-btn').classList.add('enabled');
+}
+function nextQuestion() {
+  if(answers[currentQ]===undefined)return;
+  if(currentQ<totalQ-1){
+    document.getElementById(`q${currentQ}`).classList.remove('active');
+    currentQ++;
+    document.getElementById(`q${currentQ}`).classList.add('active');
+    updateProgress();
+    const nb=document.getElementById('next-btn');
+    nb.classList.toggle('enabled',answers[currentQ]!==undefined);
+    if(currentQ===totalQ-1)nb.textContent='診断する ✦';
+  } else showLoading();
+}
+function prevQuestion() {
+  if(currentQ>0){
+    document.getElementById(`q${currentQ}`).classList.remove('active');
+    currentQ--;
+    document.getElementById(`q${currentQ}`).classList.add('active');
+    updateProgress();
+    const nb=document.getElementById('next-btn');
+    nb.textContent=currentQ===totalQ-1?'診断する ✦':'次へ →';
+    nb.classList.add('enabled');
+    document.getElementById('back-btn').disabled=currentQ===0;
+  }
+}
+function updateProgress() {
+  document.getElementById('progress-fill').style.width=(currentQ/totalQ*100)+'%';
+  document.getElementById('q-num').textContent=currentQ+1;
+  document.getElementById('back-btn').disabled=currentQ===0;
+  const times=['約30秒','約20秒','約15秒','約10秒','もう少し！'];
+  document.getElementById('q-time').textContent='⚡ '+(times[currentQ]||'');
+  for(let i=0;i<totalQ;i++){const d=document.getElementById(`dot-${i}`);d.className='step-dot';if(i<currentQ)d.classList.add('done');else if(i===currentQ)d.classList.add('active');}
+}
+function startQuiz() {
+  document.getElementById('screen-welcome').classList.remove('active');
+  document.getElementById('screen-quiz').classList.add('active');
+  document.getElementById('progress-wrap').style.display='block';
+  document.getElementById('nav-row').style.display='flex';
+  updateProgress();
+}
+function showLoading() {
+  document.getElementById('screen-quiz').classList.remove('active');
+  document.getElementById('nav-row').style.display='none';
+  document.getElementById('progress-wrap').style.display='none';
+  document.getElementById('screen-loading').classList.add('active');
+  const msgs=['回答パターンを分析中…','AIデータベースと照合中…','マッチ度スコアを算出中…','最適な組み合わせを選定中…','ほぼ完了！'];
+  let mi=0;
+  const iv=setInterval(()=>{mi=(mi+1)%msgs.length;document.getElementById('loading-msg').textContent=msgs[mi];},600);
+  setTimeout(()=>{
+    clearInterval(iv);
+    document.getElementById('screen-loading').classList.remove('active');
+    buildResult();
+    document.getElementById('screen-result').classList.add('active');
+    document.getElementById('progress-wrap').style.display='block';
+    document.getElementById('progress-fill').style.width='100%';
+    for(let i=0;i<totalQ;i++)document.getElementById(`dot-${i}`).className='step-dot done';
+    document.getElementById('q-num').textContent='完了';
+    document.getElementById('q-time').textContent='✅ 診断完了！';
+  },2500);
+}
+function resetApp() {
+  currentQ=0;Object.keys(answers).forEach(k=>delete answers[k]);
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-welcome').classList.add('active');
+  document.getElementById('progress-wrap').style.display='none';
+  document.getElementById('nav-row').style.display='none';
+  document.getElementById('result-content').innerHTML='';
+  document.querySelectorAll('.option-btn').forEach(b=>{b.classList.remove('selected');b.querySelector('.option-check').innerHTML='';});
+  document.querySelectorAll('.question-slide').forEach((s,i)=>s.classList.toggle('active',i===0));
+  const nb=document.getElementById('next-btn');nb.classList.remove('enabled');nb.textContent='次へ →';
+}
+function copyPrompt(use) {
+  navigator.clipboard.writeText(PROMPTS[use]||PROMPTS.text).then(()=>{
+    const btn=document.getElementById('copy-prompt-btn');
+    if(btn){btn.textContent='✅ コピーしました！';btn.classList.add('copied');}
+    showToast('プロンプトをコピーしました！');
+    setTimeout(()=>{if(btn){btn.textContent='📋 プロンプトをコピー';btn.classList.remove('copied');}},2000);
+  }).catch(()=>showToast('コピーできませんでした'));
+}
+function shareResult() {
+  const use=answers[0]||'text';
+  const ranked=calcScores(AI_DB[use].ais,answers);
+  const top=ranked[0];
+  const text=`【AI診断結果】\n目的: ${AI_DB[use].categoryName}\nおすすめ: ${top.name}（マッチ度${top.score}%）\n#AI診断`;
+  if(navigator.share){navigator.share({title:'AI診断結果',text,url:location.href});}
+  else{navigator.clipboard.writeText(text).then(()=>showToast('結果をコピーしました！'));}
+}
+function openUrl(url){window.open(url,'_blank','noopener');}
+function rateStar(el,n){
+  document.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('active',i<n));
+  showToast(['','😔 ありがとう','🙂 参考になります','😊 役に立てて嬉しい','😄 ありがとうございます！','🎉 最高の評価に感謝！'][n]);
+}
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+</script>
 </body>
-</html>　　
+</html>
