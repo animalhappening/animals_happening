@@ -43,6 +43,7 @@
   .logo-icon { width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 0 14px rgba(124,92,252,0.45); }
   .logo-text { font-size:14px;font-weight:700;letter-spacing:.02em; }
   .logo-text span { color:var(--accent2); }
+  .version-badge { background:rgba(124,92,252,.15);border:1px solid rgba(124,92,252,.3);border-radius:99px;padding:2px 8px;font-size:10px;color:var(--accent2);font-family:'Space Mono',monospace; }
   .reset-btn { background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:6px 13px;border-radius:20px;font-size:11px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;transition:all .2s; }
   .reset-btn:active { opacity:.7;transform:scale(.96); }
 
@@ -199,6 +200,7 @@
     <div class="logo">
       <div class="logo-icon">✦</div>
       <div class="logo-text">AI<span>診断</span></div>
+
     </div>
     <button class="reset-btn" onclick="resetApp()">🔄 リセット</button>
   </header>
@@ -223,12 +225,13 @@
   <main id="main">
     <div class="screen active" id="screen-welcome">
       <div class="welcome-orb">✦</div>
+      <div>
         <div class="welcome-title"><em>最適なAI</em>を<br>30秒で見つける</div>
       </div>
       <div class="welcome-desc">5問に答えるだけで、文章・画像・動画・コードなど目的に合ったAIを、マッチ度つきで最大5件ご提案します。</div>
-      <div class="welcome-badges">
+
       <button class="start-btn" onclick="startQuiz()">診断スタート →</button>
-      <div class="time-note">⏱ 最短30秒・API不要・完全無料</div>
+
     </div>
 
     <div class="screen" id="screen-quiz">
@@ -319,7 +322,7 @@
 
 <script>
 // ═══════════════════════════════════════
-// 2025年最新調査 AI DATABASE
+// 2026年2月最新調査 AI DATABASE
 // ═══════════════════════════════════════
 const AI_DB = {
   text: {
@@ -327,52 +330,52 @@ const AI_DB = {
     tagline: '文章作成・翻訳・要約・リサーチに強いAIをご提案します。',
     ais: [
       {
-        id:'claude', name:'Claude（Anthropic）', company:'Anthropic', icon:'🤖',
+        id:'claude', name:'Claude Sonnet 4.6（Anthropic）', company:'Anthropic', icon:'🤖',
         iconBg:'linear-gradient(135deg,#c084fc1a,#7c5cfc1a)',
-        tagline:'日本語の文章品質と長文理解力が業界トップクラス',
-        tags:['日本語◎','長文200K対応','倫理性高','安全性重視'],
+        tagline:'Opusレベルの知性をSonnet価格で。2026年2月にリリースした最新旗艦モデル',
+        tags:['日本語◎','1Mトークン対応（β）','コンピュータ操作94%','安全性重視'],
         tagTypes:['hi','hi','green','green'],
-        desc:'長文を一度に最大200,000トークン処理できる圧倒的なコンテキスト長が最大の強み。「文章の上品さ・自然さはChatGPTを上回る」と多数のメディアで評価される。倫理ガイドラインが業界最厳格で、プライバシー情報を扱う業務にも安心。ブログ・論文・企画書・メールの文章品質を特に重視する人に最適。',
-        pro:'指示への追従力が業界最高水準', proSub:'長文の一貫性・論理性が優秀',
-        con:'無料版の利用制限が厳しめ', conSub:'画像・動画の生成機能はなし',
-        price:'無料あり / Pro $20/月（約3,000円）', priceType:'free',
-        url:'https://claude.ai', baseScore:94,
-        scoreFactors:{ jaBonus:8, qualityBonus:7, securityBonus:8, freeBonus:2 }
+        desc:'2026年2月にリリースされたSonnet 4.6は、従来の旗艦モデルOpus 4.5を59%のコーディング評価で上回る驚異的な性能向上を実現。価格は$3/$15/Mトークンと変わらず、実質的にOpusレベルの知性をSonnet価格で提供。コンピュータ操作（OSWorld）で94%精度を記録し業界トップ。1Mトークンのコンテキスト（β）で超長文書も一括処理。日本語の文章品質と長文の一貫性は引き続き業界最高水準。',
+        pro:'Opusを超える品質をSonnet価格で利用可能', proSub:'コンピュータ操作・長文理解が業界最高',
+        con:'無料版の利用制限がやや厳しい', conSub:'画像・動画の生成機能は持たない',
+        price:'無料あり / Pro $20/月（約3,000円）/ Max $100〜$200/月', priceType:'free',
+        url:'https://claude.ai', baseScore:96,
+        scoreFactors:{ jaBonus:8, qualityBonus:8, securityBonus:8, freeBonus:2 }
       },
       {
-        id:'chatgpt', name:'ChatGPT（OpenAI）', company:'OpenAI', icon:'💬',
+        id:'chatgpt', name:'ChatGPT（GPT-5.2 / OpenAI）', company:'OpenAI', icon:'💬',
         iconBg:'linear-gradient(135deg,#34d3991a,#10b9811a)',
-        tagline:'世界最多ユーザー。文章・画像・音声・記憶がすべて一体化',
-        tags:['オールマイティ','記憶機能あり','画像生成内蔵','無料あり'],
+        tagline:'2025年12月リリースのGPT-5.2が標準搭載。文章・画像・音声・コードが一体化',
+        tags:['GPT-5.2搭載','記憶機能あり','DALL-E 4内蔵','400Kコンテキスト'],
         tagTypes:['hi','hi','green','green'],
-        desc:'2022年に世界を変えた最初の大型AIチャット。GPT-5世代で文章・画像・音声・データ分析・コードをすべて1つの画面で完結。「記憶機能」で過去の会話を踏まえた継続的な応答が可能。使える機能の幅広さと安定性はどのAIにも劣らず、汎用性重視なら最初の選択肢になる。',
-        pro:'1ツールで何でも完結できる', proSub:'記憶機能で会話が蓄積される',
-        con:'Claude比で日本語のニュアンスがやや粗め', conSub:'無料版は使用上限あり',
-        price:'無料あり / Plus $20/月（約3,000円）', priceType:'free',
+        desc:'2025年12月にリリースされたGPT-5.2（Instant/Thinking/Proの3段階）がChatGPT Plus標準搭載。400Kトークンのコンテキスト、August 2025知識カットオフで非常に新鮮な情報を持つ。スプレッドシート作成・コード生成・画像理解など幅広い作業でGDPvalベンチマーク業界最高水準。記憶機能で過去の会話を踏まえた継続対応が可能。',
+        pro:'幅広い作業をGPT-5.2で一括対応', proSub:'Thinkingモードで複雑な推論も得意',
+        con:'Claude比で日本語のニュアンスがやや劣る場面あり', conSub:'Pro $200/月は高い',
+        price:'無料あり / Plus $20/月（約3,000円）/ Pro $200/月', priceType:'free',
         url:'https://chatgpt.com', baseScore:88,
-        scoreFactors:{ jaBonus:4, qualityBonus:4, speedBonus:4, freeBonus:3 }
+        scoreFactors:{ jaBonus:4, qualityBonus:5, speedBonus:4, freeBonus:3 }
       },
       {
-        id:'gemini', name:'Gemini 2.5（Google）', company:'Google DeepMind', icon:'✨',
+        id:'gemini', name:'Gemini 3.1 Pro（Google DeepMind）', company:'Google DeepMind', icon:'✨',
         iconBg:'linear-gradient(135deg,#38bdf81a,#818cf81a)',
-        tagline:'Google検索と直結。最新情報・リアルタイム検索が最も強い',
-        tags:['リアルタイム検索','Google連携','無料充実','LMArena1位'],
+        tagline:'2026年2月19日リリース。ARC-AGI-2で77%を記録し推論性能が世界No.1に躍進',
+        tags:['ARC-AGI-2 No.1','Google完全統合','リアルタイム検索','1Mコンテキスト'],
         tagTypes:['hi','hi','green','green'],
-        desc:'Gemini 2.5は2025年3月のリリース後、LMArenaリーダーボードで大差をつけてトップを記録した最高水準モデル。Googleドキュメント・Gmail・Sheetsと直接連携でき、メール返信の自動生成・ドキュメント要約が一瞬で完了する。最新ニュースへのリアルタイムアクセスはGemini固有の強み。',
-        pro:'最新情報にリアルタイムで対応', proSub:'Googleアプリと完全に統合できる',
-        con:'長文の論理構成はClaudeに劣る場面あり', conSub:'Google Workspace外の連携は限定的',
-        price:'無料あり / Advanced 約2,900円/月', priceType:'free',
-        url:'https://gemini.google.com', baseScore:83,
-        scoreFactors:{ jaBonus:4, speedBonus:5, freeBonus:4 }
+        desc:'2026年2月19日にリリースされたGemini 3.1 Proは、最難関推論ベンチマーク「ARC-AGI-2」で77.1%を記録（前世代3 Proの31.1%から倍増以上）し業界首位に立つ。Artificial Analysis Intelligence Indexでも115モデル中1位。GPQA Diamond 94.3%の科学知識、SWE-bench 80.6%のコーディング力を持つ。Googleドキュメント・Gmail・Sheetsとの完全統合で既存ワークフローにシームレスに組み込める。',
+        pro:'最新の推論ベンチマークで業界No.1', proSub:'Googleアプリとの統合が最も深い',
+        con:'最初のトークンまで約29秒と応答がやや遅い', conSub:'Google Workspace外の連携は限定的',
+        price:'無料あり / AI Pro $19.99/月（約3,000円）', priceType:'free',
+        url:'https://gemini.google.com', baseScore:85,
+        scoreFactors:{ jaBonus:4, speedBonus:3, freeBonus:4, qualityBonus:3 }
       },
       {
         id:'perplexity', name:'Perplexity AI', company:'Perplexity AI', icon:'🔍',
         iconBg:'linear-gradient(135deg,#06b6d41a,#0ea5e91a)',
-        tagline:'すべての回答に「引用元URL」を明記。ファクトチェックが即できる',
-        tags:['引用元全表示','リアルタイム','リサーチ特化','無料充実'],
+        tagline:'すべての回答に「引用元URL」を明記。ファクトチェックが即できる検索特化AI',
+        tags:['引用元全表示','リアルタイム検索','リサーチ特化','無料充実'],
         tagTypes:['hi','hi','green','green'],
-        desc:'AIチャットの中で唯一、すべての回答に参照元URLを表示するため情報の信頼性が即座に確認できる。ファクトチェック・市場調査・学術リサーチに最適で、記者・研究者・学生に特に人気が高い。無料版でも十分な品質があり、ChatGPTやClaudeとは異なる「検索特化」の位置づけ。',
-        pro:'すべての答えに出典URLが付く', proSub:'調べ物・事実確認が劇的に速い',
+        desc:'AIチャットの中で唯一、すべての回答に参照元URLを表示するため情報の信頼性が即座に確認できる。ファクトチェック・市場調査・学術リサーチに最適で、記者・研究者・学生に特に人気が高い。内部でClaudeやGPT-5.2など最新モデルを活用し、専門性の高い回答を生成。無料版でも十分な品質で使用可能。',
+        pro:'すべての回答に出典URLが付く', proSub:'調べ物・事実確認が劇的に速い',
         con:'創作・長文ライティングは得意でない', conSub:'ChatGPTのような汎用性はない',
         price:'無料あり / Pro $20/月（約3,000円）', priceType:'free',
         url:'https://perplexity.ai', baseScore:76,
@@ -382,13 +385,13 @@ const AI_DB = {
         id:'grok', name:'Grok 3（xAI）', company:'xAI（Elon Musk）', icon:'⚡',
         iconBg:'linear-gradient(135deg,#f59e0b1a,#ef44441a)',
         tagline:'X（旧Twitter）のリアルタイム投稿データにアクセスできる唯一のAI',
-        tags:['X/Twitter連携','SNSトレンド分析','制約が少なめ','Xプレミアム'],
+        tags:['X/Twitter連携','SNSトレンド分析','Think機能搭載','X Premiumで利用'],
         tagTypes:['hi','hi','orange','orange'],
-        desc:'Elon MuskのxAIが開発したAI。X（旧Twitter）の投稿データにリアルタイムでアクセスできるのはGrok唯一の強み。SNS上のトレンド・バズを瞬時に把握したい人に最適。Grok 3は論理推論・数学タスクでも高スコアを記録しているが、他社比でコンテンツ倫理的制約がゆるめの面がある。',
-        pro:'X/Twitterのリアルタイム動向を把握できる', proSub:'制約が少なくフランクに使える',
-        con:'日本語精度はまだ発展途上', conSub:'X Premiumへの加入が必須',
-        price:'X Premium+ 月約1,700円〜', priceType:'cheap',
-        url:'https://x.com/i/grok', baseScore:68,
+        desc:'Elon MuskのxAIが開発。X（旧Twitter）の投稿データにリアルタイムでアクセスできるのはGrok唯一の強み。SNS上のトレンド・バズを瞬時に把握したい人に最適。Grok 3はThink機能（深い推論）を搭載し、論理推論・数学タスクでも高スコアを記録。他社比でコンテンツの制約がゆるめという特性がある。',
+        pro:'X/Twitterリアルタイムトレンドを即把握', proSub:'Think機能で複雑な推論も対応',
+        con:'日本語品質はClaudeやGeminiに劣る', conSub:'X Premiumへの加入が必須',
+        price:'X Premium+ 月約1,700円〜 / SuperGrok $30/月', priceType:'cheap',
+        url:'https://x.com/i/grok', baseScore:66,
         scoreFactors:{ speedBonus:3 }
       }
     ]
@@ -399,51 +402,51 @@ const AI_DB = {
     tagline: 'テキストや指示から高品質な画像を生成するAIをご提案します。',
     ais: [
       {
-        id:'midjourney', name:'Midjourney v7', company:'Midjourney Inc.', icon:'🎨',
+        id:'midjourney', name:'Midjourney V7', company:'Midjourney Inc.', icon:'🎨',
         iconBg:'linear-gradient(135deg,#f59e0b1a,#ef44441a)',
-        tagline:'アート・映画品質の画像生成。プロクリエイター御用達の業界No.1',
-        tags:['芸術性No.1','ドラフトモード搭載','Web UI対応','月$10〜'],
-        tagTypes:['hi','hi','green','orange'],
-        desc:'「最も美しい・芸術的な画像が生成できる」として世界のクリエイターに最も支持されるAI。v7でWebブラウザUIが整備されDiscord操作が不要になった。「ドラフトモード」で10倍の速さで試作でき、本番生成前のアイデア出しが効率的。ファンタジー・コンセプトアート・映画ポスター・ゲームアート向き。',
-        pro:'映画・ゲームレベルの圧倒的ビジュアル', proSub:'あらゆる芸術スタイルを表現可能',
-        con:'完全有料。画像内テキストが苦手', conSub:'細かい構図指定はやや難しい',
+        tagline:'2026年も業界No.1の芸術品質。V7で完全リアーキテクチャ・Draft Modeも搭載',
+        tags:['芸術性No.1','Draft Mode（10倍速）','Web UI対応','パーソナライズ機能'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'2025年4月リリース・6月デフォルト化のV7は完全に再設計されたアーキテクチャで、特に複雑な構図でのコヒーレンス（一貫性）が大幅向上。「Draft Mode」で通常の10倍の速度で試作でき、アイデア出し効率が劇的に改善。パーソナライズ機能でユーザーの好みに合わせた生成が可能。加えて動画生成（V1 Video Model）機能も2025年6月に追加。プロクリエイターに最も信頼される。',
+        pro:'あらゆるスタイルで映画・アート品質を安定生成', proSub:'Draft Modeで10倍速のアイデア出し',
+        con:'完全有料。無料トライアルなし', conSub:'Discord操作に慣れが必要（Web UIで緩和）',
         price:'Basic $10/月〜（約1,500円、無料なし）', priceType:'paid',
         url:'https://midjourney.com', baseScore:95,
         scoreFactors:{ qualityBonus:6, freeNegative:-18 }
       },
       {
-        id:'flux', name:'FLUX.1 Pro（Black Forest Labs）', company:'Black Forest Labs', icon:'📸',
-        iconBg:'linear-gradient(135deg,#7c5cfc1a,#c084fc1a)',
-        tagline:'製品写真・人物写真のリアルさが業界最高水準。コマーシャル用途に最適',
-        tags:['フォトリアル最強','商用OK','API提供','4Kクオリティ'],
+        id:'gptimage', name:'GPTイメージ生成（ChatGPT Plus）', company:'OpenAI', icon:'🖼️',
+        iconBg:'linear-gradient(135deg,#34d3991a,#06b6d41a)',
+        tagline:'DALL-E 4搭載。ChatGPTで日本語で話すだけ。テキスト描画・指示理解が最高峰',
+        tags:['日本語指示OK','DALL-E 4内蔵','テキスト描画◎','ChatGPT内完結'],
         tagTypes:['hi','hi','green','green'],
-        desc:'元Stable Diffusionチームが2024年に立ち上げたBlack Forest Labsの最新モデル。「本物の製品写真と見分けがつかない」と評されるほど照明・素材感・反射の再現度が突出している。商用ライセンスが明確で法的にも安心。4.5秒という高速生成も魅力。API提供によりWebサービスへの組み込みも可能。',
-        pro:'製品写真がプロスタジオ撮影品質', proSub:'商用ライセンスが整備されて安心',
-        con:'使えるUIサービスが少なく導入がやや難', conSub:'Midjourneyほどの「芸術的驚き」は薄い',
-        price:'約$0.04/枚〜（APIごとに変動）', priceType:'cheap',
-        url:'https://fal.ai/models/fal-ai/flux-pro', baseScore:88,
-        scoreFactors:{ qualityBonus:5, freeBonus:1 }
+        desc:'ChatGPT Plus内蔵のDALL-E 4（2026年版）は「〇〇の画像を作って」という日本語の自然な指示だけで高品質な画像を生成できる。複雑な指示への理解力と画像内のテキスト描画精度が業界最高水準。GPT-5.2の対話能力との組み合わせにより、会話を続けながら段階的に画像を洗練させることができる。ChatGPT Plusに含まれるため追加費用ゼロ。',
+        pro:'「〇〇の画像を作って」だけでOK、追加費用ゼロ', proSub:'画像内のテキスト・ロゴ文字が正確',
+        con:'Midjourneyほどの芸術的驚きは少ない', conSub:'スタイルの細かい指定が難しい',
+        price:'ChatGPT Plus $20/月（約3,000円）に含む', priceType:'cheap',
+        url:'https://chatgpt.com', baseScore:83,
+        scoreFactors:{ jaBonus:7, freeBonus:2 }
       },
       {
-        id:'dalle3', name:'DALL·E 3（ChatGPT内）', company:'OpenAI', icon:'🖼️',
-        iconBg:'linear-gradient(135deg,#34d3991a,#06b6d41a)',
-        tagline:'ChatGPTで日本語で話すだけ。プロンプトの書き方ゼロで使える',
-        tags:['日本語指示OK','ChatGPT内完結','テキスト描画◎','初心者最適'],
+        id:'nanobananapro', name:'Nano Banana Pro（Google）', company:'Google', icon:'🍌',
+        iconBg:'linear-gradient(135deg,#38bdf81a,#818cf81a)',
+        tagline:'Googleの最新画像生成。Gemini AI ProサブスクリプションでUS向けに提供中',
+        tags:['Google AI Pro統合','Googleフォト連携','Whiskで動画変換','商用OK'],
         tagTypes:['hi','hi','green','green'],
-        desc:'ChatGPTのチャット内で「〇〇の画像を作って」と日本語で伝えるだけで高品質な画像が生成できる。専用プロンプトの書き方を覚えなくていいのが最大の差別化ポイント。画像内に文字テキストを正確に描画する能力もFLUXと並んで最高水準。ChatGPT Plusに含まれるため追加料金なし。',
-        pro:'「〇〇の絵を作って」だけでOK', proSub:'画像内の文字表現が得意',
-        con:'スタイルの細かい指定が難しい', conSub:'無料版は生成枚数に制限あり',
-        price:'ChatGPT Plus $20/月（約3,000円）に含む', priceType:'cheap',
-        url:'https://chatgpt.com', baseScore:81,
-        scoreFactors:{ jaBonus:6, freeBonus:2 }
+        desc:'Googleが2026年に提供開始した最新画像生成AI。Gemini AI Pro（$19.99/月）に統合されており、Google One/Googleフォトとのシームレスな連携が強み。Whiskツールを使えばNano Banana Proで生成した画像をVeo 3.1で動画に変換する一気通貫ワークフローが可能。現在は主にUS向け提供だが順次展開中。',
+        pro:'Google AIサービスとの統合が最もスムーズ', proSub:'画像→動画の一気通貫ワークフロー',
+        con:'日本での提供はまだ限定的', conSub:'独立した専用ツールとしての完成度は発展途上',
+        price:'Google AI Pro $19.99/月（約3,000円）に含む', priceType:'cheap',
+        url:'https://gemini.google.com', baseScore:74,
+        scoreFactors:{ jaBonus:2, freeBonus:2, qualityBonus:3 }
       },
       {
         id:'firefly', name:'Adobe Firefly', company:'Adobe', icon:'🔥',
         iconBg:'linear-gradient(135deg,#ef44441a,#f973161a)',
-        tagline:'著作権クリアの学習データ使用。企業・法務部が最も安心できる',
+        tagline:'著作権クリアの学習データ使用。企業・法務部が最も安心できる商用AI',
         tags:['著作権安全','Photoshop統合','商用利用◎','企業向き'],
         tagTypes:['hi','hi','green','green'],
-        desc:'AdobeがAdobe Stockなど著作権がクリアなデータのみで学習させたAI。生成した画像を商用利用しても著作権訴訟リスクが最も低いとされ、企業の法務部でも承認されやすい。Photoshop・Illustratorに直接組み込まれているため、既存のAdobe CCワークフローにシームレスに統合できる。',
+        desc:'AdobeがAdobe Stockなど著作権がクリアなデータのみで学習させたAI。生成した画像を商用利用しても著作権訴訟リスクが最も低いとされ、企業の法務部でも承認されやすい。Photoshop・Illustratorに直接組み込まれているため、既存のAdobe CCワークフローにシームレスに統合できる。2026年もクリエイティブ業界での商用利用の第一選択肢。',
         pro:'商用利用の著作権リスクが業界最小', proSub:'Adobeソフトから直接呼び出せる',
         con:'Midjourneyほど「驚くような」表現は出にくい', conSub:'Adobe CCの契約が前提',
         price:'CC込み $9.99/月〜（約1,500円）', priceType:'cheap',
@@ -451,12 +454,12 @@ const AI_DB = {
         scoreFactors:{ securityBonus:9, qualityBonus:2 }
       },
       {
-        id:'stablediffusion', name:'Stable Diffusion', company:'Stability AI', icon:'🔧',
+        id:'stablediffusion', name:'Stable Diffusion 3.5', company:'Stability AI', icon:'🔧',
         iconBg:'linear-gradient(135deg,#4ade801a,#22d3ee1a)',
         tagline:'完全無料・ローカル動作。制限なく枚数無制限で作れるオープンソース',
         tags:['完全無料','枚数制限なし','ローカル動作','上級者向け'],
         tagTypes:['green','green','hi','orange'],
-        desc:'インターネット不要でPC上で動作するオープンソースAI。一度セットアップすれば生成枚数無制限・完全無料で使い続けられる。「LoRA」という学習技術でキャラクターやスタイルを固定でき、同一キャラを複数シーンで量産することも可能。ただし初期セットアップにPCの知識と数時間が必要。',
+        desc:'インターネット不要でPC上で動作するオープンソースAI。Stable Diffusion 3.5（2025年版）で大幅に品質が向上。一度セットアップすれば生成枚数無制限・完全無料で使い続けられる。「LoRA」という学習技術でキャラクターやスタイルを固定でき、同一キャラを複数シーンで量産することも可能。ただし初期セットアップにPCの知識と数時間が必要。',
         pro:'完全無料で枚数無制限', proSub:'LoRAでキャラ固定・スタイル統一が可能',
         con:'初期セットアップに技術知識が必要', conSub:'GPU搭載PCが理想（CPUでも動くが遅い）',
         price:'完全無料（ソフトウェア代のみ）', priceType:'free',
@@ -468,71 +471,71 @@ const AI_DB = {
 
   video: {
     categoryName: '動画生成AI',
-    tagline: 'テキストや画像から映像を自動生成できる2025年最新AIをご提案します。',
+    tagline: 'テキストや画像から映像を自動生成できる2026年最新AIをご提案します。',
     ais: [
       {
-        id:'veo3', name:'Veo 3（Google DeepMind）', company:'Google DeepMind', icon:'🎬',
+        id:'veo31', name:'Veo 3.1（Google DeepMind）', company:'Google DeepMind', icon:'🎬',
         iconBg:'linear-gradient(135deg,#38bdf81a,#818cf81a)',
-        tagline:'音声・環境音まで自動生成。2025年動画AI品質の最高峰',
-        tags:['音声込みで生成','4K対応','シネマ品質','Gemini連携'],
+        tagline:'音声込みで動画生成。MovieGenBenchとVBenchで業界No.1のシネマ品質',
+        tags:['音声・音楽自動生成','4K対応','キャラ一貫性◎','Gemini統合'],
         tagTypes:['hi','hi','green','green'],
-        desc:'2025年にGoogleがリリースした動画AI。テキストから映像だけでなく、環境音・BGM・効果音まで含む「音声付き動画」を自動生成できる唯一の主要AIとして業界を驚かせた。物理シミュレーション（光の当たり方・水の流れ・布のなびき）の精度が非常に高く、撮影不要のシネマ品質映像が制作できる。',
-        pro:'音声込みの動画生成が完全自動', proSub:'物理シミュレーションが映画品質',
-        con:'月249ドルと非常に高価（法人向け）', conSub:'日本から直接アクセスしにくい場合あり',
-        price:'Google AI Ultra $249/月（約38,000円）', priceType:'enterprise',
+        desc:'GoogleのVeo 3.1（2026年初旬更新）はテキストから映像・環境音・BGM・台詞まで含む「音声付き動画」を自動生成。参照画像から被写体・キャラクターの一貫性を保ったまま複数シーンを生成する「Ingredients-to-Video」機能が好評。MovieGenBench・VBenchの2大ベンチマークで業界No.1を記録。Gemini AI Proサブスク（$20/月）またはAPIから利用可能。',
+        pro:'音声・BGM込みの完全自動生成', proSub:'被写体の一貫性を保ったまま複数シーン生成',
+        con:'APIは$0.75/秒と高価', conSub:'日本からの直接アクセスがしにくい場合あり',
+        price:'Google AI Pro $19.99/月（約3,000円）/ API $0.75/秒〜', priceType:'cheap',
         url:'https://deepmind.google/technologies/veo/', baseScore:93,
-        scoreFactors:{ qualityBonus:7, freeNegative:-15, enterpriseBonus:12 }
+        scoreFactors:{ qualityBonus:7, freeBonus:2, enterpriseBonus:8 }
       },
       {
         id:'sora2', name:'Sora 2（OpenAI）', company:'OpenAI', icon:'🌀',
         iconBg:'linear-gradient(135deg,#7c5cfc1a,#c084fc1a)',
-        tagline:'最大20秒のリアル映像。ChatGPT Plusに含まれてコスパ最高',
-        tags:['最長20秒','ストーリー映像◎','ChatGPT Plus込み','物理リアル'],
+        tagline:'最大25秒・シネマ品質。ChatGPT Plusに含まれてコスパ最高',
+        tags:['最長25秒','物理リアル◎','音声生成対応','ChatGPT Plus込み'],
         tagTypes:['hi','hi','green','green'],
-        desc:'OpenAIが2024年末に正式リリース。最大20秒の動画を生成でき、光の当たり方・物理の動き・人物の表情が非常に自然でリアル。「撮影したような映像」として商品プロモーション・ナラティブ映像制作に向く。ChatGPT Plusに含まれているため月3,000円以下でアクセスできるコスパも魅力。',
-        pro:'ストーリー性ある映像の完成度が高い', proSub:'ChatGPT Plusで追加費用ゼロ',
-        con:'Veo 3比で音声の自動生成がない', conSub:'長尺ほど品質が落ちやすい',
+        desc:'2025年9月に正式リリースのSora 2は最大25秒の動画を生成でき、物理シミュレーション（光・物理・人物表情）のリアルさが業界最高クラス。競合が最長20秒前後のなか、25秒の1ショット生成で繋ぎ不要のSNSコンテンツが作れる。ChatGPT Plusに含まれているため月3,000円以下でアクセスできるコスパも魅力。プロモーション映像・ナラティブ映像に最適。',
+        pro:'25秒の連続シネマ品質映像が1プロンプトで完成', proSub:'ChatGPT Plusで追加費用ゼロ',
+        con:'公開APIなし、ChatGPT経由のみ', conSub:'Veo 3.1と比べると音声品質がやや劣る',
         price:'ChatGPT Plus $20/月（約3,000円）に含む', priceType:'cheap',
         url:'https://sora.com', baseScore:88,
         scoreFactors:{ qualityBonus:5, freeBonus:2 }
       },
       {
-        id:'runway', name:'Runway Gen-4', company:'Runway ML', icon:'✈️',
-        iconBg:'linear-gradient(135deg,#c084fc1a,#818cf81a)',
-        tagline:'映像クリエイター御用達。モーションブラシ・カメラ制御が業界最高',
-        tags:['カメラ制御◎','モーションブラシ','4K対応','PV制作向き'],
+        id:'kling3', name:'Kling 3.0（Kuaishou）', company:'快手（Kuaishou）', icon:'🌊',
+        iconBg:'linear-gradient(135deg,#34d3991a,#10b9811a)',
+        tagline:'2026年2月リリース。世界初ネイティブ4K/60fps・マルチショット生成対応',
+        tags:['ネイティブ4K/60fps','最長3分動画','マルチショット対応','無料枠◎'],
         tagTypes:['hi','hi','green','green'],
-        desc:'映像・広告制作のプロが最も使うAIビデオツール。「モーションブラシ」で動かしたい範囲を絵で指定できる直感的な操作性が好評。Gen-4では最大16秒・4K相当の動画が生成可能。音楽PV・CM・映画ショットへの採用実績が多数あり、プロの現場で実際に使われているAIはRunwayが最も多い。',
-        pro:'モーションブラシで動きを絵で指定できる', proSub:'CM・PV制作の現場で豊富な実績',
-        con:'本格利用すると月95ドル〜と高い', conSub:'操作習得に1〜2時間かかる',
-        price:'無料あり / Standard $15/月（約2,300円）', priceType:'cheap',
-        url:'https://runway.ml', baseScore:85,
-        scoreFactors:{ qualityBonus:4, freeBonus:2 }
+        desc:'2026年2月4日リリースのKling 3.0は業界初のネイティブ4K/60fpsを実現。マルチショットシーケンス（3〜15秒）でカメラアングルが変わっても被写体が一致する一貫性が高い評価を受けている。最長3分動画の生成は2026年現在も業界唯一。無料枠が充実しており、初めての動画AI体験にも最適。$6.99/月〜という低価格設定が量産コンテンツ制作者に人気。',
+        pro:'ネイティブ4K/60fps・最長3分は業界唯一', proSub:'無料枠の充実度は業界トップ',
+        con:'音声品質がやや劣る（muffledとの声あり）', conSub:'中国企業のためデータ管理要確認',
+        price:'無料あり / Standard $6.99/月（約1,100円）', priceType:'cheap',
+        url:'https://klingai.com', baseScore:85,
+        scoreFactors:{ freeBonus:8, costBonus:6, qualityBonus:3 }
       },
       {
-        id:'kling', name:'Kling AI 2.1（Kuaishou）', company:'快手（Kuaishou）', icon:'🌊',
-        iconBg:'linear-gradient(135deg,#34d3991a,#10b9811a)',
-        tagline:'最長2分の動画が生成可能。コスパ最強で無料枠も業界随一',
-        tags:['最長2分動画','無料枠◎','4K対応','SNS量産向き'],
-        tagTypes:['hi','green','green','hi'],
-        desc:'中国のKuaishou（快手）が開発。他の主要AIが最長20秒前後のなか、最長2分間の動画を生成できる唯一のツール。無料プランの充実度は業界随一で、試してみる最初の動画AIとして多数に選ばれている。キャラクターのモーション・表情の一貫性に強く、SNSのショート動画を大量制作したい人に最適。',
-        pro:'他にない2分間の長尺動画生成', proSub:'無料枠の充実度は業界トップ',
-        con:'無料プランは処理待ち時間が2〜3時間', conSub:'中国企業のためデータ管理要確認',
-        price:'無料あり / Standard $8/月（約1,200円）', priceType:'cheap',
-        url:'https://klingai.com', baseScore:80,
-        scoreFactors:{ freeBonus:8, costBonus:6 }
+        id:'runway', name:'Runway Gen-4.5', company:'Runway ML', icon:'✈️',
+        iconBg:'linear-gradient(135deg,#c084fc1a,#818cf81a)',
+        tagline:'映像プロの現場で最も使われるAI。モーションブラシ・カメラ制御が業界最高',
+        tags:['モーションブラシ','Veo 3.1も利用可','4K対応','PV・CM制作向き'],
+        tagTypes:['hi','hi','green','green'],
+        desc:'Gen-4.5でベンチマーク業界首位（Elo 1247）を記録する映像・広告制作プロが最も使うAIビデオツール。2026年からRunwayの統合プラットフォーム上でGoogle Veo 3/3.1も利用できるようになり、1サブスクで複数の最高品質モデルを使い分けられる。モーションブラシで動かしたい範囲を指定できる直感的な操作性と、CM・PV制作現場での豊富な実績が強み。',
+        pro:'ベンチマーク業界No.1かつVeo 3.1も使える', proSub:'CM・PV・映画ショットで豊富な採用実績',
+        con:'本格利用すると月$95〜と高い', conSub:'操作習得に1〜2時間かかる',
+        price:'無料あり / Standard $12/月（約1,800円）', priceType:'cheap',
+        url:'https://runway.ml', baseScore:82,
+        scoreFactors:{ qualityBonus:4, freeBonus:2 }
       },
       {
         id:'pika', name:'Pika 2.5', company:'Pika Labs', icon:'⚡',
         iconBg:'linear-gradient(135deg,#f59e0b1a,#fbbf241a)',
-        tagline:'最速・最簡単。SNS動画コンテンツを秒速で作れる初心者向けAI',
-        tags:['初心者向き','生成が速い','無料あり','SNS最適'],
+        tagline:'最速・最簡単。42秒でSNS動画が完成する初心者向けAI',
+        tags:['初心者向き','42秒で生成','無料あり','SNS最適'],
         tagTypes:['green','hi','green','hi'],
-        desc:'直感的なUIと圧倒的な生成速度が特徴。数分でSNS向けの短い動画が完成するため、TikTok・Instagram Reels・YouTube Shortsコンテンツの量産に最も向いている。専門知識なしで使えるUIは業界随一のわかりやすさで、「初めて動画AIを試す」ならPikaが最も挫折しにくい。',
-        pro:'直感的UIで初心者でもすぐ使える', proSub:'動画生成が速くてストレスなし',
-        con:'複雑なシーンや長尺の品質は他社に劣る', conSub:'Veo3・Soraほどのリアルさは出ない',
+        desc:'直感的なUIと業界最速クラスの42秒生成速度が特徴。Pikaswaps（物体入れ替え）・Pikaffects（特殊エフェクト）など独自の創作ツールを搭載。TikTok・Instagram Reels・YouTube Shortsコンテンツの量産に最も向いている。「初めて動画AIを試す」ならPikaが最も挫折しにくく、$8/月という低価格でスタートできる。',
+        pro:'直感的UIで初心者でもすぐ使える', proSub:'42秒生成でストレスなく量産できる',
+        con:'複雑なシーンや長尺の品質は他社に劣る', conSub:'Veo3.1・Sora 2ほどのリアルさは出ない',
         price:'無料あり / Basic $8/月（約1,200円）', priceType:'cheap',
-        url:'https://pika.art', baseScore:73,
+        url:'https://pika.art', baseScore:74,
         scoreFactors:{ freeBonus:5, speedBonus:6, beginnerBonus:9 }
       }
     ]
@@ -545,51 +548,51 @@ const AI_DB = {
       {
         id:'claudecode', name:'Claude Code（Anthropic）', company:'Anthropic', icon:'🤖',
         iconBg:'linear-gradient(135deg,#c084fc1a,#7c5cfc1a)',
-        tagline:'SWEベンチスコア業界最高80.9%。大規模コードの理解力が突出',
-        tags:['SWEベンチNo.1','200K文脈','CLI自律エージェント','複雑推論◎'],
+        tagline:'Opus 4.6でSWEベンチ80.8%・1Mトークン。Agent Teamsで複数エージェントが協調',
+        tags:['SWEベンチ業界最高','1Mトークン（β）','Agent Teams搭載','CLI自律エージェント'],
         tagTypes:['hi','hi','green','green'],
-        desc:'SWE-bench Verified（実際のGitHub Issueを解かせるベンチマーク）でスコア80.9%という業界最高を記録。20万トークンのコンテキスト長でコードベース全体を把握したうえでの設計・リファクタリングが得意。ターミナルからのCLI操作・ファイル編集・テスト実行まで自律的にこなすエージェント機能が特に評価が高い。',
-        pro:'業界最高ベンチマークの推論力', proSub:'大規模コードベースを一括理解できる',
-        con:'IDEへのリアルタイム補完は非対応', conSub:'CLI操作になれるまで手間がかかる',
-        price:'Claude Pro $20/月（約3,000円）or API従量課金', priceType:'cheap',
-        url:'https://claude.ai/code', baseScore:95,
+        desc:'2026年2月リリースのClaude Opus 4.6はSWE-bench Verified 80.8%で業界最高を更新。1Mトークンのコンテキスト（β）でリポジトリ全体を把握した設計・リファクタリングが可能。新機能「Agent Teams」では複数のサブエージェントを生成し専用コンテキスト・共有タスクリスト・エージェント間メッセージで協調作業が可能。Claude Sonnet 4.6（80.8%付近）もClaude Codeから利用できる。',
+        pro:'業界最高SWEベンチ+Agent Teamsで複数エージェント協調', proSub:'1Mトークンでコードベース全体を一括理解',
+        con:'APIの従量課金は使いすぎると高額になる', conSub:'CLIベースで操作に慣れるまで手間がかかる',
+        price:'Claude Max $100〜$200/月 or API従量課金（Sonnet $3/M〜）', priceType:'paid',
+        url:'https://claude.ai/code', baseScore:96,
         scoreFactors:{ qualityBonus:9, securityBonus:5, advancedBonus:7 }
       },
       {
-        id:'cursor', name:'Cursor', company:'Anysphere', icon:'🖱️',
+        id:'cursor', name:'Cursor 2.4', company:'Anysphere', icon:'🖱️',
         iconBg:'linear-gradient(135deg,#f59e0b1a,#fb923c1a)',
-        tagline:'AI統合コードエディタのデファクトスタンダード。時価総額$100億のスター',
-        tags:['VSCodeベース','プロジェクト全体理解','エージェントモード','Fortune500採用'],
+        tagline:'100万人超が利用するAI統合IDEの事実上の標準。並列サブエージェントを搭載',
+        tags:['100万人利用','並列8サブエージェント','バックグラウンドエージェント','マルチモデル'],
         tagTypes:['hi','hi','green','green'],
-        desc:'VSCodeをベースにAIを全面統合した専用コードエディタ。フォーチュン500の50%が採用し、時価総額$100億を超えるAIツール界の大型スタートアップ。プロジェクト内の複数ファイルを横断的に理解した補完・生成が強み。「Composerエージェント」で複数ファイルの同時編集・テスト・コミットまで自律的に実行できる。',
-        pro:'プロジェクト全体を把握した的確な補完', proSub:'エージェントで複数ファイルを同時編集',
-        con:'月20〜40ドルとやや高め', conSub:'慣れるまで設定に時間がかかる',
-        price:'Hobby 無料 / Pro $20/月（約3,000円）', priceType:'cheap',
+        desc:'2026年現在100万人以上・36万人以上の有料ユーザーを抱えるAI統合IDEの事実上の標準。2.4アップデートで最大8並列サブエージェントを同時実行、バックグラウンドエージェントでPR自動作成まで行う。Claude・GPT-5・Geminiなどすべての主要モデルを選べるマルチモデル対応が強み。プロジェクト横断的なファイル理解と補完速度（Supermaven）も業界トップ。',
+        pro:'マルチモデル+並列エージェントで最速の開発体験', proSub:'プロジェクト全体を理解した的確な補完',
+        con:'月$20のPro費用＋エージェント使用で想定外の追加費用も', conSub:'重い大規模リポジトリでインデックスが遅い',
+        price:'Hobby 無料 / Pro $20/月（約3,000円）/ Pro+ $60/月', priceType:'cheap',
         url:'https://cursor.sh', baseScore:90,
         scoreFactors:{ qualityBonus:5, advancedBonus:6, freeBonus:1 }
       },
       {
         id:'copilot', name:'GitHub Copilot', company:'Microsoft / GitHub', icon:'⚙️',
         iconBg:'linear-gradient(135deg,#1e29451a,#3341551a)',
-        tagline:'企業の82%が採用する業界標準。タイプしながらリアルタイム補完',
-        tags:['182万人が利用','VSCode/JetBrains','企業標準','月$10コスパ'],
-        tagTypes:['hi','hi','green','green'],
-        desc:'エンジニアの82%が在籍企業で採用する業界標準のAIコーディングアシスタント。タイピングに合わせたリアルタイム補完が最も高速で、開発のリズムを止めない自然な体験が最大の魅力。VS Code・JetBrains・Neovim等すべての主要IDEに対応。月$10は最もコスパが良い選択肢。2025年からAgent Modeも搭載。',
-        pro:'タイプしながらの補完速度が最速', proSub:'企業・エンタープライズ採用実績No.1',
-        con:'複雑な推論はClaude Codeに劣る', conSub:'大規模コード理解に8Kトークン制限',
-        price:'無料あり / Pro $10/月（約1,500円）', priceType:'cheap',
+        tagline:'VSCode 1.109でClaude・Codex・Copilotが同時起動。既存IDEで使える標準',
+        tags:['全IDE対応','マルチエージェント','月$10コスパ','クラウドエージェント'],
+        tagTypes:['hi','green','green','green'],
+        desc:'2026年2月のVSCode 1.109アップデートで、Claude・Codex・Copilotの3エージェントを同時起動できるマルチエージェントプラットフォームに進化。JetBrains・Neovim・Xcode・Visual Studioすべての主要IDEに対応するIDEロックインがない。クラウドVM上でPRを自動作成するCopilot Coding AgentはGitHub統合チームに最適。月$10は最もコスパの良い選択肢。',
+        pro:'全IDEで使える＋月$10の圧倒的コスパ', proSub:'GitHubとの統合がどのツールよりも深い',
+        con:'CursorやClaude Codeほどエージェント能力が高くない', conSub:'重い推論タスクはClaude Codeに劣る',
+        price:'無料（2,000補完/月）/ Pro $10/月（約1,500円）/ Business $39/月', priceType:'cheap',
         url:'https://github.com/features/copilot', baseScore:87,
         scoreFactors:{ qualityBonus:3, speedBonus:6, securityBonus:5, freeBonus:2 }
       },
       {
-        id:'windsurf', name:'Windsurf（Codeium）', company:'Codeium（OpenAI傘下）', icon:'🏄',
+        id:'windsurf', name:'Windsurf（Cognition AI傘下）', company:'Cognition AI（旧Codeium）', icon:'🏄',
         iconBg:'linear-gradient(135deg,#34d3991a,#22d3ee1a)',
-        tagline:'Cursorのライバル。月15ドルでCursor並みの機能を実現するコスパ番長',
-        tags:['Cascade Flow搭載','コスパNo.1','自律エージェント','OpenAI傘下'],
+        tagline:'Cursorのライバル。SWE-1モデル搭載で月$15のコスパ番長',
+        tags:['Cascade Flow搭載','SWE-1専用モデル','コスパNo.1','自律エージェント'],
         tagTypes:['hi','hi','green','green'],
-        desc:'Cursorの強力なライバルとして急成長したAIコードエディタ。独自の「Cascade Flow」アーキテクチャによるエージェントが、リポジトリ全体を理解した自律コーディングを実現する。2025年にOpenAIに買収されさらなる機能強化が進行中。Cursor Pro（$20）より安い$15という価格設定がコスパ重視層に人気。',
-        pro:'Cursorより安く同等以上の機能', proSub:'Cascade Flowで自律コーディングが可能',
-        con:'Cursorほどコミュニティ情報が多くない', conSub:'一部機能はまだ発展途上',
+        desc:'2025年7月にCognition AI（Devin開発元）に買収され機能強化が進むAIコードエディタ。独自の「SWE-1」モデルは実際のソフトウェア開発タスクに特化して学習されており、Windsurf内での開発ワークフローを大幅に加速。Cascade Flowがリポジトリ全体を理解した自律コーディングを実現。Cursor Pro（$20）より安い$15という価格設定がコスパ重視層に人気。',
+        pro:'SWE-1専用モデル+Cascadeで自律開発が高速', proSub:'Cursorより安く同等以上の機能',
+        con:'Cursorほどコミュニティ情報が多くない', conSub:'Cognition傘下のため長期安定性に疑問も',
         price:'無料あり / Pro $15/月（約2,300円）', priceType:'cheap',
         url:'https://codeium.com/windsurf', baseScore:83,
         scoreFactors:{ costBonus:8, qualityBonus:3, freeBonus:2 }
@@ -600,9 +603,9 @@ const AI_DB = {
         tagline:'ブラウザのみで完結。アイデアを話すだけでWebサービスが公開できる',
         tags:['インストール不要','デプロイ自動','非エンジニア向き','プロトタイプ最速'],
         tagTypes:['hi','hi','green','green'],
-        desc:'PCへのインストール・環境構築が一切不要で、ブラウザだけでコーディング〜Webサービス公開まで全部完結するクラウドIDE。「〇〇なWebサービスを作って」と指示するだけでAIがコードを書き・テストし・デプロイまで全自動で行ってくれる。エンジニアでない起業家・マーケター・学生のプロトタイプ開発に特に人気。',
+        desc:'PCへのインストール・環境構築が一切不要で、ブラウザだけでコーディング〜Webサービス公開まで全部完結するクラウドIDE。「〇〇なWebサービスを作って」と指示するだけでAIがコードを書き・テストし・デプロイまで全自動で行ってくれる。エンジニアでない起業家・マーケター・学生のプロトタイプ開発に特に人気。2026年も初心者向け開発AIの筆頭。',
         pro:'ブラウザだけでアプリを公開できる', proSub:'コードゼロでもサービス作成が可能',
-        con:'本格的な大規模開発・チーム開発には不向き', conSub:'ローカル環境の学習機会にはならない',
+        con:'本格的な大規模・チーム開発には不向き', conSub:'ローカル環境の学習機会にはならない',
         price:'無料あり / Core $20/月（約3,000円）', priceType:'cheap',
         url:'https://replit.com', baseScore:76,
         scoreFactors:{ freeBonus:4, beginnerBonus:11, speedBonus:3 }
@@ -695,7 +698,8 @@ const PROMPTS = {
 被写体: [人物・物・動物など]
 動き: [カメラワーク（パン・ズーム等）と被写体の動き]
 照明・時間帯: [朝日/夕日/夜/スタジオ照明 など]
-尺: [秒数（例：5秒、10秒、最大20秒）]
+音声・BGM: [効果音・BGM・台詞があるか]
+尺: [秒数（例：5秒、10秒、最大25秒）]
 スタイル: [シネマティック / アニメ / ドキュメンタリー / 広告風]
 アスペクト比: [16:9 / 9:16 / 1:1]`,
 
